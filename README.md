@@ -38,6 +38,7 @@ TODO: Bootstrapping scripts
 - docker (installed as cask)
 - mysqlworkbench (installed as cask)
 - emacs (installed as cask)
+- angular-cli
 
 ### Globally-Installed Node Modules
 
