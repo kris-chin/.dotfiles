@@ -1,0 +1,183 @@
+snippet rfc Write a react functional component
+	import React from "react";
+
+	export type $1Props = {
+	}
+
+	export const $1 = (props: $1Props) => {
+		return (
+			<div>
+				$1
+			</div>
+		)
+	}
+
+#Assumes react testing library
+snippet rfct Write a test for a react component
+	import { render } from "@testing-library/react";
+	import react from "React";
+	import { $1, $1Props } from "./component.js";
+
+	describe("$1", () => {
+		let defaultProps: $1Props;
+
+		beforeEach() => {
+			defaultProps = {
+			}
+		}
+
+		it("Renders", () => {
+			//Act
+			const { container } = render(<$1 {...defaultProps />);
+
+			//Assert
+			const element = container.firstElementChild
+			expect(element?.className).toContain("$2");
+		})
+	})
+
+snippet rsg Write a react Service (GET)
+	export interface GetParams {
+	}
+
+	export type GetResponse = Record<string, string>
+
+	export async function get(params: GetParams) {
+		const queryString = getQueryString(params)
+
+		const res = await fetch(\`$1\`)
+		//wrap this with throwIfNotOk
+		return res
+	}
+
+	function getQueryString(params: GetParams) {
+		return \`${new URLSearchParams(params as Record<string,string>).toString()}\`
+	}
+
+snippet rstg Write a test for a react Service (GET)
+	import { get } from "./get.js"
+	import fetchMock from "jest-fetch-mock"
+	import { mockParams, mockGetResponse } from "./get.mock.js"
+	
+	describe("$1", () => {
+		beforeEach() => {
+			fetchMock.resetMocks()
+		}
+
+		it("$1 - status 200", async () => {
+			//Setup
+			fetchMock.mockResponse(JSON.stringify(mockGetResponse), {
+				status: 200
+			});
+
+			//Act
+			await expect(get(mockParams)).resolves.toStrictEqual(mockGetResponse);
+
+			//Verify
+			expect(fetchMock).toBeCalledWith(\`\`)
+		})
+
+		it("$1 - throws error", async () => {
+			//Setup
+			const expectedError = "Error example"
+			fetchMock.mockReject(new Error(expectedError))
+
+			await expect(get()).rejects.toThrow(expectedError)
+		}
+	})
+
+snippet rsmg Write mock data for a React Service (GET)
+	import {GetParams, GetResponse} from "./get.js"
+
+	export const mockGetParams : GetParams = {
+	}
+
+	export const mockGetResponse : Readonly<GetResponse> = {
+	}
+
+#assumes tanstack query
+snippet rq Write a React Query
+	import { someResource } = "../keys.js"
+	import { someService } = "changeThis"
+	import { UseQueryResult, useQuery } from "react-query"
+
+	export type GetParams = 
+	export type GetResponse = 
+	export type UseGet = UseQueryResult<GetResponse, Error>;
+
+	export function useGet(params: GetParams) : UseGet {
+		return useQuery<GetResponse, Error>(someResource, () => {
+			someService.get(params)
+		})
+	}
+
+#assumes react testing library
+#assumes tanstack query
+#assumes a test utility to create a query client
+snippet rqtg Write a test for a react Query (GET)
+	import * as ReactQuery from "react-query"
+	import { renderHook } from "@testing-library/react-hooks"
+	import { GetResponse, GetParams, UseGet } from "./get.js"
+	import { createQueryClientWrapper } from "QUERY_CLIENT_DIR"
+	
+	jest.mock("MOCK THE SERVICE IMPORT HERE");
+	const mockedServices = ServiceObject as jest.mocked<typeof ServiceObject>
+
+	describe("$1", () => {
+		let mockResponse: GetResponse;
+		let mockParams: GetParams;
+
+		beforeEach(() => {
+			mockResponse = 
+			mockParams = 
+		})
+
+		it("calls useQuery with expected keys", () => {
+			//Setup
+			mockedServices.get.mockResolvedValueOnce(mockresponse)
+			const useQuerySpy = jest.spyOn(ReactQuery, "useQuery")
+			
+			//Act
+			const { result, waitFor } = renderHook(() => useGet(mockParams), {
+				wrapper: createQueryClientWrapper()
+			})
+			await waitFor(() => result.current.isSuccess)
+
+			//Verify
+			expect(useQuerySpy.mock.calls[0][0]).toStrictEqual(PUT_KEYS_HERE)
+		})
+
+		it("returns response on success", () => {
+			//Setup
+			mockedServices.get.mockResolvedValueOnce(mockresponse)
+
+			//Act
+			const { result, waitFor } = renderHook(() => useGet(mockParams), {
+				wrapper: createQueryClientWrapper()
+			})
+			await waitFor(() => result.current.isSuccess)
+
+			//Verify
+			expect(result.current.data).toBe(mockResponse)
+		})
+
+		it("returns error on error", () => {
+			//Setup
+			const expectedError = "Bad Response"
+			mockedServices.get.mockRejectedValueOnce(new Error(expectedError))
+
+			//Act
+			const { result, waitFor } = renderHook(() => useGet(mockParams), {
+				wrapper: createQueryClientWrapper()
+			})
+			await waitFor(() => result.current.isError)
+
+			//Verify
+			expect(result.current.data).toBeUndefined();
+			expect(result.current.error?.message).toBe(expectedError)
+		})
+
+	})
+
+snippet cl Quick Shorthand for writing debug console logs
+	console.log("$1: ", $1);
