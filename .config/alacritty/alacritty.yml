@@ -9,6 +9,8 @@ font:
   #normal:
     #REMINDER! we have Cozette and CozetteVector!!!
     #family: CozetteVector
+  normal:
+    family: "MesloLGL Nerd Font" #Font I have for MacOS
   size: 12
 colors:
   name: Garuda (dr460nized)
