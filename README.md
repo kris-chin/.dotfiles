@@ -51,3 +51,7 @@ TODO: Bootstrapping scripts
 - urllib3
 
 ### Installed Arch Packages (WIP)
+
+- picom
+- feh
+- xrandr
