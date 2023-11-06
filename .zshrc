@@ -242,3 +242,10 @@ alias v="nvim"
 
 # default git editor to vim
 export GIT_EDITOR=vim
+
+#setup tab completion for colorls
+source $(dirname $(gem which colorls))/tab_complete.sh
+
+#colorls aliass
+alias lc='colorls -lA --sd'
+alias ls='colorls'

@@ -39,6 +39,7 @@ TODO: Bootstrapping scripts
 - mysqlworkbench (installed as cask)
 - emacs (installed as cask)
 - angular-cli
+- ruby
 
 ### Globally-Installed Node Modules
 
@@ -56,3 +57,7 @@ TODO: Bootstrapping scripts
 - picom
 - feh
 - xrandr
+
+### Installed Ruby Gems
+
+- colorls
