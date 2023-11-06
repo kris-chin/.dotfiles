@@ -1,37 +1,39 @@
-font: 
-  normal: 
-    family: "MesloLGL Nerd Font"
-  size: 11
-
-#window:
-  #hides title bar (not sure if I want this right now)
-  #decorations: None
-
-# Colors (Horizon Dark)
+window:
+  opacity: 0.8
+  dynamic_title: true
+  dimensions:
+    columns: 280
+    lines: 64
+font:
+  #normal:
+    #REMINDER! we have Cozette and CozetteVector!!!
+    #family: CozetteVector
+  size: 12
 colors:
-  # Primary colors
+  name: Garuda (dr460nized)
+  author: dr460nf1r3
   primary:
-    background: '0x1c1e26'
-    foreground: '0xe0e0e0'
-
-  # Normal colors
+    background: '0x0a1124'
+    foreground: '0xeec49a'
+  cursor:
+    text: '0x0a1124'
+    cursor: '0xeec49a'
   normal:
-    black: '0x16161c'
-    red: '0xe95678'
-    green: '0x29d398'
-    yellow: '0xfab795'
-    blue: '0x26bbd9'
-    magenta: '0xee64ac'
-    cyan: '0x59e1e3'
-    white: '0xd5d8da'
-
-  # Bright colors
+    black: '0x0a1124'
+    red: '0x5F4149'
+    green: '0xEB3247'
+    yellow: '0xBC4349'
+    blue: '0xF35645'
+    magenta: '0xF6A73B'
+    cyan: '0xFAD32F'
+    white: '0xeec49a'
   bright:
-    black: '0x5b5858'
-    red: '0xec6a88'
-    green: '0x3fdaa4'
-    yellow: '0xfbc3a7'
-    blue: '0x3fc4de'
-    magenta: '0xf075b5'
-    cyan: '0x6be4e6'
-    white: '0xd5d8da'
+    black: '0xa6896b'
+    red: '0x5F4149'
+    green: '0xEB3247'
+    yellow: '0xBC4349'
+    blue: '0xF35645'
+    magenta: '0xF6A73B'
+    cyan: '0xFAD32F'
+    white: '0xeec49a'
+theme: Garuda.dr460nized
