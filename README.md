@@ -10,6 +10,8 @@ Just my dotfiles! Working on making this nicer and easier to bootstrap
 - Tmux
 - Neovim
 - Git
+- Vim (just as legacy, not really for normal usage)
+  - vim-plug
 
 ## Installed Software (wip)
 
