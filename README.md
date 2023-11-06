@@ -1,6 +1,8 @@
 # chin's Dotfiles
 
 Just my dotfiles! Working on making this nicer and easier to bootstrap
+TODO: OSX vs Arch support
+TODO: Bootstrapping scripts
 
 ## Setup
 
@@ -47,3 +49,5 @@ Just my dotfiles! Working on making this nicer and easier to bootstrap
 - jira
 - requests
 - urllib3
+
+### Installed Arch Packages (WIP)
