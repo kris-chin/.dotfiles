@@ -61,3 +61,8 @@ TODO: Bootstrapping scripts
 ### Installed Ruby Gems
 
 - colorls
+
+### Installed MacOs Apps (WIP)
+
+- ubersicht
+- scroll reverser
