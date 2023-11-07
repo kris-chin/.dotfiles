@@ -22,21 +22,11 @@
   )
 )
 
-;;Helper function
-;;If the buffer does not have any windows, kill it.
-;;TODO Get this to work
-(defun flow-kill-buffer-if-no-windows (buffer)
-  "Kills the buffer if no windows are detected"
-  (let ((process (get-buffer-process buffer) ))
-    (when 
-      (and (bufferp buffer) ;;buffer exists
-           (not (get-buffer-window buffer t)) ;;if attempting to get the window for the buffer fails (no windows exist)
-      )
-      (delete-process process)
-      ;;(kill-buffer buffer) ;;first, kill the buffer (kills the process as well)
-    )
-  )
-)
+;;Helper function to determine if a window is a main window
+(defun my-window-is-main-p (window)
+  "Check if WINDOW is a main window."
+  (with-selected-window window
+    (not (window-parameter nil 'no-other-windows))))
 
 ;;Helper variable for our buffer name
 (defvar flow-buffer-name "*Flow*"
@@ -47,15 +37,24 @@
 (defun flow-script-sentinel (process event)
   ;;kill buff if the process dies
   (unless (process-live-p process)
-    (let ((buffer (process-buffer process))
+    (let* ((buffer (process-buffer process))
           (last-lines (get-last-line-content flow-script-line-count))
           (on-close-form flow-script-end-form)
+          (window (get-buffer-window buffer))
          )
-      (delete-window (get-buffer-window buffer)) ;;kill window first
-      ;;TODO: figure out if last-line was actual content or script-exit
-      ;;TODO: detect python errors
-      (kill-buffer buffer) ;;then kill buffer, leaving us back in the old buffer
-      (funcall on-close-form last-lines) ;;call the callback in the OLD buffer (this needs to be here)
+      (condition-case nil
+                      (progn
+                        (delete-window window) ;;kill window first
+                        ;;TODO: figure out if last-line was actual content or script-exit
+                        ;;TODO: detect python errors
+                        (kill-buffer buffer) ;;then kill buffer, leaving us back in the old buffer
+                        (funcall on-close-form last-lines) ;;call the callback in the OLD buffer (this needs to be here)
+                        )
+                      ;;literally do nothing on error.
+                      ;;this is to just mute the error message that shows up when this code attempts to delete a main window
+                      ;;change this if necessary
+                      (error ())
+      )
     )
   )
 )
@@ -93,6 +92,22 @@
   (setq flow-script-end-form '(message "FORM_NOT_OVERRITTEN")) ;;form that is called once process exits. this is called by the sentinel and will be passed in a string as an argument 
   (setq flow-script-line-count 1) ;;number of lines to get from the end of the output when the process ends
   )
+
+;;Helper function to be added as an advice 
+;;This function auto-kills the buffer of a window-to-be-closed only if this window's associated buffer is Flow itself
+(defun flow-auto-kill-buffer (&optional window)
+  "kills the buffer of a window only if it belongs to Flow"
+    (let ((buffer (window-buffer window)))
+      ;;ENSURE that we are attempting to close the Flow window and not any other window
+      (when (string-equal (buffer-name buffer) "*Flow*")
+        (kill-buffer buffer)
+        )
+      )
+  )
+
+;;be careful with this advice. "if deleting the window would leave no more windows in the window tree, an error is signaled."
+;;IE. if your function errors out, emacs is quitting!! (this is due to how evil works)
+(advice-add 'delete-window :before #'flow-auto-kill-buffer)
 
 ;;simple keymap for "Flow" mode (name subject to change)
 ;;not sure why I need this in this spot of the file specifically, (maybe comint-mode isn't defined yet in flow-mode-map?)
