@@ -53,7 +53,7 @@ def main(script_args=None):
         # TODO: Verify that ticket exists here
         issue = jira.issue(ticketName)
         print("printing...")
-
+        sys.stdout.write(f"{issue.fields.summary}\n")
         sys.stdout.write(f"{issue.key}\n")
 
         # Print the status of the new issue
