@@ -183,6 +183,12 @@ if [ -f ~/personal.env ]; then
 	source ~/personal.env
 fi
 
+#helper function that pushes the current branch to remote
+function gpo () {
+	local currentBranch=$(git rev-parse --abbrev-ref HEAD)
+	git push origin $currentBranch "$@"
+}
+
 #helper function for creating git symbolic refs for better branch names 
 function gsref () {
 	local currentBranch=$(git rev-parse --abbrev-ref HEAD)
