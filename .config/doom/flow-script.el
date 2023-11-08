@@ -41,14 +41,17 @@
           (last-lines (get-last-line-content flow-script-line-count))
           (on-close-form flow-script-end-form)
           (window (get-buffer-window buffer))
+          (exit-status (process-exit-status process))
          )
       (condition-case nil
-                      (progn
-                        (delete-window window) ;;kill window first
-                        ;;TODO: figure out if last-line was actual content or script-exit
-                        ;;TODO: detect python errors
-                        (kill-buffer buffer) ;;then kill buffer, leaving us back in the old buffer
-                        (funcall on-close-form last-lines) ;;call the callback in the OLD buffer (this needs to be here)
+                      (if (eq 0 exit-status) ;;if no errors occurred
+                            (progn
+                                (sit-for 1) ;;sit for 1 second to read the output
+                                (delete-window window) ;;kill window first
+                                (kill-buffer buffer) ;;then kill buffer, leaving us back in the old buffer
+                                (funcall on-close-form last-lines) ;;call the callback in the OLD buffer (this needs to be here)
+                            )
+                          (message "An error occurred: Exit Status: %s" exit-status)
                         )
                       ;;literally do nothing on error.
                       ;;this is to just mute the error message that shows up when this code attempts to delete a main window
