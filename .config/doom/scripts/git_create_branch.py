@@ -42,11 +42,11 @@ def main(script_args=None):
     branch_name = input("Enter branch name (will include issue ticket in name!): ")
 
     repo = git.Repo(directory, search_parent_directories=True)
+    current_branch = str(repo.active_branch)
 
-    #TODO: I really want to do this: but I need to find a good way to do this that's not too annoying.
-        #3. If we want to create this branch from main, then use the switch_to_branch flow to go to main, and create the branch, then switch_to_branch back to the current branch
-
-        #3.5. If we want to just create this branch from the existing branch, just create the branch from here
+    #if useCurrentBranch isn't true, checkout to main first
+    if (args.useCurrentBranch != True):
+        switch_to_branch({"target_branch": "main", "dir": args.dir})
 
     #create the branch
     issueSection = f"{args.jira_issue}--" if (args.jira_issue != None) else ""
@@ -55,6 +55,10 @@ def main(script_args=None):
 
     #4. Also create a symbolic ref to make it easier to switch to on the terminal
     repo.git.symbolic_ref(f"refs/heads/{branch_name}", f"refs/heads/{finalName}")
+
+    #if doing it from main, switch back to the original branch
+    if (args.useCurrentBranch != True):
+        switch_to_branch({"target_branch": current_branch, "dir": args.dir})
 
     #Output the name of the branch
     print(finalName)

@@ -162,6 +162,9 @@ alias gch="git checkout"
 #alias for quicker clears
 alias c="clear"
 
+#alias for switch-to-branch script
+alias sb="python3 ~/.config/doom/scripts/git_switch_to_branch.py"
+
 #export the jira cli token
 #commented out because i'm using my PAT instead of the cli token
 #export JIRA_API_TOKEN=$(cat ~/jira_cli_token)
