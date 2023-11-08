@@ -47,14 +47,17 @@ def main(script_args=None):
 
     #3. Rebase with main (optional)
     if (get_yes_or_no("Fetch and Rebase with main?") == "y"):
-        #switch to main real quick to update main
-        repo.git.checkout("main")
-        repo.git.fetch("--all")
-        repo.git.pull("origin", "main")
-        #then go back to original branch
-        repo.git.checkout(args.target_branch)
-        #now rebase
-        repo.git.rebase("main")
+        try:
+            #switch to main real quick to update main
+            repo.git.checkout("main")
+            repo.git.fetch("--all")
+            repo.git.pull("origin", "main")
+            #then go back to original branch
+            repo.git.checkout(args.target_branch)
+            #now rebase
+            repo.git.rebase("main")
+        except Exception as e:
+            print(f"ERROR: {e}")
 
     #4. If the target branch has an associated stash, pop it
     #get all stashes in the repo and convert each line into a list item
