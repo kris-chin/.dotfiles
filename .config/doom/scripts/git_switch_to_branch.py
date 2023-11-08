@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import git
+from git.exc import GitCommandError
 import argparse
 from utils.git_utils import find_git_root
 from utils.cli_utils import get_yes_or_no
@@ -43,7 +44,10 @@ def main(script_args=None):
 
     #2. Switch to Target Branch
     target_branch = args.target_branch
-    repo.git.checkout(args.target_branch)
+    try:
+        repo.git.checkout(args.target_branch)
+    except GitCommandError as e:
+        raise Exception("This branch does not exist. Please create it before continuing (won't create it automatically cuz I'm lazy)")
 
     #3. Rebase with main (optional)
     if (get_yes_or_no("Fetch and Rebase with main?") == "y"):
