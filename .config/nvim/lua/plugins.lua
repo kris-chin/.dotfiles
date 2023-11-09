@@ -120,7 +120,13 @@ require("lazy").setup({
   --prettier for vim (adapted to neovim)
   {
       'prettier/vim-prettier',
-      build = "npm install --frozen-lockfile --production"
+      build = "npm install --frozen-lockfile --production",
+      config = function()
+          vim.cmd([[
+              let g:prettier#autoformat = 1
+              let g:prettier#autoformat_require_pragma = 0
+          ]])
+      end
   },
   --enables integration between nvim and tmux navigation (finally! have the same keys binds to navigate)
   {
