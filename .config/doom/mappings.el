@@ -43,6 +43,7 @@
     "jira scripts hydra"
     ("c" #'flow-jira-create-ticket "create JIRA ticket")
     ("s" #'flow-jira-update-ticket-status "update JIRA status")
+    ("t" #'flow-test-script "test script")
   )
 
 (defhydra hydra-flow-git ()

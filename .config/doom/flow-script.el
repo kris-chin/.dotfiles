@@ -150,6 +150,13 @@
   (interactive)
   (flow-set-property '("JIRA_Ticket" "JIRA_Status" "JIRA_Link") (concat (expand-file-name "~") "/.config/doom/scripts/jira_create_ticket.py") nil )
 )
+
+(defun flow-test-script ()
+  "Runs the test script"
+  (interactive)
+  (run-flow-script (concat (expand-file-name "~") "/.config/doom/scripts/test_script.py") '() nil 0)
+  )
+
 (defun flow-jira-update-ticket-status ()
   "Updates the status of a JIRA Ticket"
   (interactive)
