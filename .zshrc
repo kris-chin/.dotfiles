@@ -128,6 +128,10 @@ export PATH="/opt/homebrew/bin:$PATH"
 # Add Cargo to our PATH
 export PATH=$PATH:/home/krischin/.cargo/bin
 
+# Add ruby gems to our PATH
+export GEM_HOME="$(gem env user_gemhome)"
+export PATH="$PATH:$GEM_HOME/bin"
+
 #Run tmux and make sure it doesn't run itself
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	exec tmux
