@@ -20,6 +20,7 @@ def main1():
 
 def main2():
     print("Hello this is testing external editor functionality")
+    input("First, I'm going to ask for some input here to ensure that the output is being read line-by-line: ")
     print("We will now prompt for external input")
     externalInput = getExternalInput(os.path.expanduser("~/.config/doom/scripts/templates/pull_request.md"))
     print("externalinput:")

@@ -28,6 +28,17 @@
   (with-selected-window window
     (not (window-parameter nil 'no-other-windows))))
 
+;;Helper function to select the window running the flow buffer
+(defun select-flow-window ()
+  "Selects the window holding the flow buffer"
+  (select-window
+    (let ((window (get-buffer-window "*Flow*")))
+      (when window
+        window)
+      )
+    )
+  )
+
 ;;Helper variable for our buffer name
 (defvar flow-buffer-name "*Flow*"
   "Name of the buffer to use for comint instances for flow scripts")
@@ -84,6 +95,76 @@
   )
 )
 
+;;This advice is *carefully* added to delete-window
+(defun flow-tmp-make-changes (&optional window)
+  "Makes changes to a file and switches back to flow mode. Runs only in flow-tmp-mode"
+    (let ((buffer (window-buffer window)))
+      ;;ENSURE that we are attempting to close the Flow-tmp window and not any other window
+      (when (string-equal (buffer-name buffer) "*Flow-Tmp*")
+        ;;get all of the buffer content and write to the file
+        (write-region (point-min) (point-max) flow-tmp-filename)
+        ;;switch back to the flow buffer
+        (switch-to-buffer (get-buffer "*Flow*"))
+        (condition-case nil
+            (progn
+              (kill-buffer buffer)
+              ;;remove advice so we can do normal delete-window functionality again
+              (advice-remove 'delete-window #'flow-tmp-make-changes)
+             )
+            (error ()) ;;mute the error caused by the missing process (change if necessary)
+          )
+        )
+      )
+  )
+
+(define-derived-mode flow-tmp-mode markdown-mode "Flow Script External Editor"
+   "Major mode for any temporary editing done in Flow Script
+   /
+   "
+   ;;Hooks:
+   ;;On save, don't actually save to file (i think this is already done)
+   ;;On window close or buffer exit, actually WRITE to the file and then switch back to flow mode
+   ;;TODO: ensure only "delete-window" for this buffer is affected (it affects other buffers) (this doesn't work for some reason?)
+   (advice-add 'delete-window :override #'flow-tmp-make-changes)
+   )
+
+
+
+;;TODO: implement this
+(defun flow-open-tmp-buffer (filename)
+   "Opens a tmpfile in a new buffer editor (starts in markdown mode) Exiting the file means saving the file"
+   (let ((buffer (get-buffer-create "*Flow-Tmp*")))
+       (select-flow-window) ;;ensure the flow window is selected
+       (switch-to-buffer buffer)  ;;create a temp buffer that temporarily replaces the window
+       (insert-file-contents filename)
+       (flow-tmp-mode) ;;run the tmp-editor mode
+       (setq flow-tmp-filename filename)
+     )
+  )
+
+;;TODO: maybe move the reserved-prefixes variable out for performance reasons?
+
+;;NOTE: for some reason, filter-output doesn't necessarily correspond with new outputs of the comint,
+;;so we just get the last line of the buffer at the moment instead
+(defun flow-read-prefixes (filter-output)
+  "Comint Filter Function for Flow mode that looks for message prefixes and calls their associated functions"
+  (let* ((reserved-prefixes '( ("[TMP FILE]:" . flow-open-tmp-buffer) ) )
+         (last-line (with-current-buffer "*Flow*"
+                        (string-trim-right (get-last-line-content 1)) ;;get last line content and trim string
+                       )
+                     )
+        )
+      (dolist (prefix-cell reserved-prefixes)
+          (when (string-prefix-p (car prefix-cell) last-line) ;;if the output string is prefixed by the CAR
+            (let ((suffix-string (substring last-line (length (car prefix-cell)))))
+                (funcall (cdr prefix-cell) suffix-string) ;;call the associated function with the suffix as the argument
+              )
+            )
+        )
+      )
+  )
+
+
 ;;The definition for our major mode that wraps our comint
 (define-derived-mode flow-mode comint-mode "Flow Script"
   "Major mode for `run-flow-script`
@@ -94,6 +175,8 @@
   (setq comint-process-echoes t)
   (setq flow-script-end-form '(message "FORM_NOT_OVERRITTEN")) ;;form that is called once process exits. this is called by the sentinel and will be passed in a string as an argument 
   (setq flow-script-line-count 1) ;;number of lines to get from the end of the output when the process ends
+  (add-hook (make-local-variable 'comint-output-filter-functions) 'flow-read-prefixes) ;;watch output from comint and run any commands based on that
+  (remove-hook (make-local-variable 'comint-output-filter-functions) 'ansi-color-process-output);;disable ansi color function to hide an error (this is due to the mid-buffer switch for flow-tmp-mode
   )
 
 ;;Helper function to be added as an advice 
