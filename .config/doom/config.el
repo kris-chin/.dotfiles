@@ -164,7 +164,7 @@
 ;;The lowest priority NEEDS to be a higher ascii number than the highest, but what if I want an inverse number system?
 (setq org-highest-priority 1) 
 (setq org-lowest-priority 10) ;;This is weird
-(setq org-default-priority 5)
+(setq org-default-priority 2) ;;Start with 2nd Highest priority and go from there
 
 ;;Configure org-fancy-priorities
 ;;for some reason, ?1 is needed rather than 41.. why is that?
