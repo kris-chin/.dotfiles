@@ -118,16 +118,16 @@ require("lazy").setup({
   --peekup: lets you view contents in registers
   'gennaro-tedesco/nvim-peekup',
   --prettier for vim (adapted to neovim)
-  {
-      'prettier/vim-prettier',
-      build = "npm install --frozen-lockfile --production",
-      config = function()
-          vim.cmd([[
-              let g:prettier#autoformat = 1
-              let g:prettier#autoformat_require_pragma = 0
-          ]])
-      end
-  },
+  --{
+  --    'prettier/vim-prettier',
+  --    build = "npm install --frozen-lockfile --production",
+  --    config = function()
+  --        vim.cmd([[
+  --            let g:prettier#autoformat = 1
+  --            let g:prettier#autoformat_require_pragma = 0
+  --        ]])
+  --    end
+  --},
   --enables integration between nvim and tmux navigation (finally! have the same keys binds to navigate)
   {
       "alexghergh/nvim-tmux-navigation",
@@ -159,7 +159,7 @@ require("lazy").setup({
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   },
   --vim-sleuth: automatically adapts "shiftwidth" and "expandtab" based on file (automatic tab setting)
-  "tpope/vim-sleuth",
+  --"tpope/vim-sleuth",
   --luasnippets: nvim snippet support
   {
     "L3MON4D3/LuaSnip",
@@ -252,5 +252,42 @@ require("lazy").setup({
                 let g:VM_maps["Add Cursor Up"] = '<M-k>'
             ]])
         end
-    }
+    },
+    --null-ls: support for neovim linting AND formatting (non-LSP programs) WITHIN neovim's LSP
+    {
+        "nvimtools/none-ls.nvim", --future note: this is compatible with null-ls, since null-ls was hard to maintain
+        config = function()
+            local null_ls = require("null-ls")
+            local augroup = vim.api.nvim_create_augroup("LspFormatting", {}) --augroup for formatting
+
+            null_ls.setup({
+                sources = {
+                    --put any sources you installed from mason here
+                    --FUTURE NOTE: all of these sources have a ton of configuration options with the "with" method
+                    null_ls.builtins.code_actions.eslint,
+                    --special note regarding prettier: null-ls integrates with neovim, so neovim also can influence stuff like tabs
+                    null_ls.builtins.formatting.prettier.with({
+                        only_local = "node_modules/.bin", --force use the repo's prettier instead (nice) 
+                    })
+                },
+                --the following on_attach function was just taken from the wiki, but this should effectively add auto-formatting on save
+                -- you can reuse a shared lspconfig on_attach callback here
+                on_attach = function(client, bufnr)
+                    if client.supports_method("textDocument/formatting") then
+                        vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+                        vim.api.nvim_create_autocmd("BufWritePre", {
+                            group = augroup,
+                            buffer = bufnr,
+                            callback = function()
+                                -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                                -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
+                                --vim.lsp.buf.formatting_sync()
+                                vim.lsp.buf.format({async = false})
+                            end,
+                        })
+                    end
+                end
+            })
+        end
+    },
 })
