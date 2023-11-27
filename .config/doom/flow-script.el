@@ -309,3 +309,23 @@
   )
 )
 
+(defun flow-github-create-pr ()
+  "Creates a Pull Request for a branch"
+  (interactive)
+  (let ((branch-name (org-entry-get (point) "Git_Branch"))
+        (local-repository (org-entry-get (point) "Local_Repository" 'inherit))
+        (jira-ticket (org-entry-get (point) "JIRA_Ticket"))
+        )
+      (if local-repository
+        (if branch-name 
+           (flow-set-property '("PR_Number" "GitHub_Link")
+                              (concat (expand-file-name "~") "/.config/doom/scripts/github_create_pr.py")
+                              (list (concat "--branch_name=" branch-name) (concat "--dir=" local-repository) "--text_editor=emacs-flow")
+                            )
+          (message "No Git Branch for this heading!")
+          )
+        (message "No Local Repository found!")
+      )
+  )
+)
+

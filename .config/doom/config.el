@@ -26,6 +26,8 @@
                                    "BASE_URL"
                                    "JIRA_BASE_URL"
                                    "DUMMY_ISSUE"
+                                   "GITHUB_BASE_NAME"
+                                   "GITHUB_API_TOKEN"
                                ))
                   (add-to-list 'exec-path-from-shell-variables env-var))
                 ;;initialize exec-path-from-shell for macos

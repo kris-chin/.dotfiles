@@ -46,11 +46,17 @@
     ("t" #'flow-test-script "test script")
   )
 
+(defhydra hydra-flow-github ()
+  "github scripts hydra"
+  ("c" #'flow-github-create-pr "create pull request")
+)
+
 (defhydra hydra-flow-git ()
     "git scripts hydra"
     ("c" #'flow-git-create-branch "create git branch")
     ("s" #'flow-git-switch-to-branch "switch to git branch")
     ("p" #'flow-git-push-to-remote "push to remote")
+    ("h" #'hydra-flow-github/body "GitHub" :exit t)
 )
 
 ;;map \ + r to org-roam-buffer toggle
