@@ -8,6 +8,9 @@ from utils.general_utils import DictToObject
 import os
 import re
 import logging
+import sys
+sys.path.append('~/.config/doom/scripts')
+from tmux_clean_pane import main as tmux_clean_pane
 
 # This script stashes all changes and switches to a new branch
 # If the new branch it switches to has stashed changes, it pops those changes from stash stack
@@ -79,6 +82,9 @@ def main(script_args=None):
         if ((target_branch == stash_branch) and (stash_message == "AUTO_STASH")):
             print("Popping AUTO_STASH")
             repo.git.stash("pop", stash_number)
+
+    #Clean the pane for an easy clear
+    tmux_clean_pane()
 
 if __name__ == "__main__":
     main()

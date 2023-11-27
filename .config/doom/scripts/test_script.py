@@ -2,6 +2,7 @@
 
 from utils.cli_utils import get_yes_or_no, get_user_choice, getExternalInput
 from utils.jenkins_utils import setup_jenkins
+from utils.tmux_utils import setup_tmux, find_first_zsh_pane
 import sys
 import os
 
@@ -32,7 +33,16 @@ def main3():
     print("Hello this is testing Jenkins integrations")
     setup_jenkins()
 
+def main4():
+    print("Hello this is testing tmux integrations")
+    server = setup_tmux()
+    first_pane = find_first_zsh_pane(server)
+    if (first_pane == None):
+        print("No zsh pane found")
+        return
+    first_pane.send_keys("ls", enter=True)
+
 if __name__ == "__main__":
     #main1()
     #main2()
-    main3()
+    main4()
