@@ -329,3 +329,13 @@
   )
 )
 
+(defun flow-tmux-change-all-to-repo ()
+  "Calls cd on every zsh pane to a given repo"
+  (interactive)
+  (let ((local-repository (org-entry-get (point) "Local_Repository" 'inherit)))
+    (if local-repository
+      (run-flow-script (concat (expand-file-name "~") "/.config/doom/scripts/tmux_change_all_to_directory.py") (list local-repository) nil 0)
+      (message "No local repository found!")
+      )
+    )
+  )

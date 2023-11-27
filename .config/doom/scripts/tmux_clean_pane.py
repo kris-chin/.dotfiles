@@ -10,3 +10,6 @@ def main():
         print("No ZSH pane found in existing tmux server!")
 
     first_pane.send_keys("clear", enter=True)
+
+if __name__ == "__main__":
+    main()

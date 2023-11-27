@@ -59,6 +59,11 @@
     ("h" #'hydra-flow-github/body "GitHub" :exit t)
 )
 
+(defhydra hydra-flow-tmux ()
+  "github scripts tmux"
+  ("c" #'flow-tmux-change-all-to-repo "cd all to repo")
+)
+
 ;;map \ + r to org-roam-buffer toggle
 (map! :map evil-normal-state-map "\\ r" #'org-roam-buffer-toggle)
 (map! :map org-roam-mode-map "\\ r" #'org-roam-buffer-toggle) ;;do this for the org roam mode
@@ -96,12 +101,13 @@
   ("r" #'hydra-org-roam/body "roam" :exit t)
   ("g" #'hydra-flow-git/body "Git" :exit t)
   ("j" #'hydra-flow-jira/body "JIRA" :exit t)
+  ("t" #'hydra-flow-tmux/body "tmux" :exit t)
   ("n" #'org-narrow-to-subtree "narrow to subtree")
   ("w" #'widen "widen")
   ("l" #'org-toggle-link-display "toggle link display")
   ("8" #'org-toggle-heading "toggle heading")
   ("s" #'org-sort "sort heading")
-  ("t" #'org-todo "toggle TODO state")
+  ("T" #'org-todo "toggle TODO state")
   ("c" #'org-columns "column view")
   )
 ;;this is kinda a crazy mapping but im down wit it..
