@@ -2,7 +2,7 @@
 #this script takes EVERY zsh pane and calls "cd" on it to a given directory
 
 import argparse
-from utils.tmux_utils import setup_tmux, find_all_zsh_panes
+from utils.tmux_utils import setup_tmux, find_all_zsh_panes, ensure_empty_insert_mode
 from utils.general_utils import DictToObject
 
 def GetArguments(script_args=None):
@@ -21,7 +21,9 @@ def main(script_args=None):
 
     for pane in zsh_panes:
         print("Attempting pane: " + str(pane))
+        ensure_empty_insert_mode(pane)
         pane.send_keys(f"cd {args.dir}", enter=True)
+        pane.send_keys("clear", enter=True)
 
 if __name__ == "__main__":
     main()
