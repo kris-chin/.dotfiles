@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from utils.cli_utils import get_yes_or_no, get_user_choice, getExternalInput
+from utils.jenkins_utils import setup_jenkins
 import sys
 import os
 
@@ -27,6 +28,11 @@ def main2():
     print(externalInput)
     print("Yay!! we can then pass this to anything")
 
+def main3():
+    print("Hello this is testing Jenkins integrations")
+    setup_jenkins()
+
 if __name__ == "__main__":
     #main1()
-    main2()
+    #main2()
+    main3()
