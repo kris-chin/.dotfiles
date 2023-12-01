@@ -48,8 +48,12 @@ ls.setup({
 ls.add_snippets("all", {
     --easy index.js export
     --TODO: detect camelCase to kebab case
-    s("i", {
-	t("export * as "), i(1), t(" from \"./"), f(function(args, parent, user_args) local lowercase = string.lower(args[1][1]) return lowercase end, {1}), t("/index.js\";")
+    s("ii", {
+	t("export * as "),
+        i(1),
+        t(" from \"./"),
+        f(function(args, parent, user_args) local lowercase = string.lower(args[1][1]) return lowercase end, {1}),
+        t("/index.js\";")
     })
 })
 
