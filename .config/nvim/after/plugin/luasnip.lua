@@ -68,3 +68,10 @@ local sl = require("luasnip.extras.snippet_list")
 
 --special note: you can pass args into sl-open to print it in a way that suits u
 vim.keymap.set('n', '<leader>s', sl.open)
+
+--jump forward and back for a snippet's args
+--move forward
+vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump( 1) end, {silent = true})
+--move backward
+vim.keymap.set({"i", "s"}, "<C-K>", function() ls.jump(-1) end, {silent = true})
+

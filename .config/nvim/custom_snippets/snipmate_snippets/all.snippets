@@ -203,3 +203,21 @@ snippet is Easy styles import
 
 snippet ica Easy container export
 	export { $1Container as $1 } from "./container.js";
+
+snippet jds Quick "describe" Block
+	describe("$1", () => {
+
+	})
+
+snippet jdi Quick "it" Block
+	it("$1", () => {
+
+	})
+
+snippet jde Quick "it.each" Block
+	it.each\`
+	$2   | expected
+	${$3}  | ${$4}
+	\`("$1", ({$2, expected}) => {
+
+	})
