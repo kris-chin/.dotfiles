@@ -162,7 +162,7 @@
 ;;custom TODO workflow states
 ;;TODO: Add BLOCKED and other stuff
 (setq org-todo-keywords '((sequence "TODO" "NOT_STARTED" "QUEUED" "ANALYSIS" "DESIGN" "CODE" "DONE_ON_LOCAL" "PR_FEEDBACK" "TESTING"
-                                    "|" "FOR_THIS_RELEASE" "DONE")))
+                                    "|" "FOR_BACKEND" "FOR_THIS_RELEASE" "DONE")))
 
 ;;org priorities 0-9 
 ;;TODO: change this and also maybe make it cooler (easier to understand?) with org-fancy-priorities
@@ -220,6 +220,7 @@
                                ("DONE_ON_LOCAL" . "plum1")
                                ("PR_FEEDBACK" . "purple3")
                                ("TESTING" . "purple3")
+                               ("FOR_BACKEND" . "maroon2")
                                ("FOR_THIS_RELEASE" . "goldenrod1")
                                ("DONE" . "chartreuse3")
                                )
