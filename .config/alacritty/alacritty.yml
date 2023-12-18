@@ -1,3 +1,8 @@
+key_bindings:
+  #re-add command+backspace for macOs
+  - { key: Back, mods: Command, chars: "\x15" }
+  #delete word at a time with alt + backspace for MacOs
+  - { key: Back, mods: Alt, chars: "\x17" }
 window:
   opacity: 0.8
   decorations: "None" #hide title bar
