@@ -268,7 +268,8 @@ require("lazy").setup({
                     --special note regarding prettier: null-ls integrates with neovim, so neovim also can influence stuff like tabs
                     null_ls.builtins.formatting.prettier.with({
                         only_local = "node_modules/.bin", --force use the repo's prettier instead (nice) 
-                    })
+                    }),
+                    null_ls.builtins.formatting.rubyfmt
                 },
                 --the following on_attach function was just taken from the wiki, but this should effectively add auto-formatting on save
                 -- you can reuse a shared lspconfig on_attach callback here
@@ -290,4 +291,12 @@ require("lazy").setup({
             })
         end
     },
+    --telescope-frecency: implements firefox's frecency algorithm into file searches in telescope to prioritize frequent/recent files first
+    {
+      "nvim-telescope/telescope-frecency.nvim",
+      config = function()
+        --I would put this line in /after but that adds a delay to the start time so I'll just put it here
+        require("telescope").load_extension "frecency"
+      end,
+  }
 })

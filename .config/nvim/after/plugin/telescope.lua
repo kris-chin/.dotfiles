@@ -23,6 +23,11 @@ require('telescope').setup({
     --        theme = "dropdown"
     --    }
     --}
+    extensions = {
+      frecency = {
+        show_scores = true --show ranking scores
+      }
+    }
 })
 
 --load file_browser extension for telescope
@@ -68,3 +73,6 @@ vim.keymap.set('n', '<C-p>0', function()
     })
 end, {noremap = true})
 --useful keybind: C-f to toggle between folder and file
+
+--set a keymap for the frecency extension
+vim.keymap.set('n', '<C-p>;', "<Cmd>Telescope frecency workspace=CWD<CR>")
