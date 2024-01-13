@@ -51,12 +51,17 @@
   ("c" #'flow-github-create-pr "create pull request")
 )
 
-(defhydra hydra-flow-git ()
-    "git scripts hydra"
+(defhydra hydra-flow-git-branch ()
+  "git branch hyrda"
     ("c" #'flow-git-create-branch "create git branch")
     ("s" #'flow-git-switch-to-branch "switch to git branch")
     ("p" #'flow-git-push-to-remote "push to remote")
+  )
+
+(defhydra hydra-flow-git ()
+    "git script hydra"
     ("h" #'hydra-flow-github/body "GitHub" :exit t)
+    ("b" #'hydra-flow-git-branch/body "Branch" :exit t)
 )
 
 (defhydra hydra-flow-tmux ()
@@ -80,6 +85,7 @@
 (map! "C-c l" #'org-store-link)
 (map! "C-c a" #'org-agenda)
 (map! "C-c c" #'org-capture)
+(map! "C-c ," #'org-timestamp-inactive) ;;TODO: this doesn't work
 
 ;;toggle todo states with "shift - h" and "shift - l"
 (map! :map evil-normal-state-map "H" "S-<left>")
@@ -93,22 +99,29 @@
   ("k" #'org-previous-visible-heading "previous visible")
   ("C-j" #'org-forward-heading-same-level "forward same level")
   ("C-k" #'org-backward-heading-same-level "backward same level")
-  ("o" #'outline-up-heading "back up")
+  ("9" #'outline-up-heading "back up")
+  )
+
+;;this mapping is completely seperate from my normal org-mode mapping. this is purely for faster keybindings
+(map! :map evil-normal-state-map "C-9" #'hydra-org-mode-motion/body)
+
+(defhydra hydra-org-view-toggles ()
+  ("n" #'org-narrow-to-subtree "narrow to subtree")
+  ("w" #'widen "widen")
+  ("l" #'org-toggle-link-display "toggle link display")
+  ("c" #'org-columns "column view")
+  ("t" #'org-tidy-toggle "tidy toggle")
   )
 
 (defhydra hydra-org-mode ()
-  ("o" #'hydra-org-mode-motion/body "motion" :exit t)
   ("r" #'hydra-org-roam/body "roam" :exit t)
   ("g" #'hydra-flow-git/body "Git" :exit t)
   ("j" #'hydra-flow-jira/body "JIRA" :exit t)
   ("t" #'hydra-flow-tmux/body "tmux" :exit t)
-  ("n" #'org-narrow-to-subtree "narrow to subtree")
-  ("w" #'widen "widen")
-  ("l" #'org-toggle-link-display "toggle link display")
-  ("8" #'org-toggle-heading "toggle heading")
+  ("o" #'hydra-org-view-toggles/body "view toggles" :exit t)
+  ;;("8" #'org-toggle-heading "toggle heading")
   ("s" #'org-sort "sort heading")
-  ("T" #'org-todo "toggle TODO state")
-  ("c" #'org-columns "column view")
+  ;;("T" #'org-todo "toggle TODO state")
   )
 ;;this is kinda a crazy mapping but im down wit it..
 (map! :map evil-normal-state-map "C-o" #'hydra-org-mode/body)
