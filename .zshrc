@@ -125,6 +125,9 @@ source $ZSH/oh-my-zsh.sh
 #Set brew path
 export PATH="/opt/homebrew/bin:$PATH"
 
+#Add the ruby homebrew bin first to override the macOs default ruby
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
 # Add Cargo to our PATH
 export PATH=$PATH:/home/krischin/.cargo/bin
 
@@ -262,3 +265,6 @@ source $(dirname $(gem which colorls))/tab_complete.sh
 #colorls aliass
 alias lc='colorls -lA --sd'
 alias ls='colorls'
+
+#source work-related aliases
+source ~/scripts/aliases
