@@ -129,12 +129,15 @@
    )
 
 
-
-;;TODO: implement this
 (defun flow-open-tmp-buffer (filename)
    "Opens a tmpfile in a new buffer editor (starts in markdown mode) Exiting the file means saving the file"
    (let ((buffer (get-buffer-create "*Flow-Tmp*")))
        (select-flow-window) ;;ensure the flow window is selected
+       ;;if a hydra map is present, attempt to delete lv aka "other echo area".
+       ;;this is because there's a bug where setting the flow-tmp-mode is also changing the mode for this echo area as well, which keeps the echo area around.
+       (when hydra-curr-map
+          (lv-delete-window) 
+         )
        (switch-to-buffer buffer)  ;;create a temp buffer that temporarily replaces the window
        (insert-file-contents filename)
        (flow-tmp-mode) ;;run the tmp-editor mode
