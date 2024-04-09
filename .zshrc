@@ -143,6 +143,10 @@ fi
 #speed up key sequences in zsh-vi-mode
 export ZVM_KEYTIMEOUT=0.01
 
+#configure the zsh-suggestions plugin to have a certain highlight text
+#this is important for when your terminal emulator colorscheme's text colors conflict with this color and the suggestions dont show up
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
+
 #C-hjkl in zsh insert mode (these don't work and i dont fucking know why!!!)
 #TODO: wtf is a widget? (seems like a ZSH Concept)
 zvm_bindkey viins '^K' up-line-or-history zvm_readkeys_handler

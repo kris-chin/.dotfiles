@@ -59,12 +59,14 @@ require("lazy").setup({
   "cdaddr/gentooish.vim",
   { "dracula/vim", name = "dracula" },
   "drazil100/dusklight.vim",
+  "kevinm6/kurayami.nvim",
 
   --rustic themes
   "scottymoon/vim-twilight",
   "CreaturePhil/vim-handmade-hero",
   "hexared/Hypsteria",
   "sainnhe/gruvbox-material",
+  "comfysage/evergarden",
 
   --light themes
   "sainnhe/everforest",

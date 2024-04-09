@@ -4,43 +4,42 @@ key_bindings:
   #delete word at a time with alt + backspace for MacOs
   - { key: Back, mods: Alt, chars: "\x17" }
 window:
-  opacity: 0.8
-  decorations: "None" #hide title bar
+  #opacity: 0.8
+  #decorations: "None" #hide title bar
   dynamic_title: true
   dimensions:
     columns: 280
     lines: 64
 font:
   #normal:
-    #REMINDER! we have Cozette and CozetteVector!!!
-    #family: CozetteVector
+  #REMINDER! we have Cozette and CozetteVector!!!
+  #family: CozetteVector
   normal:
     family: "MesloLGL Nerd Font" #Font I have for MacOS
   size: 12
 colors:
-  name: Garuda (dr460nized)
-  author: dr460nf1r3
+  # Default Colors
   primary:
-    background: '0x0a1124'
-    foreground: '0xeec49a'
-  cursor:
-    text: '0x0a1124'
-    cursor: '0xeec49a'
+    background: '#212121'
+    foreground: '#f1f1f1'
+  # Normal colors
   normal:
-    black: '0x0a1124'
-    red: '0x5F4149'
-    green: '0xEB3247'
-    yellow: '0xBC4349'
-    blue: '0xF35645'
-    magenta: '0xF6A73B'
-    cyan: '0xFAD32F'
-    white: '0xeec49a'
+    black: '#212121'
+    red: '#c30771'
+    green: '#10a778'
+    yellow: '#a89c14'
+    blue: '#008ec4'
+    magenta: '#523c79'
+    cyan: '#20a5ba'
+    white: '#e0e0e0'
+  # Bright colors
   bright:
-    black: '0xa6896b'
-    red: '0x5F4149'
-    green: '0xEB3247'
-    yellow: '0xBC4349'
-    blue: '0xF35645'
-    magenta: '0xF6A73B'
-    cyan: '0xFAD32F'
-    white: '0xeec49a'
+    black: '#212121'
+    red: '#fb007a'
+    green: '#5fd7af'
+    yellow: '#f3e430'
+    blue: '#20bbfc'
+    magenta: '#6855de'
+    cyan: '#4fb8cc'
+    white: '#f1f1f1'
+theme: Pencil-Dark
