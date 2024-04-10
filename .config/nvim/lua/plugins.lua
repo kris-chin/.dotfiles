@@ -60,6 +60,7 @@ require("lazy").setup({
   { "dracula/vim", name = "dracula" },
   "drazil100/dusklight.vim",
   "kevinm6/kurayami.nvim",
+  {"sekke276/dark_flat.nvim"},
 
   --rustic themes
   "scottymoon/vim-twilight",
