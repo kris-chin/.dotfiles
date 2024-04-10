@@ -266,7 +266,7 @@ require("lazy").setup({
                 sources = {
                     --put any sources you installed from mason here
                     --FUTURE NOTE: all of these sources have a ton of configuration options with the "with" method
-                    null_ls.builtins.code_actions.eslint,
+                    --null_ls.builtins.code_actions.eslint,
                     --special note regarding prettier: null-ls integrates with neovim, so neovim also can influence stuff like tabs
                     null_ls.builtins.formatting.prettier.with({
                         only_local = "node_modules/.bin", --force use the repo's prettier instead (nice) 
