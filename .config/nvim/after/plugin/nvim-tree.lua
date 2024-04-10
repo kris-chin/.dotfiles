@@ -40,7 +40,46 @@ require('nvim-tree').setup({
     },
     filters = {
         git_ignored = false
+    },
+    renderer = {
+      --highlight the text itself if you want, check the manual for all options
+      highlight_opened_files = "name",
+      icons = {
+        show = {
+          git=true
+        },
+        web_devicons = {
+          file = {
+            enable = true,
+            color = true
+          },
+          folder = {
+            enable = true,
+            color = true,
+          }
+        },
+        glyphs = {
+          git = {
+            --This is literally just here as a sanity check. 
+            --Did you know: the colorscheme that you have can literally break glyphs in certain colors?
+            --   eg. I had evergarden and the red version of "✗" returned a box.
+            --       I'm literally even looking at this right now in gruvbox and the comment color of it is broken??
+            unstaged = "✗",
+            staged = "✓",
+            unmerged = "",
+            renamed = "➜",
+            untracked = "★",
+            deleted = "",
+            ignored = "◌",
+          },
+
+        }
+      }
     }
+})
+
+require('nvim-web-devicons').setup({
+  --you can put icon overrides in here
 })
 
 vim.keymap.set("n", "<leader>t", ":NvimTreeToggle<CR>")

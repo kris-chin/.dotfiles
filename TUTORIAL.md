@@ -123,3 +123,15 @@ there is not yet a key command for this from my understanding and this still nee
 
 # closing windows
 META + SHIFT + Q
+
+# nerd fonts
+Apparently, the upgrade to nerdfonts v3 moved some fonts and a lot of them are obsolete. This can affect some of the plugins in the terminal. 
+This can manifest itself in neovim showing an invalid font but the terminal is just fine.
+We can use nerdfix to fix any of the plugins that use the obsolete fonts:
+`nerdfix fix --recursive /path/to/root`
+It does take some time, so feel free to point to the the install-directory instead of root (eg. just target neovim)
+
+## neovim colorschemes and nerd fonts
+For some reason, some neovim colorschemes can even break nerd fonts.
+eg. A red "✗" wouldnt render on evergarden, but it would render on gruvbox.
+eg2. However, the "✗" becomes a box when it's rendered in gruvbox's comment color.

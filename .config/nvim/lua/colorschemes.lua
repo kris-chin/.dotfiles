@@ -41,10 +41,10 @@ M.colorscheme2dir = {
 
     --rustic themes
     --hypsteria = "hypsteria",
-    --['gruvbox-material'] = "gruvbox-material",
+    ['gruvbox-material'] = "gruvbox-material",
     --['handmade-hero'] = "vim-handmade-hero",
     --twilight = "vim-twilight",
-    ['evergarden'] = "evergarden"
+    --['evergarden'] = "evergarden"
 
     --light themes
     --everforest = "everforest",

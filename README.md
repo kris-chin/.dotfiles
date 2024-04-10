@@ -40,6 +40,7 @@ TODO: Bootstrapping scripts
 - emacs (installed as cask)
 - angular-cli
 - ruby
+- rust (specifically for cargo)
 
 ### Globally-Installed Node Modules
 
@@ -66,6 +67,10 @@ TODO: Bootstrapping scripts
 
 - ubersicht
 - scroll reverser
+
+### Installed Cargo Packages
+
+- nerdfix
 
 ## All potential spots for colorschemes
 
