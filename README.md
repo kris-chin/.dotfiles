@@ -87,7 +87,7 @@ TODO: Bootstrapping scripts
 - ubersicht (macOS)
     - I don't know yet. 
 - colorls  
-    - `https://github.com/romkatv/powerlevel10k/blob/master/README.md#how-do-i-change-prompt-colors`
+    - `https://github.com/athityakumar/colorls?tab=readme-ov-file#custom-configurations`
     - why the hell is this so complicated?
 - vim
     - `.vimrc`
