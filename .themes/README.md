@@ -1,5 +1,6 @@
 # Theme management
 This is my simple system to manange themes for all of my programs.
+I'm writing it in ruby cuz why not LMAO
 
 ## `active-themes.yml`
 
@@ -18,7 +19,12 @@ Additionally, font information will be taken from `alacritty/font/Cozette`
 
 I (will) have built-in handling for each of these keywords that modifies the corresponding config file with the theme information. This will scoped to be inside each folder.
 
-### To do:
+### Theme data
 
-- [ ]  Combine high-level `active-themes` files to change all themes at once 
+Theme data can be saved as any file format, the script just reads the whole contents of the file and overwrites sections of certain configs
+
+## To do:
+
+- [x]  Combine high-level `active-themes` files to change all themes at once 
 - [ ]  Support for window-manager / desktop stuff like i3 / feh / macOS / yabai etc
+- [ ]  Easily share colors from one theme to another. This is useful for themes that dont exist for the other application. (eg. Flate)

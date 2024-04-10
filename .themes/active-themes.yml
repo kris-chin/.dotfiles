@@ -1,12 +1,3 @@
 alacritty:
   color: Garuda
-  font: Cozette
-doom:
-  color: Miramare
-  font: Fragment Mono #emacs still has more stuff added on top of this
-neovim:
-  color: Gruvbox Material
-zsh:
-  theme: powerlevel10k
-tmux:
-  theme: powerline
+  font: MesloLGLNerdFont
