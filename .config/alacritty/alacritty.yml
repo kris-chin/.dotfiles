@@ -10,36 +10,46 @@ window:
   dimensions:
     columns: 280
     lines: 64
+#[GENERATED_CODE: alacritty/font]
 font:
-  #normal:
-  #REMINDER! we have Cozette and CozetteVector!!!
-  #family: CozetteVector
   normal:
-    family: "MesloLGL Nerd Font" #Font I have for MacOS
+    family: CozetteVector
   size: 12
+#[END_GENERATED_CODE: alacritty/font]
+#[GENERATED_CODE: alacritty/color]
+# Colors (Kanagawa Wave)
+# Source https//github.com/rebelot/kanagawa.nvim
+
 colors:
-  # Default Colors
   primary:
-    background: '#212121'
-    foreground: '#f1f1f1'
-  # Normal colors
+    background: '#1f1f28'
+    foreground: '#dcd7ba'
+
   normal:
-    black: '#212121'
-    red: '#c30771'
-    green: '#10a778'
-    yellow: '#a89c14'
-    blue: '#008ec4'
-    magenta: '#523c79'
-    cyan: '#20a5ba'
-    white: '#e0e0e0'
-  # Bright colors
+    black: '#090618'
+    red: '#c34043'
+    green: '#76946a'
+    yellow: '#c0a36e'
+    blue: '#7e9cd8'
+    magenta: '#957fb8'
+    cyan: '#6a9589'
+    white: '#c8c093'
+
   bright:
-    black: '#212121'
-    red: '#fb007a'
-    green: '#5fd7af'
-    yellow: '#f3e430'
-    blue: '#20bbfc'
-    magenta: '#6855de'
-    cyan: '#4fb8cc'
-    white: '#f1f1f1'
-theme: Pencil-Dark
+    black: '#727169'
+    red: '#e82424'
+    green: '#98bb6c'
+    yellow: '#e6c384'
+    blue: '#7fb4ca'
+    magenta: '#938aa9'
+    cyan: '#7aa89f'
+    white: '#dcd7ba'
+
+  selection:
+    background: '#2d4f67'
+    foreground: '#c8c093'
+
+  indexed_colors:
+    - {index: 16, color: '#ffa066'}
+    - {index: 17, color: '#ff5d62'}
+#[END_GENERATED_CODE: alacritty/color]

@@ -58,9 +58,21 @@ require('nvim-tree').setup({
             color = true,
           }
         },
+        --I'm having this config here literally just as a sanity check. 
         glyphs = {
+          folder = {
+            --arrow_closed = "",
+            arrow_closed = "▶",
+            --arrow_open = "",
+            arrow_open = "▼",
+            default = "",
+            open = "",
+            empty = "",
+            empty_open = "",
+            symlink = "",
+            symlink_open = "",
+          },
           git = {
-            --This is literally just here as a sanity check. 
             --Did you know: the colorscheme that you have can literally break glyphs in certain colors?
             --   eg. I had evergarden and the red version of "✗" returned a box.
             --       I'm literally even looking at this right now in gruvbox and the comment color of it is broken??
