@@ -28,3 +28,4 @@ Theme data can be saved as any file format, the script just reads the whole cont
 - [x]  Combine high-level `active-themes` files to change all themes at once 
 - [ ]  Support for window-manager / desktop stuff like i3 / feh / macOS / yabai etc
 - [ ]  Easily share colors from one theme to another. This is useful for themes that dont exist for the other application. (eg. Flate)
+- [ ]  Run additional terminal commands (if necessary)
