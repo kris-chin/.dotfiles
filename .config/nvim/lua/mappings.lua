@@ -9,3 +9,23 @@ vim.keymap.set('n', '<leader>bd', ':bp<bar>sp<bar>bn<bar>bd<CR>')
 --vim.keymap.set('i', '<C-k>', '<Up>')
 --vim.keymap.set('i', '<C-l>', '<Right>')
 --vim.keymap.set('i', '<C-h>', '<Left>')
+
+--When I do "d/", I'm intending to delete the selection included. I am usually NEVER trying to delete before the selection. This is just a mapping for my own sake.
+vim.keymap.set('n', 'd/', function()
+  vim.ui.input({
+    prompt = "/",
+    highlight = function(input)
+      --TODO: still dont know how to do live highlighting yet, this doesn't seem to be called upon keypress?
+      return {}
+    end,
+  }, function(input)
+      --keypress explanation:
+      --enter visual and search for the input. press enter and move back one character,
+      --from there, delete the visual selection, then use gn to visually re-select the search input. then delete that.
+      local keypresses = vim.api.nvim_replace_termcodes([[v/]]..input..[[<CR>hdgnd:noh<CR>]], true, true, true)
+      vim.api.nvim_feedkeys(keypresses, 'n', false)
+    end
+  )
+end);
+
+
