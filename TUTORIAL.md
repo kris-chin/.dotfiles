@@ -1,6 +1,6 @@
 # Hey Chin so this file is to help you get re-aquainted with terminal stuff in Arch!!
 
-## Using your kbdx password database 
+## Using your kbdx password database
 
 Your kbdx password database is synced up with google drive. We do this via `rclone` and we have a special script called `sync_passwords.sh` to help us out
 
@@ -27,7 +27,7 @@ going through http should probably trigger the portal. also try firefox?
 
 ## i3 and X (our desktop environment)
 
-### i3 and X distinctions 
+### i3 and X distinctions
 
 i3 is built on top of X.
 X is a server that lets you run graphics on your screen
@@ -48,9 +48,10 @@ This means to change dpi, we need to configure X in this file:
 i3 configuration is stored in `~/.config/i3/`
 (this is where you can also change keybinds)
 
-### useful i3 keybinds 
+### useful i3 keybinds
 
 #### useful programs:
+
 dmenu - application launcher
 xdotool - simulate keyboard presses in X
 nemo - my file manager
@@ -100,7 +101,7 @@ this is set again in i3 config on startup
 
 ## configuring the themes
 
-we can set up X11 to use GTK themes to configure the common colors for all of our windows 
+we can set up X11 to use GTK themes to configure the common colors for all of our windows
 we do this via an app called `lxappearance`, which customizes X11
 
 ## What happens when you initially start up arch linux? (what is the login screen we see?)
@@ -108,11 +109,12 @@ we do this via an app called `lxappearance`, which customizes X11
 (TODO)
 
 ## xrandr - X11 + HDMI cable / other monitor
+
 you can use `xrandr` as a diagnostic tool for your monitors and sending certain commands to configure them
 this is good for disabling monitors in laptop mode, setting refresh rate, changing DPI, etc
 
 also consider writing a script to easily jump to 144HZ for certian monitors, as well as disabling certain monitors when in widescreen mode
-we have some scripts! `ultrawide_display.sh` will run the commands needed to switch to the ultrawide display 
+we have some scripts! `ultrawide_display.sh` will run the commands needed to switch to the ultrawide display
 
 ## xrandr-brightness
 
@@ -122,4 +124,26 @@ i installed a program called `brightness-xrandr` to control the screen brightnes
 there is not yet a key command for this from my understanding and this still needs to be made. for now I've just been manually shutting down with the power button
 
 # closing windows
+
 META + SHIFT + Q
+
+# Remaping Keys
+
+For X11 (which is what I have right now), you should use `xbindkeys`/`xmodmap`.
+
+If you ever decide to use Wayland, you'll need a different solution, there are a few. consider `evremap`
+
+Also, just a reminder, you ALSO have i3 bindings. These are in `~/.config/i3/`
+
+## remapping keys in X
+
+There seems to be two tools for binding keys in X. We have `xkindkeys` and `xmodmap`
+I think `xmodmap` is for modifying the literal mappings, whereas `xbindkeys` is for running commands via keybindings. (i think I have some configs in i3, but this is for X itself)
+
+Regarding `xmodmap`, the configs are stored in `~/.xmodmap`, this file is then run within `~/.xinitrc`
+
+# X init
+
+I've put my X keybinds in this file. Feel free to put any additional x-related startup commands in this file.
+
+the file, `.xinitrc` only runs when X is started with `xstart`, when opened via a graphical loading screen, it looks for `.xprofile` instead of `.xinitrc`, so I just symlinked `.xprofile` to `.xinitrc`.

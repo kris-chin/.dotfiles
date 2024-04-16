@@ -18,7 +18,7 @@ TODO: Bootstrapping scripts
 ## Installed Software (wip)
 
 - ack (search tool alternative to grep)
-- brew 
+- brew
 - code-minimap (creates a minimap (for neovim))
 - fd (faster "find" alternative)
 - git-delta
@@ -34,7 +34,7 @@ TODO: Bootstrapping scripts
 - coreutils (helpful utilities)
 - python3
 - cloc (counts lines of code)
-- ripgrep 
+- ripgrep
 - docker (installed as cask)
 - mysqlworkbench (installed as cask)
 - emacs (installed as cask)
@@ -43,7 +43,7 @@ TODO: Bootstrapping scripts
 
 ### Globally-Installed Node Modules
 
-- @mermaid-js/mermaid-cli@10.4.0 (mermaid JS) 
+- @mermaid-js/mermaid-cli@10.4.0 (mermaid JS)
 
 ### Globally-Installed Python Packages
 
@@ -57,6 +57,8 @@ TODO: Bootstrapping scripts
 - picom
 - feh
 - xrandr
+- xmodmap
+- xbindkeys
 
 ### Installed Ruby Gems
 
