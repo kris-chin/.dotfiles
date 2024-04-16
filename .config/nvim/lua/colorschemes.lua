@@ -37,12 +37,15 @@ M.colorscheme2dir = {
     --gentooish = "gentooish",
     --hyper = "hyper.vim",
     --dusklight = "dusklight-vim",
+    --['kurayami'] = "kurayami"
+    dark_flat = "dark_flat"
 
     --rustic themes
     --hypsteria = "hypsteria",
-    ['gruvbox-material'] = "gruvbox-material"
+    --['gruvbox-material'] = "gruvbox-material",
     --['handmade-hero'] = "vim-handmade-hero",
     --twilight = "vim-twilight",
+    --['evergarden'] = "evergarden"
 
     --light themes
     --everforest = "everforest",

@@ -1,4 +1,4 @@
-snippet rfc Write a react functional component
+snippet rfco Write a react functional component
 	import React from "react";
 
 	export type $1Props = {
@@ -9,6 +9,19 @@ snippet rfc Write a react functional component
 			<div>
 				$1
 			</div>
+		)
+	}
+
+snippet rfca Write a container for a component
+	import React from "react";
+	import { $1, $1Props } from "./component.js";
+
+	export type $1ContainerProps = $1Props & {
+	}
+
+	export const $1Container = (props: $1ContainerProps) => {
+		return (
+		  <$1 {...props} />
 		)
 	}
 
@@ -181,3 +194,30 @@ snippet rqtg Write a test for a react Query (GET)
 
 snippet cl Quick Shorthand for writing debug console logs
 	console.log("$1: ", $1);
+
+snippet ico Easy component export  
+	export * from "./component.js";
+
+snippet is Easy styles import
+	import "./styles.css";
+
+snippet ica Easy container export
+	export { $1Container as $1 } from "./container.js";
+
+snippet jds Quick "describe" Block
+	describe("$1", () => {
+
+	})
+
+snippet jdi Quick "it" Block
+	it("$1", () => {
+
+	})
+
+snippet jde Quick "it.each" Block
+	it.each\`
+	$2   | expected
+	${$3}  | ${$4}
+	\`("$1", ({$2, expected}) => {
+
+	})

@@ -40,6 +40,7 @@ TODO: Bootstrapping scripts
 - emacs (installed as cask)
 - angular-cli
 - ruby
+- rust (specifically for cargo)
 
 ### Globally-Installed Node Modules
 
@@ -68,3 +69,32 @@ TODO: Bootstrapping scripts
 
 - ubersicht
 - scroll reverser
+
+### Installed Cargo Packages
+
+- nerdfix
+
+## All potential spots for colorschemes
+
+- alacritty
+    - `alacritty.yml`
+    - I've been using `npx alacritty-themes` to easily manage a set number of themes, but I know there's more I can do
+- neovim
+    - `.config/nvim`
+- zsh -> powerlevel10k prompts
+    - `https://github.com/romkatv/powerlevel10k/blob/master/README.md#how-do-i-change-prompt-colors`
+- tmux powerline
+    - `.tmux.conf`
+    - (I think there's also a way to configure it manaully as well, I don't know this one yet)
+- ubersicht (macOS)
+    - I don't know yet. 
+- colorls  
+    - `https://github.com/athityakumar/colorls?tab=readme-ov-file#custom-configurations`
+    - why the hell is this so complicated?
+- vim
+    - `.vimrc`
+    - this is actually only used for the VERY few times vim is opened. (eg. git?) so no need to hyperfocus this being changed
+- doom emacs
+    - `.config/doom`
+- yabai (macOS)
+    - `.yabairc`

@@ -125,6 +125,9 @@ source $ZSH/oh-my-zsh.sh
 #Set brew path
 export PATH="/opt/homebrew/bin:$PATH"
 
+#Add the ruby homebrew bin first to override the macOs default ruby
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
 # Add Cargo to our PATH
 export PATH=$PATH:/home/krischin/.cargo/bin
 
@@ -139,6 +142,10 @@ fi
 
 #speed up key sequences in zsh-vi-mode
 export ZVM_KEYTIMEOUT=0.01
+
+#configure the zsh-suggestions plugin to have a certain highlight text
+#this is important for when your terminal emulator colorscheme's text colors conflict with this color and the suggestions dont show up
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 
 #C-hjkl in zsh insert mode (these don't work and i dont fucking know why!!!)
 #TODO: wtf is a widget? (seems like a ZSH Concept)
@@ -262,3 +269,6 @@ source $(dirname $(gem which colorls))/tab_complete.sh
 #colorls aliass
 alias lc='colorls -lA --sd'
 alias ls='colorls'
+
+#source work-related aliases
+source ~/scripts/aliases

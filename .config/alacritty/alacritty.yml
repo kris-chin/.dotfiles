@@ -1,42 +1,55 @@
+key_bindings:
+  #re-add command+backspace for macOs
+  - { key: Back, mods: Command, chars: "\x15" }
+  #delete word at a time with alt + backspace for MacOs
+  - { key: Back, mods: Alt, chars: "\x17" }
 window:
-  opacity: 0.8
-  decorations: "None" #hide title bar
+  #opacity: 0.8
+  #decorations: "None" #hide title bar
   dynamic_title: true
   dimensions:
     columns: 280
     lines: 64
+#[GENERATED_CODE: alacritty/font]
 font:
-  #normal:
-    #REMINDER! we have Cozette and CozetteVector!!!
-    #family: CozetteVector
   normal:
-    family: "MesloLGL Nerd Font" #Font I have for MacOS
+    family: CozetteVector
   size: 12
+#[END_GENERATED_CODE: alacritty/font]
+#[GENERATED_CODE: alacritty/color]
+# Colors (Kanagawa Wave)
+# Source https//github.com/rebelot/kanagawa.nvim
+
 colors:
-  name: Garuda (dr460nized)
-  author: dr460nf1r3
   primary:
-    background: '0x0a1124'
-    foreground: '0xeec49a'
-  cursor:
-    text: '0x0a1124'
-    cursor: '0xeec49a'
+    background: '#1f1f28'
+    foreground: '#dcd7ba'
+
   normal:
-    black: '0x0a1124'
-    red: '0x5F4149'
-    green: '0xEB3247'
-    yellow: '0xBC4349'
-    blue: '0xF35645'
-    magenta: '0xF6A73B'
-    cyan: '0xFAD32F'
-    white: '0xeec49a'
+    black: '#090618'
+    red: '#c34043'
+    green: '#76946a'
+    yellow: '#c0a36e'
+    blue: '#7e9cd8'
+    magenta: '#957fb8'
+    cyan: '#6a9589'
+    white: '#c8c093'
+
   bright:
-    black: '0xa6896b'
-    red: '0x5F4149'
-    green: '0xEB3247'
-    yellow: '0xBC4349'
-    blue: '0xF35645'
-    magenta: '0xF6A73B'
-    cyan: '0xFAD32F'
-    white: '0xeec49a'
-theme: Garuda.dr460nized
+    black: '#727169'
+    red: '#e82424'
+    green: '#98bb6c'
+    yellow: '#e6c384'
+    blue: '#7fb4ca'
+    magenta: '#938aa9'
+    cyan: '#7aa89f'
+    white: '#dcd7ba'
+
+  selection:
+    background: '#2d4f67'
+    foreground: '#c8c093'
+
+  indexed_colors:
+    - {index: 16, color: '#ffa066'}
+    - {index: 17, color: '#ff5d62'}
+#[END_GENERATED_CODE: alacritty/color]

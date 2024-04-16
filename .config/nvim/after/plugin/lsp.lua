@@ -2,11 +2,6 @@ local lsp = require("lsp-zero")
 
 lsp.preset("recommended")
 
-lsp.ensure_installed({
-    'tsserver',
-    'eslint'
-})
-
 lsp.on_attach(function(client, bufnr)
   -- see :help lsp-zero-keybindings
   -- to learn the available actions
@@ -72,15 +67,7 @@ cmp.setup({
   },
    mapping = {
        --press enter to confirm mapping
-       ['<CR>'] = function(fallback)
-            --if luasnip.expand_or_jumpable() then
-            --   luasnip.expand_or_jump()
-            if cmp.visible() then
-                cmp.mapping.confirm({select = false})()
-            else
-                fallback()
-            end
-       end,
+       ['<CR>'] = cmp.mapping.confirm({select = false, behavior = cmp.ConfirmBehavior.Replace}),
        --use C-k and c-j for navigating autocomplete
        ['<C-k>'] = function(fallback)
             --if luasnip.jumpable(-1) then

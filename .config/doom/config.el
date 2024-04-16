@@ -26,6 +26,11 @@
                                    "BASE_URL"
                                    "JIRA_BASE_URL"
                                    "DUMMY_ISSUE"
+                                   "GITHUB_BASE_NAME"
+                                   "GITHUB_API_TOKEN"
+                                   "JENKINS_BASE_URL"
+                                   "JENKINS_USERNAME"
+                                   "JENKINS_API_TOKEN"
                                ))
                   (add-to-list 'exec-path-from-shell-variables env-var))
                 ;;initialize exec-path-from-shell for macos
@@ -157,14 +162,14 @@
 ;;custom TODO workflow states
 ;;TODO: Add BLOCKED and other stuff
 (setq org-todo-keywords '((sequence "TODO" "NOT_STARTED" "QUEUED" "ANALYSIS" "DESIGN" "CODE" "DONE_ON_LOCAL" "PR_FEEDBACK" "TESTING"
-                                    "|" "FOR_THIS_RELEASE" "DONE")))
+                                    "|" "FOR_BACKEND" "FOR_THIS_RELEASE" "DONE")))
 
 ;;org priorities 0-9 
 ;;TODO: change this and also maybe make it cooler (easier to understand?) with org-fancy-priorities
 ;;The lowest priority NEEDS to be a higher ascii number than the highest, but what if I want an inverse number system?
 (setq org-highest-priority 1) 
 (setq org-lowest-priority 10) ;;This is weird
-(setq org-default-priority 5)
+(setq org-default-priority 2) ;;Start with 2nd Highest priority and go from there
 
 ;;Configure org-fancy-priorities
 ;;for some reason, ?1 is needed rather than 41.. why is that?
@@ -215,6 +220,7 @@
                                ("DONE_ON_LOCAL" . "plum1")
                                ("PR_FEEDBACK" . "purple3")
                                ("TESTING" . "purple3")
+                               ("FOR_BACKEND" . "maroon2")
                                ("FOR_THIS_RELEASE" . "goldenrod1")
                                ("DONE" . "chartreuse3")
                                )

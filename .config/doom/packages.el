@@ -41,6 +41,19 @@
 ;;helper package that helps get variables from your zshrc/bashrc
 (package! exec-path-from-shell)
 
+;;centers the cursor properly
+;;please use this instead of scroll margin 999. that one doesnt work like vim's and just sucks.
+;;TODO: I believe in this plugin. if you do end up working on smooth scrolling again for emacs, PLEASE just keep this plugin here
+(package! centered-cursor-mode)
+
+;;enables drag-and-drop images for org mode (either from the browser, file system, remote image, or screenshots)
+(package! org-download)
+;;adds a screenshot-taker command to add screenshots
+(package! org-ros)
+
+;;org-tidy: adds a new minor mode to hide property drawers
+(package! org-tidy)
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

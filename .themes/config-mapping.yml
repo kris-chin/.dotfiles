@@ -1,0 +1,3 @@
+alacritty: "~/alacritty.yml"
+doom: "~/.config/doom"
+neovim: "~/.config/nvim"
