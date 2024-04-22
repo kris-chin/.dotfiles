@@ -1,0 +1,79 @@
+- shell: 
+    #install packages via apt
+    - 
+        command: ~/.dotfiles/apt-get.packages.sh ~/.dotfiles/packages.txt
+        stdin: true
+        stdout: true
+        description: Installing packages via apt-get
+        stderr: true
+    #install vim-plug (not sure why I want it though, other than to fix errors)
+    -
+        command: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        stdin: true
+        stdout: true
+        description: Installing vim-plug
+        stderr: true
+    #install oh-my-zsh (TODO: check if already installed)
+    - 
+        command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        stdin: true
+        stdout: true
+        description: Installing oh-my-zsh
+        stderr: true
+    #install code-minimap (via cargo. since this isnt on apt? maybe we should move this) )
+    -
+        command: cargo install --locked code-minimap
+        stdin: true
+        stdout: true
+        description: Installing code-minimap
+        stderr: true
+    #install node version manager
+    -
+        command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+        stdin: true
+        stdout: true
+        description: Installing node version manager
+        stderr: true
+    #install an Ubuntu Nerd Font
+    -
+        command: sudo ~/.dotfiles/install_font.sh https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Ubuntu.zip
+        stdin: true
+        stdout: true
+        description: Installing ubuntu font
+        stderr: true
+    #install the LATEST version of neovim (this is because apt is out of date)
+    -
+        command: sudo add-apt-repository ppa:neovim-ppa/unstable; sudo apt-get update; sudo apt-get install neovim
+        stdin: true
+        stdout: true
+        description: Get the latest version of neovim
+        stderr: true
+    #install colorls (TODO: Move this. I don't think this should be here)
+    -
+        command: sudo gem install colorls
+        stdin: true
+        stdout: true
+        description: Install colorls
+        stderr: true
+    #install angular cli via npm (also move this. I don't think this should be here)
+    -
+        command: npm install -g @angular/cli --force
+        stdin: true
+        stdout: true
+        description: install angular-cli
+        stderr: true
+    #install latest version of emacs
+    -
+        command: sudo apt-add-repository ppa:ubuntu-elisp/ppa; sudo apt update; sudo apt-get install emacs-snapshot
+        stdin: true
+        stdout: true
+        description: install the latest version of emacs
+        stderr: true
+    #install doom emacs
+    #TODO: I think emacs creates an ~/.emacs.d folder which overrides my existing config? I need to delete this automatically somehow
+    -
+        command: git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs; ~/.config/emacs/bin/doom install
+        stdin: true
+        stdout: true
+        description: install doom emacs
+        stderr: true

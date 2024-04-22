@@ -1,0 +1,35 @@
+- defaults: #these are automatically run for every command
+    link:
+      relink: true #delete old symlink and replace with new symlink
+      force: true #force removes old target
+
+- clean: ['~']
+
+- link:
+    ~/.tmux.conf: .tmux.conf
+    ~/.vimrc: .vimrc
+    ~/.Xresources: .Xresources
+    ~/.bashrc: .bashrc
+    ~/.fehbg: .fehbg
+    ~/.skhdrc: .skhdrc
+    ~/.xinitrc: .xinitrc
+    ~/.xmodmap: .xmodmap
+    ~/.xprofile: .xprofile
+    ~/.yabairc: .yabairc
+    ~/.zshrc: .zshrc
+    ~/.config/:
+        glob: true
+        path: .config/*
+        create: true
+
+- create:
+    - ~/downloads
+    - ~/.vim/undo-history
+
+- shell:
+  -
+    command: git submodule update --init --recursive
+    stdin: true
+    stdout: true
+    description: Installing submodules
+    stderr: true

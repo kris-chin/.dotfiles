@@ -38,13 +38,13 @@ TODO: Bootstrapping scripts
 - docker (installed as cask)
 - mysqlworkbench (installed as cask)
 - emacs (installed as cask)
-- angular-cli
 - ruby
 - rust (specifically for cargo)
 
 ### Globally-Installed Node Modules
 
 - @mermaid-js/mermaid-cli@10.4.0 (mermaid JS)
+- @angular/cli (used for terminal autocompletion)
 
 ### Globally-Installed Python Packages
 

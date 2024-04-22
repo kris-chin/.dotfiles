@@ -131,9 +131,13 @@ export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 # Add Cargo to our PATH
 export PATH=$PATH:/home/krischin/.cargo/bin
 
+#Add emacs to our PATH (for doom)
+export PATH=$PATH:$HOME/.config/emacs/bin
+
 # Add ruby gems to our PATH
-export GEM_HOME="$(gem env user_gemhome)"
-export PATH="$PATH:$GEM_HOME/bin"
+#TODO: uncomment this when you figure out why user_gemhome is undefined?
+#export GEM_HOME="$(gem env user_gemhome)"
+#export PATH="$PATH:$GEM_HOME/bin"
 
 #Run tmux and make sure it doesn't run itself
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
@@ -181,7 +185,8 @@ alias sb="python3 ~/.config/doom/scripts/git_switch_to_branch.py"
 #export JIRA_API_TOKEN=$(cat ~/jira_cli_token)
 
 #export the jira PAT (also for jira cli)
-export JIRA_API_TOKEN=$(cat ~/jira_token) 
+#TODO: uncomment once we create a temporary blank file
+#export JIRA_API_TOKEN=$(cat ~/jira_token) 
 export JIRA_AUTH_TYPE="bearer"
 
 #show git dialog in gitpython
@@ -253,7 +258,7 @@ alias docker-compose="sudo docker-compose"
 #R alias so we can install packages in a non-personal directory
 alias R="sudo R"
 
-# Load Angular CLI autocompletion.
+# Load Angular CLI autocompletion for terminal.
 source <(ng completion script)
 
 # alias for vim to nvim because i will never change
@@ -271,4 +276,5 @@ alias lc='colorls -lA --sd'
 alias ls='colorls'
 
 #source work-related aliases
-source ~/scripts/aliases
+#TODO: uncomment this once we can create a blank version of this file on startup
+#source ~/scripts/aliases

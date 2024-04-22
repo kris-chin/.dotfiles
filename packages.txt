@@ -1,0 +1,17 @@
+tmux
+zsh
+ack
+htop
+ispell
+neofetch
+nodejs
+tmux
+ripgrep
+coreutils
+python3
+cloc
+ripgrep
+ruby
+ruby-dev
+rustc
+cargo
