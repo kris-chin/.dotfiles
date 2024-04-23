@@ -1,7 +1,7 @@
 - shell: 
     #install packages via apt
     - 
-        command: ~/.dotfiles/apt-get.packages.sh ~/.dotfiles/packages.txt
+        command: ./apt-get.packages.sh ./packages.txt
         stdin: true
         stdout: true
         description: Installing packages via apt-get
@@ -13,7 +13,7 @@
         stdout: true
         description: Installing vim-plug
         stderr: true
-    #install oh-my-zsh (TODO: check if already installed)
+    #install oh-my-zsh (TODO: check if already installed. TODO2: This stops the installation process midway if this is the first time installation)
     - 
         command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
         stdin: true
@@ -36,7 +36,7 @@
         stderr: true
     #install an Ubuntu Nerd Font
     -
-        command: sudo ~/.dotfiles/install_font.sh https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Ubuntu.zip
+        command: sudo ./install_font.sh https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Ubuntu.zip
         stdin: true
         stdout: true
         description: Installing ubuntu font
