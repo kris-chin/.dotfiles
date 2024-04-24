@@ -1,4 +1,11 @@
 - shell: 
+    #add the universe repository
+    -
+        command: sudo apt-add-repository universe
+        stdin: true
+        stdout: true
+        description: "Add the universe repository for apt"
+        stderr: true
     #install packages via apt
     - 
         command: ./apt-get.packages.sh ./packages.txt
@@ -33,12 +40,17 @@
         stdout: true
         description: Installing node version manager
         stderr: true
-    #install node version 20
+    #this does a lot. I don't like it, but if I had these in seperate steps, nvm and npm would not be recognized. it seems they need to be in a single step or something?
+    #what it does is:
+    #1. add nvm to current shell
+    #2. install node version 20
+    #3. install @angular/cli
+    #TODO: this all definitely should be moved..
     -
-        command: nvm install 20
+        command: export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"; nvm install 20; npm install -g @angular/cli --force
         stdin: true
         stdout: true
-        description: install node 20
+        description: install nvm, node 20, and angular/cli
         stderr: true
     #install an Ubuntu Nerd Font
     -
@@ -60,13 +72,6 @@
         stdin: true
         stdout: true
         description: Install colorls
-        stderr: true
-    #install angular cli via npm (also move this. I don't think this should be here)
-    -
-        command: npm install -g @angular/cli --force
-        stdin: true
-        stdout: true
-        description: install angular-cli
         stderr: true
     #install latest version of emacs
     -

@@ -16,3 +16,5 @@ ruby-dev
 rustc
 cargo
 make
+gcc
+build-essential
