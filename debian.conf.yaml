@@ -1,3 +1,6 @@
+- create:
+  - ~/org/roam
+
 - shell: 
     #add the universe repository
     -
@@ -20,12 +23,24 @@
         stdout: true
         description: Installing vim-plug
         stderr: true
-    #install oh-my-zsh
-        command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    #install oh-my-zsh, delete auto-generated zshrc and pre-oh-my-zsh zshrc,
+    -
+        command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended; rm ~/.zshrc; rm ~/.zshrc.pre-oh-my-zsh
         stdin: true
         stdout: true
         description: Installing oh-my-zsh
         stderr: true
+
+#briefly re-link .zshrc
+- link: 
+    ~/.zshrc:
+        path: .zshrc
+        create: true
+        force: true
+        relink: true
+
+#go back to shell commands
+- shell: 
     #install code-minimap (via cargo. since this isnt on apt? maybe we should move this) )
     -
         command: cargo install --locked code-minimap
