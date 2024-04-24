@@ -10,7 +10,6 @@ ripgrep
 coreutils
 python3
 cloc
-ripgrep
 ruby
 ruby-dev
 rustc
@@ -18,3 +17,5 @@ cargo
 make
 gcc
 build-essential
+cmake
+fd-find

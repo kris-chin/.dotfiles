@@ -110,3 +110,18 @@
         stdout: true
         description: Adding permissions to ~/.local and ~/.local/share
         stderr: true
+    #change permissions of ~/.local/share/fonts to allow for easy font installations
+    - 
+        command: sudo chmod a+rwx ~/.local/share/fonts
+        stdin: true
+        stdout: true
+        description: Add permissions to ~/.local/share/fonts
+        stderr: true
+    #build an updated ripgrep binary with PCRE lookaheads (for doom)
+    -
+        command: cargo install --features pcre2 ripgrep
+        stdin: true
+        stdout: true
+        description: Build ripgrep with pcre lookaheads
+        strerr: true
+
