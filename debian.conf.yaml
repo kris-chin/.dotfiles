@@ -13,9 +13,8 @@
         stdout: true
         description: Installing vim-plug
         stderr: true
-    #install oh-my-zsh (TODO: check if already installed. TODO2: This stops the installation process midway if this is the first time installation)
-    - 
-        command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    #install oh-my-zsh
+        command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         stdin: true
         stdout: true
         description: Installing oh-my-zsh
@@ -33,6 +32,13 @@
         stdin: true
         stdout: true
         description: Installing node version manager
+        stderr: true
+    #install node version 20
+    -
+        command: nvm install 20
+        stdin: true
+        stdout: true
+        description: install node 20
         stderr: true
     #install an Ubuntu Nerd Font
     -
@@ -76,4 +82,11 @@
         stdin: true
         stdout: true
         description: install doom emacs
+        stderr: true
+    #change permissions of ~/.local and ~/.local/share this should allow neovim to install packages properly
+    -
+        command: sudo chmod a+rwx ~/.local; sudo chmod a+rwx ~/.local/share
+        stdin: true
+        stdout: true
+        description: Adding permissions to ~/.local and ~/.local/share
         stderr: true
