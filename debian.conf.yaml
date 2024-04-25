@@ -88,13 +88,6 @@
         stdout: true
         description: Install colorls
         stderr: true
-    #install latest version of emacs
-    -
-        command: sudo apt-add-repository ppa:ubuntu-elisp/ppa; sudo apt update; sudo apt-get install emacs-snapshot
-        stdin: true
-        stdout: true
-        description: install the latest version of emacs
-        stderr: true
     #install doom emacs
     #TODO: I think emacs creates an ~/.emacs.d folder which overrides my existing config? I need to delete this automatically somehow
     -
