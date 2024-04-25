@@ -6,38 +6,38 @@
 ;;inspo taken from https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 ;;Get our environment variables from our .zshrc/bashrc
-(use-package! exec-path-from-shell
-              :config
-              (progn 
-                ;;get our environment variables from our shell
-                (dolist (env-var '(
-                                   "JIRA_API_TOKEN"
-                                   "JIRA_AUTH_TYPE"
-                                   "JIRA_BASE_URL"
-                                   "USER_EMAIL"
-                                   "USERNAME"
-                                   "MYSELF"
-                                   "USER_EMAIL"
-                                   "RELEVANT_PROJECTS"
-                                   "PRODUCT_MANAGERS"
-                                   "QA_ENGINEERS"
-                                   "RELEVANT_COMPONENTS"
-                                   "RELEVANT_LABELS"
-                                   "BASE_URL"
-                                   "JIRA_BASE_URL"
-                                   "DUMMY_ISSUE"
-                                   "GITHUB_BASE_NAME"
-                                   "GITHUB_API_TOKEN"
-                                   "JENKINS_BASE_URL"
-                                   "JENKINS_USERNAME"
-                                   "JENKINS_API_TOKEN"
-                               ))
-                  (add-to-list 'exec-path-from-shell-variables env-var))
-                ;;initialize exec-path-from-shell for macos
-                (when (memq window-system '(mac ns x))
-                  (exec-path-from-shell-initialize))
-                )
-              )
+;;(use-package! exec-path-from-shell
+;;              :config
+;;              (progn 
+;;                ;;get our environment variables from our shell
+;;                (dolist (env-var '(
+;;                                   "JIRA_API_TOKEN"
+;;                                   "JIRA_AUTH_TYPE"
+;;                                   "JIRA_BASE_URL"
+;;                                   "USER_EMAIL"
+;;                                   "USERNAME"
+;;                                   "MYSELF"
+;;                                   "USER_EMAIL"
+;;                                   "RELEVANT_PROJECTS"
+;;                                   "PRODUCT_MANAGERS"
+;;                                   "QA_ENGINEERS"
+;;                                   "RELEVANT_COMPONENTS"
+;;                                   "RELEVANT_LABELS"
+;;                                   "BASE_URL"
+;;                                   "JIRA_BASE_URL"
+;;                                   "DUMMY_ISSUE"
+;;                                   "GITHUB_BASE_NAME"
+;;                                   "GITHUB_API_TOKEN"
+;;                                   "JENKINS_BASE_URL"
+;;                                   "JENKINS_USERNAME"
+;;                                   "JENKINS_API_TOKEN"
+;;                               ))
+;;                  (add-to-list 'exec-path-from-shell-variables env-var))
+;;                ;;initialize exec-path-from-shell for macos
+;;                (when (memq window-system '(mac ns x))
+;;                  (exec-path-from-shell-initialize))
+;;                )
+;;              )
 
 ;;my own custom major mode to run external integration scripts
 (load! "~/.config/doom/flow-script.el")
@@ -251,7 +251,7 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 
-(setq doom-font "Fragment Mono:pixelsize=12:weight=regular:slant=normal:width=normal:spacing=100:scalable=true")
+;;(setq doom-font "Fragment Mono:pixelsize=12:weight=regular:slant=normal:width=normal:spacing=100:scalable=true")
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
