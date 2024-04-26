@@ -1,6 +1,3 @@
-- create:
-  - ~/org/roam
-
 - shell: 
     #add the universe repository
     -
