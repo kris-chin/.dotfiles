@@ -19,3 +19,4 @@ gcc
 build-essential
 cmake
 fd-find
+syncthing
