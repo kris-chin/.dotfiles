@@ -21,3 +21,4 @@ neovim
 emacs-nativecomp
 fd
 enchant
+nm-connection-editor

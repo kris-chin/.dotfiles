@@ -22,6 +22,10 @@ Use `nmcli device wifi` to look for access points nearby
 
 Use `nmcli device wifi connect [ACCESS_POINT_NAME] password [PASSWORD]` to connect to an access point
 
+### GUI
+
+There's also the networkManager GUI, called `nm-connection-editor`, feel free to use that as well, since typing in WIFI by name is annoying
+
 ### Captive Portals
 
 if you are using a wifi network that has a captive portal, try connecting to:
