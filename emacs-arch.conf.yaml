@@ -1,20 +1,6 @@
-#make sure you get the org folder from syncthing. otherwise, just create ~/org/roam
+#Make sure you get the org folder from syncthing, otherwise, just create aa new folder
 
 - shell:
-    #add the universe repository
-    -
-        command: sudo apt-add-repository universe
-        stdin: true
-        stdout: true
-        description: "Add the universe repository for apt"
-        stderr: true
-    #build and install emacs, then delete the ~/.emacs.d folder
-    -
-        command: ./build-emacs-latest.sh; sudo rm -rf ~/.emacs.d
-        stdin: true
-        stdout: true
-        description: Build and install emacs. Then delete ~/.emacs.d
-        stderr: true
     #build an updated ripgrep binary with PCRE lookaheads (for doom)
     #NOTE: assumes cargo is installed. man, I gotta set up these configs so they can be independent of each other..
     -

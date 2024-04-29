@@ -159,3 +159,8 @@ It does take some time, so feel free to point to the the install-directory inste
 For some reason, some neovim colorschemes can even break nerd fonts.
 eg. A red "✗" wouldnt render on evergarden, but it would render on gruvbox.
 eg2. However, the "✗" becomes a box when it's rendered in gruvbox's comment color.
+
+# pacman - "Errors occurred, no packages were upgraded"
+This usually occurs if you don't update for a long time. An outdated keyring means that packages signed by new packagers won't be accepted, since the keyring isn't updated.
+This is usually fixed with `pacman -Sy archlinux-keyring; pacman -Syu`
+I may or may-not have this be a built-in alias. But tbh, this is good to always think about, and having an alias for it might make me forget it tbh.

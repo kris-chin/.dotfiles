@@ -6,7 +6,8 @@ POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  #TODO: uncomment this. for some reason. this causes zsh to crash when overriding manjaro's oh-my-zsh
+  #source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # If you come from bash you might have to change your $PATH.
@@ -135,9 +136,9 @@ export PATH=$PATH:/home/krischin/.cargo/bin
 export PATH=$PATH:$HOME/.config/emacs/bin
 
 # Add ruby gems to our PATH
-#TODO: uncomment this when you figure out why user_gemhome is undefined?
-#export GEM_HOME="$(gem env user_gemhome)"
-#export PATH="$PATH:$GEM_HOME/bin"
+#TODO: in some situations, user_gemhome is undefined, not sure why..?
+export GEM_HOME="$(gem env user_gemhome)"
+export PATH="$PATH:$GEM_HOME/bin"
 
 #Run tmux and make sure it doesn't run itself
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
