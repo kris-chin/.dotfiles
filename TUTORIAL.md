@@ -6,6 +6,10 @@ Your kbdx password database is synced up with google drive. We do this via `rclo
 
 We have keepassXC installed on this machine, so just run `keepassxc` to open keepassxc and view your passwords
 
+## rclone and ~/.config
+rclone saves remote information in the .config folder, this contains sensitive information, so it's not committed to this repo.
+however, when boostrapping, this will be empty. you will need to manually add the remotes again (specificallu gdrive)
+
 ### keyboard shortcut for keepassXC
 
 I have it mapped to `META + SHIFT + V`
