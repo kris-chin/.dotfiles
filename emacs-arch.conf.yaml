@@ -1,3 +1,9 @@
+- defaults: 
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
+
 #Make sure you get the org folder from syncthing, otherwise, just create aa new folder
 
 - shell:
@@ -5,21 +11,16 @@
     #NOTE: assumes cargo is installed. man, I gotta set up these configs so they can be independent of each other..
     -
         command: cargo install --features pcre2 ripgrep
-        stdin: true
-        stdout: true
         description: Build ripgrep with pcre lookaheads
-        strerr: true
     #install doom emacs
     -
         command: git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs; ~/.config/emacs/bin/doom install; ~/.config/emacs/bin/doom sync
-        stdin: true
-        stdout: true
         description: install doom emacs
-        stderr: true
     #change permissions of ~/.local/share/fonts to allow for easy font installations
     - 
         command: sudo chmod a+rwx ~/.local/share/fonts
-        stdin: true
-        stdout: true
         description: Add permissions to ~/.local/share/fonts
-        stderr: true
+    #enable the emacs daemon to speed up startup and shutdown
+    -
+        command: systemctl --user enable --now emacs
+        description: Enable the emacs daemon for faster startup/teardown

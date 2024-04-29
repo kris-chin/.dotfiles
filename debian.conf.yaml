@@ -1,32 +1,26 @@
+- defaults:
+    shell:
+        stdin: true
+        stdout: true
+        stderr: true
+
 - shell: 
     #add the universe repository
     -
         command: sudo apt-add-repository universe
-        stdin: true
-        stdout: true
         description: "Add the universe repository for apt"
-        stderr: true
     #install packages via apt
     - 
         command: ./apt-get.packages.sh ./packages.txt
-        stdin: true
-        stdout: true
         description: Installing packages via apt-get
-        stderr: true
     #install vim-plug (not sure why I want it though, other than to fix errors)
     -
         command: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        stdin: true
-        stdout: true
         description: Installing vim-plug
-        stderr: true
     #install oh-my-zsh, delete auto-generated zshrc and pre-oh-my-zsh zshrc,
     -
         command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended; rm ~/.zshrc; rm ~/.zshrc.pre-oh-my-zsh
-        stdin: true
-        stdout: true
         description: Installing oh-my-zsh
-        stderr: true
 
 #briefly re-link .zshrc
 - link: 
@@ -41,17 +35,11 @@
     #install code-minimap (via cargo. since this isnt on apt? maybe we should move this) )
     -
         command: cargo install --locked code-minimap
-        stdin: true
-        stdout: true
         description: Installing code-minimap
-        stderr: true
     #install node version manager
     -
         command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-        stdin: true
-        stdout: true
         description: Installing node version manager
-        stderr: true
     #this does a lot. I don't like it, but if I had these in seperate steps, nvm and npm would not be recognized. it seems they need to be in a single step or something?
     #what it does is:
     #1. add nvm to current shell
@@ -60,35 +48,24 @@
     #TODO: this all definitely should be moved..
     -
         command: export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"; nvm install 20; npm install -g @angular/cli --force
-        stdin: true
-        stdout: true
         description: install nvm, node 20, and angular/cli
-        stderr: true
     #install an Ubuntu Nerd Font
     -
         command: sudo ./install_font.sh https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Ubuntu.zip
-        stdin: true
-        stdout: true
         description: Installing ubuntu font
-        stderr: true
     #install the LATEST version of neovim (this is because apt is out of date)
     -
         command: sudo add-apt-repository ppa:neovim-ppa/unstable; sudo apt-get update; sudo apt-get install neovim
-        stdin: true
-        stdout: true
         description: Get the latest version of neovim
-        stderr: true
     #install colorls (TODO: Move this. I don't think this should be here)
     -
         command: sudo gem install colorls
-        stdin: true
-        stdout: true
         description: Install colorls
-        stderr: true
     #change permissions of ~/.local and ~/.local/share this should allow neovim to install packages properly
     -
         command: sudo chmod a+rwx ~/.local; sudo chmod a+rwx ~/.local/share
-        stdin: true
-        stdout: true
         description: Adding permissions to ~/.local and ~/.local/share
-        stderr: true
+    #enable the emacs daemon for faster startup and teardown
+    -
+        command: systemctl --user enable --now emacs
+        description: "Enabling the emacs daemon for faster startup and teardown"
