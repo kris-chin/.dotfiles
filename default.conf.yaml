@@ -22,6 +22,7 @@
         path: .config/*
         create: true
     ~/TUTORIAL.md: TUTORIAL.md
+    ~/customize-device-input.sh: customize-device-input.sh
 
 - create:
     - ~/downloads
