@@ -202,7 +202,8 @@ gaps outer 5px
 exec_always --no-startup-id ~/.fehbg &
 
 #open picom in the background (this is a compositor that allows for transparent windows)
-exec_always --no-startup-id picom -b
+#this setting also disables fade animations
+exec_always --no-startup-id picom -b --fade-in-step=1 --fade-out-step=1 --fade-delta=0
 
 #hide window titlebars
 for_window [class="^.*"] border none
