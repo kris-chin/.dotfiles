@@ -1,10 +1,18 @@
 - shell: 
-    #install pacman packages (keyring might need to be updated for this to work, and that depends on distro probably (manjaro vs normal arch?)
+    #install pacman required + optional packages
+    #(keyring might need to be updated for this to work, and that depends on distro probably (manjaro vs normal arch?)
     -
-        command: sudo pacman -Syu - < ./packages-arch.txt
+        command: sudo pacman -Syu - < ./packages-arch.txt; sudo pacman -S --asdeps - < ./packages-arch-optional.txt
         stdin: true
         stdout: true
         description: Installing all packages
+        stderr: true
+    #build and install yay from source
+    -
+        command: ./build-yay-latest.sh
+        stdin: true
+        stdout: tre
+        description: building and installing yay
         stderr: true
     #install vim-plug (not sure why I want it though, other than to fix errors)
     -

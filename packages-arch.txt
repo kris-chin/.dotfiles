@@ -20,3 +20,4 @@ syncthing
 neovim
 emacs-nativecomp
 fd
+enchant

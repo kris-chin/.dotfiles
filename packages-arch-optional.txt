@@ -1,0 +1,6 @@
+nuspell
+hspell
+libvoikko
+hunspell
+aspell
+aspell-en
