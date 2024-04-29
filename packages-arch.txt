@@ -19,3 +19,4 @@ cmake
 syncthing
 neovim
 emacs-nativecomp
+fd
