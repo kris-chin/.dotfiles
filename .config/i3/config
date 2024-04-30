@@ -88,10 +88,10 @@ bindsym $mod+Ctrl+k resize grow height 1 px or 1 ppt
 bindsym $mod+Ctrl+l resize grow width 1 px or 1 ppt
 
 # split in horizontal orientation (note, this only applies once a new window is made)
-bindsym $mod+backslash split h
+#bindsym $mod+backslash split horizontal
 
 # split in vertical orientation (note: this only applies once a new window is made)
-bindsym $mod+minus split v
+bindsym $mod+minus split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle

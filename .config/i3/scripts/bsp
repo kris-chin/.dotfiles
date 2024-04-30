@@ -1,0 +1,51 @@
+#!/bin/python3
+#For arch: ensure that python-i3ipc is installed via pacman so we can access it globally
+from i3ipc import Connection, Event
+from queue import Queue
+import json
+
+i3 = Connection()
+
+#TODO: set up different modes to determine horizontal / vertical split
+MODE = "ALTERNATING"
+
+#Takes a search id, and attempts to find the parent of the search_id
+def search_for_parent(con, search_id):
+    nodes = con.nodes
+
+    #base case 1: we found the id
+    if con.id == search_id:
+        return con
+
+    #base case 2: no children.
+    if len(nodes) == 0:
+        return None
+
+    #recursive case: check children
+    for node in nodes:
+        attempt = search_for_parent(node, search_id)
+        if attempt != None:
+            #if our result is the EXACT id we are looking for, go back one layer to get the parent
+            if search_id == attempt.id:
+                return node
+
+            return attempt
+
+    return None
+
+def on_window_new(i3, e):
+    window_id = int(e.container.id)
+    parent = search_for_parent(i3.get_tree(), window_id)
+
+    if (parent == None):
+        return
+
+    #TODO: set up different modes to determine horizontal / vertical split
+    match parent.orientation:
+        case "horizontal":
+            i3.command("split vertical")
+        case "vertical":
+            i3.command("split horizontal")
+
+i3.on(Event.WINDOW_NEW, on_window_new)
+i3.main()
