@@ -35,3 +35,4 @@ export PATH="$PATH:$NODE_PATH"
 zsh
 #Close bash if zsh gets exited
 exit
+. "$HOME/.cargo/env"

@@ -18,6 +18,10 @@
     -
         command: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         description: Installing vim-plug
+    #install rust and rustup
+    -
+        command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        description: installing rust and rustup
     #install oh-my-zsh, delete auto-generated zshrc and pre-oh-my-zsh zshrc,
     -
         command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended; rm ~/.zshrc; rm ~/.zshrc.pre-oh-my-zsh

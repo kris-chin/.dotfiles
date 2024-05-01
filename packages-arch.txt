@@ -12,7 +12,6 @@ coreutils
 python3
 cloc
 ruby
-rust
 make
 gcc
 cmake

@@ -12,8 +12,6 @@ python3
 cloc
 ruby
 ruby-dev
-rustc
-cargo
 make
 gcc
 build-essential
