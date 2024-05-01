@@ -200,8 +200,8 @@ bar {
 bindsym $mod+Shift+Return exec --no-startup-id chromium
 
 #window gaps 
-gaps inner 10px
-gaps outer 5px
+gaps inner 20px
+gaps outer 10px
 
 #open feh on startup to load background image
 exec_always --no-startup-id ~/.fehbg &
