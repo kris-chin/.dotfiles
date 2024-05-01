@@ -103,9 +103,13 @@ https://github.com/dylanaraps/pywal
 
 we use a program called `feh` to set the background image. we do this via
 
-`feh --bg-scale [IMAGE DIR]`
+`feh --bg-[BG COMMAND] [IMAGE DIR]`
+see `man feh` for more info.
 
-this is set again in i3 config on startup
+this is set again in i3 config on startup to keep the background
+
+NOTE: do not commit or edit **.fehbg**. This file gets auto-written to when the `feh` command is called with a background arg.
+However, for switchable themes, it would make sense to override this. But dont actually include a default .fehbg with the dotfiles!
 
 ## configuring the themes
 
