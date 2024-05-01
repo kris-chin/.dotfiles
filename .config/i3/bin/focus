@@ -1,0 +1,161 @@
+#!/bin/python3
+from argparse import ArgumentParser
+from i3ipc import Connection, Event
+from libtmux import Server
+from subprocess import check_output, run
+from time import time
+from hashlib import sha1
+from time import sleep
+
+#==========
+#focus
+#    wraps over i3's focus command and handles terminals with tmux clients + VIM
+#    ie. if a tmux client is selected, attempts to change pane in tmux before switching focus in i3
+#==========
+
+TERMINAL_INSTANCES = ["Alacritty"]
+EDITOR_COMMANDS=["nvim", "vim"]
+
+#Helper Functions
+
+#Shortens direction to key string
+def direction_to_key(direction):
+    direction_map = {
+        "left":"h",
+        "down":"j",
+        "up":"k",
+        "right":"l"
+    }
+    return direction_map[direction]
+
+#Echo within vim by sending keys to tmux pane. 
+#Assumes the following: tmux_pane is a vim pane, vim_command_input WILL echo "marker"
+#This is for the purpose of acquiring information from vim, since it is not externally managed by a server
+def echo_vim(tmux_pane, echo_command_input, marker, char_offset):
+    #First, send keys into vim and press Enter
+    tmux_pane.send_keys("\x1B:echo \"" + marker + ":\" . " + echo_command_input, literal=True);
+    tmux_pane.send_keys("\x1B", literal=True, enter=False);
+    #Wait 1ms so we don't accidentally capture the command we just typed
+    sleep(0.01)
+    #Then, capture content within the vim pane
+    output = ''.join(tmux_pane.capture_pane())
+    #Attempt to find the marker within the vim pane
+    marker_position=output.find(marker)
+    if marker_position != -1:
+        num_chars = len(str(marker))
+        start = marker_position + num_chars + 1 #account for the ":"
+        end = start + char_offset
+        return output[start:end]
+    return None
+
+#Set up i3ipc and tmux
+i3 = Connection()
+tmux = Server()
+
+#Set up Args
+parser = ArgumentParser("focus", "")
+parser.add_argument("direction", help="The direction to focus. Can be left,down,up,right")
+
+#Parse args
+args = parser.parse_args()
+
+if args.direction not in ["left", "down", "up", "right"]:
+    raise Exception("direction must be \"left\", \"down\", \"up\" or \"right\"")
+
+#1. First, check the currently-focused window and ensure it is a terminal
+focused_instance = i3.get_tree().find_focused().window_instance
+
+#2. If not a terminal, send the corresponding i3 message. EXIT.
+if focused_instance not in TERMINAL_INSTANCES:
+    #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END (NOT TERMINAL)"])
+    i3.command(f"focus {args.direction}")
+    i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
+    quit()
+
+#3. Get the PID of the terminal.
+terminal_pid = check_output(['xdotool', 'getactivewindow', 'getwindowpid'], universal_newlines=True).strip()
+
+#Then get the PID of its child
+result = run(['ps', '--ppid', terminal_pid, "-o", "pid="], capture_output=True, text=True)
+if (result.returncode == 1):
+    raise Exception("Couldn't execute")
+child_pid = result.stdout.strip()
+
+#4. Connect to the Tmux Server and go through the clients (this also contains the sessions they are displaying)
+#we format the list-clients command to be a ":" seperated string with the tty as the first item, and the pid as the second
+clients = [output.split(':') for output in tmux.cmd("list-clients", "-F#{client_pid}:#{client_session}:#{client_tty}").stdout]
+clients = [{"pid": client[0], "session": client[1], "tty": client[2]} for client in clients]
+
+try:
+    terminal_client = list(filter(lambda client: client["pid"] == child_pid, clients))[0]
+except IndexError: #no client found
+    terminal_client = None
+
+#5. If no client is found, send the corresponding i3 message. EXIT.
+if terminal_client == None:
+    #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END (NOT TMUX)"])
+    i3.command(f"focus {args.direction}")
+    i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
+    quit()
+
+#7. Hop into the session ID
+try:
+    session = tmux.sessions.get(session_id=f'${terminal_client["session"]}')
+except Exception:
+    raise Exception("Couldn't acquire tmux session ID")
+
+#8. Save tmux pane id for later comparision
+current_pane_id = session.active_pane.id
+
+#10. If we are in a vim pane, capture current window
+current_pane_command = session.active_pane.pane_current_command
+isVimPane = current_pane_command in EDITOR_COMMANDS
+
+#Generate unique marker to echo in vim to prevent unintended behavior
+#It's just the sha1 of the current time truncated to 10 digits. This SURLY should be okay.
+marker = sha1(str(time()).encode("UTF-8")).hexdigest()[:10]
+
+#get current window within vim
+#do this by echoing marker winnr() via send-keys
+if isVimPane:
+    #offset: 2 because we want to get 2 digits just in case
+    current_window = echo_vim(session.active_pane, f'winnr()', marker, 2)
+
+    if (current_window == None):
+        raise Exception("Could not find vim echo")
+
+#11. Send the keys.
+#TODO: This is still technically a hardcode to c-hjkl, which is in my tmux config + vim config.
+keypress = direction_to_key(args.direction)
+output = tmux.cmd("send-keys", "-K", terminal_client["tty"], f"c-{keypress}")
+
+#Update our values now that we could be in a new pane
+session.refresh()
+session.active_pane.refresh()
+new_pane_id = session.active_pane.id
+
+#12. If are in a different tmux pane, then the switch was successful. EXIT
+if (current_pane_id != new_pane_id):
+    text_content = f"current: {current_pane_id} new: {new_pane_id}"
+    #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "PANE CHANGE"])
+    quit()
+
+#13. If we are in the same tmux, pane, (check if we are in a vim pane)
+if (current_pane_id == new_pane_id):
+    #14. If we are in a vim pane, check if we are in a different window
+    if (session.active_pane.pane_current_command in EDITOR_COMMANDS):
+
+        new_window = echo_vim(session.active_pane, f'winnr()', marker, 2)
+        if (new_window == None):
+            raise Exception("Could not find vim echo")
+        
+        #15. If we are in a different window, then the switch was successful. EXIT
+        if (current_window != new_window):
+            text_content = f"current: {current_window} new: {new_window}"
+            #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "WINDOW CHANGE"])
+            quit()
+
+#16. If you are here, either we were on the same tmux pane, or on the same vim pane. Send the i3 command
+i3.command(f"focus {args.direction}")
+#run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END"])
+i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
