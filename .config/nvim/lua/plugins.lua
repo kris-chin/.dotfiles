@@ -301,5 +301,7 @@ require("lazy").setup({
         --I would put this line in /after but that adds a delay to the start time so I'll just put it here
         require("telescope").load_extension "frecency"
       end,
-  }
+    },
+    --yuck.vim syntax highlighting for .yuck files
+    "elkowar/yuck.vim"
 })
