@@ -1,0 +1,7 @@
+(defwindow topbar
+  :stacking "fg"
+  :windowtype "dock"
+  :wm-ignore true
+  :geometry (geometry :x "0%" :y "20px" :width "90%" :height "30px" :anchor "top center")
+  "hi"
+)

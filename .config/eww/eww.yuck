@@ -1,3 +1,2 @@
-
-(defwindow
-)
+(include "./example/powermenu.yuck")
+(include "./topbar/topbar.yuck")
