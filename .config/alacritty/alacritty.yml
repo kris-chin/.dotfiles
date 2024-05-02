@@ -17,39 +17,27 @@ font:
   size: 12
 #[END_GENERATED_CODE: alacritty/font]
 #[GENERATED_CODE: alacritty/color]
-# Colors (Kanagawa Wave)
-# Source https//github.com/rebelot/kanagawa.nvim
-
 colors:
+  name: Miramare
   primary:
-    background: '#1f1f28'
-    foreground: '#dcd7ba'
-
+    background: '0x2A2426'
+    foreground: '0xe6d6ac'
   normal:
-    black: '#090618'
-    red: '#c34043'
-    green: '#76946a'
-    yellow: '#c0a36e'
-    blue: '#7e9cd8'
-    magenta: '#957fb8'
-    cyan: '#6a9589'
-    white: '#c8c093'
-
+    black: '0x2A2426'
+    red: '0xe68183'
+    green: '0x87af87'
+    yellow: '0xd9bb80'
+    blue: '0x89beba'
+    magenta: '0xd3a0bc'
+    cyan: '0x87c095'
+    white: '0xe6d6ac'
   bright:
-    black: '#727169'
-    red: '#e82424'
-    green: '#98bb6c'
-    yellow: '#e6c384'
-    blue: '#7fb4ca'
-    magenta: '#938aa9'
-    cyan: '#7aa89f'
-    white: '#dcd7ba'
-
-  selection:
-    background: '#2d4f67'
-    foreground: '#c8c093'
-
-  indexed_colors:
-    - {index: 16, color: '#ffa066'}
-    - {index: 17, color: '#ff5d62'}
+    black: '0x2A2426'
+    red: '0xe68183'
+    green: '0x87af87'
+    yellow: '0xd9bb80'
+    blue: '0x89beba'
+    magenta: '0xd3a0bc'
+    cyan: '0x87c095'
+    white: '0xe6d6ac'
 #[END_GENERATED_CODE: alacritty/color]

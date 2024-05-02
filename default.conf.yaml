@@ -20,6 +20,10 @@
         glob: true
         path: .config/*
         create: true
+    ~/.themes/:
+        glob: true
+        path: .themes/*
+        create: true
     ~/TUTORIAL.md: TUTORIAL.md
     ~/customize-device-input.sh: customize-device-input.sh
 
