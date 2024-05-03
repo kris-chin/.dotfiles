@@ -1,3 +1,12 @@
+(include "./topbar/workspace-item.yuck")
+(defwidget _workspace_item [name focused]
+  (box :class "" :space-evenly false
+    (label :text "hi")
+    (label :text name)
+    (label :text focused) 
+    )
+  )
+
 (defwindow topbar
   :stacking "fg"
   :windowtype "dock"
@@ -21,6 +30,11 @@
 (defpoll topbar_split :interval "0.01s"
   :initial "horizontal"
   `cat /tmp/i3_split`)
+
+;;get i3 workspace info
+(defpoll topbar_i3_workspaces :interval "0.01s"
+  :initial "N/A"
+  `./bin/get-i3-workspace-info`)
 
 
 (defwidget _network [strength ssid offline excellent good okay slow]
@@ -46,8 +60,20 @@
       battery < 75 ? three :
       battery < 95 ? two : one})))
 
+(defwidget _i3_workspaces [focused_window focused_workspace workspaces_yuck]
+  (box :class "" :space-evenly false :spacing 8
+    (label :text "${focused_window}")
+    (label :text "|")
+    (label :text "${focused_workspace}")
+    ;;TODO: the content of this will be multiple labels
+    ;;(label :text "${workspaces_yuck}")
+    ;;TODO: debug why this literal is not evaluating
+    (literal :content workspaces_yuck)
+    )
+  )
+
 (defwidget topbar_layout []
-  (box :class "topbar-box" :space-evenly false :orientation "horizontal" :style "background-color: black; border-radius: 20px; border-style: solid; border-width: 2px;" 
+  (box :class "topbar-box" :space-evenly false :orientation "horizontal" :style "background-color: black; border-radius: 20px; border-style: solid; border-width: 2px" 
       (_battery :status {EWW_BATTERY.BAT0.status}
                 :battery {EWW_BATTERY.BAT0.capacity}
                 :charge "󰂄" :one "󰂂" :two "󰂁" :three "󰁿" :four "󰁾"
@@ -62,5 +88,11 @@
       (_network :strength "${topbar_net.signal}" :ssid "${topbar_net.ssid}"  :offline "󰣼" :excellent "󰣺" :good "󰣸" :okay "󰣶" :slow "󰣴")
       (label :text "|")
       (label :text "${topbar_split}")
+      (label :text "|")
+      (_i3_workspaces
+        :focused_window "${topbar_i3_workspaces.focused_window}"
+        :focused_workspace "${topbar_i3_workspaces.focused_workspace}"
+        :workspaces_yuck "${topbar_i3_workspaces.workspaces}"
+      )
     )
   )

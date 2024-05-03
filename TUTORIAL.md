@@ -176,3 +176,10 @@ eg2. However, the "✗" becomes a box when it's rendered in gruvbox's comment co
 This usually occurs if you don't update for a long time. An outdated keyring means that packages signed by new packagers won't be accepted, since the keyring isn't updated.
 This is usually fixed with `pacman -Sy archlinux-keyring; pacman -Syu`
 I may or may-not have this be a built-in alias. But tbh, this is good to always think about, and having an alias for it might make me forget it tbh.
+
+# bluetooth
+arch: I have the bluetooth protocal stack `bluez, bluez-utils` 
+I installed `bluetuith` which is a user-friendly TUI for bluetooth connections
+
+## pipewire
+There seems to be a strange conflict involving pipewire and pulseaudio. if pipewire is not running, bluetooth conenctions can fail. ensure that everything about pipewire is installed and check online for additional information

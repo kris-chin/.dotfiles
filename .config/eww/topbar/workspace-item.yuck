@@ -1,0 +1,6 @@
+(defwidget _workspace_item [name focused]
+  (box :class "" :space-evenly false
+    (label :text name)
+    (label :text focused) 
+    )
+  )
