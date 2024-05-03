@@ -4,7 +4,7 @@ from json import dumps
 import sys
 
 #Gets information from the i3ipc and outputs it in a json format
-MAX_FOCUSED_LENGTH = 20
+#MAX_FOCUSED_LENGTH = 20
 
 i3 = Connection()
 workspaces = i3.get_workspaces()
@@ -13,7 +13,9 @@ output = {}
 
 focused = i3.get_tree().find_focused()
 #truncate the name if it is too long
-new_focused_name = ('..' + focused.name[MAX_FOCUSED_LENGTH:]) if len(focused.name) > MAX_FOCUSED_LENGTH else focused.name
+#commented out because im using window instances instead of titles. (these c
+#new_focused_name = ('..' + focused.name[MAX_FOCUSED_LENGTH:]) if len(focused.name) > MAX_FOCUSED_LENGTH else focused.name
+new_focused_name = focused.window_instance
 output["focused_window"] = new_focused_name
 
 workspace_info = []
@@ -30,7 +32,10 @@ for workspace in workspaces:
 def convert_to_eww(workspace):
     return f'(_workspace_item :name \'{workspace["name"]}\' :focused \'{str(workspace["focused"]).lower()}\')'
 
-output["workspaces"] = ''.join([convert_to_eww(workspace) for workspace in workspace_info])
+joined_workspaces = ''.join([convert_to_eww(workspace) for workspace in workspace_info])
+outer = f'(box {joined_workspaces})'
+output["workspaces"] = outer
+
 
 #Export data
 sys.stdout.write(dumps(output))

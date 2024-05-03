@@ -1,11 +1,4 @@
 (include "./topbar/workspace-item.yuck")
-(defwidget _workspace_item [name focused]
-  (box :class "" :space-evenly false
-    (label :text "hi")
-    (label :text name)
-    (label :text focused) 
-    )
-  )
 
 (defwindow topbar
   :stacking "fg"
@@ -65,9 +58,6 @@
     (label :text "${focused_window}")
     (label :text "|")
     (label :text "${focused_workspace}")
-    ;;TODO: the content of this will be multiple labels
-    ;;(label :text "${workspaces_yuck}")
-    ;;TODO: debug why this literal is not evaluating
     (literal :content workspaces_yuck)
     )
   )
