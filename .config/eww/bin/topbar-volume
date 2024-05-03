@@ -1,0 +1,2 @@
+#!/bin/bash
+pactl get-sink-volume @DEFAULT_SINK@  | sed -n 's/.*front-left:.* \([0-9]*%\).*front-right:.* \([0-9]*%\).*/{"left": "\1", "right": "\2"}/p'

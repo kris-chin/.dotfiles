@@ -29,11 +29,16 @@
   :initial "N/A"
   `./bin/get-i3-workspace-info`)
 
+(defpoll topbar_volume :interval "0.01s"
+  :initial "N/A"
+  `./bin/topbar-volume`
+)
 
 (defwidget _network [strength ssid offline excellent good okay slow]
   (box :class ""
        :space-evenly false
        :spacing 8
+       :style "color: green"
     (label :text ssid)
     (label :text {strength == "" ? offline :
       strength < 26 ? slow :
@@ -55,12 +60,26 @@
 
 (defwidget _i3_workspaces [focused_window focused_workspace workspaces_yuck]
   (box :class "" :space-evenly false :spacing 8
-    (label :text "${focused_window}")
+    (label :style "color: cyan" :text "${focused_window}")
     (label :text "|")
     (label :text "${focused_workspace}")
     (literal :content workspaces_yuck)
     )
   )
+
+(defwidget _i3_split [split]
+  (box 
+    (label :style "color: magenta" :text {split == "horizontal" ? "󰯍" : "󰯎"})
+    )
+  )
+
+(defwidget _volume [left right]
+  (box
+    ;;just ignore the right. when will i EVER care about both?
+    (label :text "${left}")
+    (label :text "")
+  )
+)
 
 (defwidget topbar_layout []
   (box :class "topbar-box" :space-evenly false :orientation "horizontal" :style "background-color: black; border-radius: 20px; border-style: solid; border-width: 2px" 
@@ -69,15 +88,17 @@
                 :charge "󰂄" :one "󰂂" :two "󰂁" :three "󰁿" :four "󰁾"
                 :five "󰁽" :six "󰁼" :seven "󰁺")
       (label :text "|")
+      (_volume :left "${topbar_volume.left}" :right "${topbar_volume.right}")
+      (label :text "|")
       (box :spacing 15 :class "" :space-evenly false :valign "end"
         :halign "start"
         (label :text "")
-        (label :text "${topbar_time.hour}  ${topbar_time.min}")
+        (label :text "${topbar_time.hour}:${topbar_time.min}")
       )
       (label :text "|")
       (_network :strength "${topbar_net.signal}" :ssid "${topbar_net.ssid}"  :offline "󰣼" :excellent "󰣺" :good "󰣸" :okay "󰣶" :slow "󰣴")
       (label :text "|")
-      (label :text "${topbar_split}")
+      (_i3_split :split "${topbar_split}")
       (label :text "|")
       (_i3_workspaces
         :focused_window "${topbar_i3_workspaces.focused_window}"
