@@ -16,6 +16,12 @@
   `nmcli -t -f SSID,SIGNAL,ACTIVE device wifi \
   | awk -F':' '{if($3=="yes")print"{\\\"signal\\\":\\\"\"$2\"\\\",\\\"ssid\\\":\\\"\"$1\"\\\"}"}'`)
 
+;;return current i3 split
+;;TODO: is this 1ms interval bad for performance?
+(defpoll topbar_split :interval "0.01s"
+  :initial "horizontal"
+  `cat /tmp/i3_split`)
+
 
 (defwidget _network [strength ssid offline excellent good okay slow]
   (box :class ""
@@ -53,7 +59,8 @@
         (label :text "${topbar_time.hour}  ${topbar_time.min}")
       )
       (label :text "|")
-      (_network :strength "${topbar_net.signal}" :ssid "${topbar_net.ssid}"  :offline "󰣼" :excellent "󰣺" :good "󰣸"
-                :okay "󰣶" :slow "󰣴")
+      (_network :strength "${topbar_net.signal}" :ssid "${topbar_net.ssid}"  :offline "󰣼" :excellent "󰣺" :good "󰣸" :okay "󰣶" :slow "󰣴")
+      (label :text "|")
+      (label :text "${topbar_split}")
     )
   )

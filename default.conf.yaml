@@ -2,6 +2,10 @@
     link:
       relink: true #delete old symlink and replace with new symlink
       force: true #force removes old target
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
 
 - clean: ['~']
 
@@ -35,7 +39,7 @@
 - shell:
   -
     command: git submodule update --init --recursive
-    stdin: true
-    stdout: true
     description: Installing submodules
-    stderr: true
+  -
+    command: sudo chmod a+rw /tmp/
+    description: adding permissions to the /tmp/ folder in case it is not writable
