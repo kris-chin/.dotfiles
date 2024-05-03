@@ -2,6 +2,58 @@
   :stacking "fg"
   :windowtype "dock"
   :wm-ignore true
-  :geometry (geometry :x "0%" :y "20px" :width "90%" :height "30px" :anchor "top center")
-  "hi"
+  :geometry (geometry :x "0%" :y "0px" :width "20%" :height "1%" :anchor "top center")
+  (topbar_layout)
 )
+
+(defpoll topbar_time :interval "5s"
+  :initial `date +'{"hour":"%H","min":"%M"}'`
+  `date +'{"hour":"%H","min":"%M"}'`)
+
+;;returns a json object: {signal: signal_strength, ssid: name_of_network)
+(defpoll topbar_net :interval "1s"
+  :initial "N/A"
+  `nmcli -t -f SSID,SIGNAL,ACTIVE device wifi \
+  | awk -F':' '{if($3=="yes")print"{\\\"signal\\\":\\\"\"$2\"\\\",\\\"ssid\\\":\\\"\"$1\"\\\"}"}'`)
+
+
+(defwidget _network [strength ssid offline excellent good okay slow]
+  (box :class ""
+       :space-evenly false
+       :spacing 8
+    (label :text ssid)
+    (label :text {strength == "" ? offline :
+      strength < 26 ? slow :
+      strength < 51 ? okay :
+      strength < 76 ? good : excellent})
+    (label :text strength)
+    ))
+
+(defwidget _battery [battery status one two three four five six seven charge]
+  (box :class "" :space-evenly false :spacing 8
+    (label :text `${battery}%`)
+    (label :text {status == 'Charging' ? charge :
+      battery < 15 ? seven :
+      battery < 30 ? six :
+      battery < 45 ? five :
+      battery < 68 ? four :
+      battery < 75 ? three :
+      battery < 95 ? two : one})))
+
+(defwidget topbar_layout []
+  (box :class "topbar-box" :space-evenly false :orientation "horizontal" :style "background-color: black; border-radius: 20px; border-style: solid; border-width: 2px;" 
+      (_battery :status {EWW_BATTERY.BAT0.status}
+                :battery {EWW_BATTERY.BAT0.capacity}
+                :charge "󰂄" :one "󰂂" :two "󰂁" :three "󰁿" :four "󰁾"
+                :five "󰁽" :six "󰁼" :seven "󰁺")
+      (label :text "|")
+      (box :spacing 15 :class "" :space-evenly false :valign "end"
+        :halign "start"
+        (label :text "")
+        (label :text "${topbar_time.hour}  ${topbar_time.min}")
+      )
+      (label :text "|")
+      (_network :strength "${topbar_net.signal}" :ssid "${topbar_net.ssid}"  :offline "󰣼" :excellent "󰣺" :good "󰣸"
+                :okay "󰣶" :slow "󰣴")
+    )
+  )
