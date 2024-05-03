@@ -183,3 +183,6 @@ I installed `bluetuith` which is a user-friendly TUI for bluetooth connections
 
 ## pipewire
 There seems to be a strange conflict involving pipewire and pulseaudio. if pipewire is not running, bluetooth conenctions can fail. ensure that everything about pipewire is installed and check online for additional information
+
+# force-closing windows
+You can use `xkill` to force-close all processes related to an X window (neat!)
