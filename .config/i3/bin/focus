@@ -70,6 +70,7 @@ if focused_instance not in TERMINAL_INSTANCES:
     #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END (NOT TERMINAL)"])
     i3.command(f"focus {args.direction}")
     i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
+    i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
     quit()
 
 #3. Get the PID of the terminal.
@@ -96,6 +97,7 @@ if terminal_client == None:
     #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END (NOT TMUX)"])
     i3.command(f"focus {args.direction}")
     i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
+    i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
     quit()
 
 #7. Hop into the session ID
@@ -159,3 +161,4 @@ if (current_pane_id == new_pane_id):
 i3.command(f"focus {args.direction}")
 #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END"])
 i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
+i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")

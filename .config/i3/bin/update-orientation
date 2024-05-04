@@ -1,0 +1,46 @@
+#!/bin/python3
+#For arch: ensure that python-i3ipc is installed via pacman so we can access it globally
+from i3ipc import Connection 
+from subprocess import check_output
+
+#This script just reads the current focused window, gets its parent's orientation, and then updates the i3_split file so it reflects accordingly in eww
+#I hate that I have to do it this way, but trying to have a global split mode just wasn't able to work for some reason
+
+FILEPATH="/tmp/i3_split"
+
+i3 = Connection()
+
+#Takes a search id, and attempts to find the parent of the search_id
+#Copy-and-pasted from bsp
+def search_for_parent(con, search_id):
+    nodes = con.nodes
+
+    #base case 1: we found the id
+    if con.id == search_id:
+        return con
+
+    #base case 2: no children.
+    if len(nodes) == 0:
+        return None
+
+    #recursive case: check children
+    for node in nodes:
+        attempt = search_for_parent(node, search_id)
+        if attempt != None:
+            #if our result is the EXACT id we are looking for, go back one layer to get the parent
+            if search_id == attempt.id:
+                return node
+
+            return attempt
+
+    return None
+
+#1. Get the focused window
+focused = i3.get_tree().find_focused()
+#2. Find its parent in the tree
+parent = search_for_parent(i3.get_tree(), focused.id)
+
+#3. Write its orientation to the FILEPATH
+f = open(FILEPATH, 'w')
+f.write(parent.orientation)
+f.close()
