@@ -303,5 +303,7 @@ require("lazy").setup({
       end,
     },
     --yuck.vim syntax highlighting for .yuck files
-    "elkowar/yuck.vim"
+    "elkowar/yuck.vim",
+    --rasi.vim (add rasi syntax highlighting for .rasi files
+    "Fymyte/rasi.vim"
 })
