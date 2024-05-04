@@ -20,6 +20,7 @@
     ~/.xprofile: .xprofile
     ~/.yabairc: .yabairc
     ~/.zshrc: .zshrc
+    ~/.p10k.zsh: .p10k.zsh
     ~/.config/:
         glob: true
         path: .config/*

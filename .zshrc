@@ -15,6 +15,8 @@ fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+#Point our oh-my-zsh custom folder instead to .config/zsh/custom
 export ZSH_CUSTOM="$HOME/.config/zsh/custom"
 
 # Set name of the theme to load --- if set to "random", it will
