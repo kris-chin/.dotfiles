@@ -6,3 +6,11 @@
     color: red;
   }
 }
+
+.topbar--eventbox {
+  background-color: red;
+
+  &:hover {
+    background-color: green;
+  }
+}

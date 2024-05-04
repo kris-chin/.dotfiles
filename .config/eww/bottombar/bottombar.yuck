@@ -1,0 +1,86 @@
+(defwindow bottombar
+  :stacking "fg"
+  :windowtype "dock"
+  :wm-ignore true
+  :geometry (geometry :x "0px" :y "0px" :width "100%" :height "1%" :anchor "bottom center")
+  (bottombar_layout)
+)
+
+(defvar bottombar_display true)
+
+(defpoll bottombar_time :interval "1s"
+  :initial `date +'{"month":"%B","day":"%d","year":"%Y","quarter":"%q","weekday":"%A","week":"%U","hour":"%H","min":"%M","seconds":"%S"}'`
+  `date +'{"month":"%B","day":"%d","year":"%Y","quarter":"%q","weekday":"%A","week":"%U","hour":"%H","min":"%M","seconds":"%S"}'`)
+
+(defpoll bottombar_moonphase :interval "3600s"
+  :initial "N/A"
+  `./bin/moonphase`
+  )
+
+(defwidget _moonphase [phase_pos]
+  (box :spacing 8 :space-evenly false
+    ;;moonphase.py has a looser calculation, nf-weather moon DOES have more chill spacing of moon phases, but for some reason, I decided to go with their detailed implementation.
+    ;;(label :text "${phase_name}")
+    ;;nf-weather-moon's phases are by 6ths. after putting these all together, im dividing by 1/28. (0.035)
+    (label :text {
+      phase_pos < 0.035 ? "" : ;;new
+      phase_pos < 0.070 ? "" : ;;waxing crescent 1
+      phase_pos < 0.105 ? "" : ;;waxing crescent 2
+      phase_pos < 0.140 ? "" : ;;waxing crescent 3
+      phase_pos < 0.175 ? "" : ;;waxing crescent 4
+      phase_pos < 0.210 ? "" : ;;waxing crescent 5
+      phase_pos < 0.245 ? "" : ;;waxing crescent 6
+      phase_pos < 0.280 ? "" : ;;first quarter
+      phase_pos < 0.315 ? "" : ;;waxing gibbous 1
+      phase_pos < 0.350 ? "" : ;;waxing gibbous 2
+      phase_pos < 0.385 ? "" : ;;waxing gibbous 3
+      phase_pos < 0.420 ? "" : ;;waxing gibbous 4
+      phase_pos < 0.455 ? "" : ;;waxing gibbous 5
+      phase_pos < 0.490 ? "" : ;;waxing gibbous 6
+      phase_pos < 0.525 ? "" : ;;full moon
+      phase_pos < 0.560 ? "" : ;;waning gibbous 1
+      phase_pos < 0.595 ? "" : ;;waning gibbous 2
+      phase_pos < 0.630 ? "" : ;;waning gibbous 3
+      phase_pos < 0.665 ? "" : ;;waning gibbous 4
+      phase_pos < 0.700 ? "" : ;;waning gibbous 5
+      phase_pos < 0.735 ? "" : ;;waning gibbous 6
+      phase_pos < 0.770 ? "󰽣" : ;;third quarter
+      phase_pos < 0.805 ? "" : ;;waning crescent 1
+      phase_pos < 0.840 ? "" : ;;waning crescent 2
+      phase_pos < 0.875 ? "" : ;;waning crescent 3
+      phase_pos < 0.910 ? "" : ;;waning crescent 4
+      phase_pos < 0.945 ? "" : ;;waning crescent 5
+      phase_pos < 0.980 ? "" : ;;waning crescent 6
+      "" ;;new moon
+      })
+    )
+  )
+
+(defwidget bottombar_leftside []
+  (box :halign "start" :style "padding-left: 10px; padding-right: 10px; background-color: black; border-radius: 20px; border-style: solid; border-width: 2px" 
+      (box :spacing 15 :class "" :space-evenly false
+        :halign "start"
+        (label :text "")
+        (label :text "${bottombar_time.weekday} ${bottombar_time.month} ${bottombar_time.day} ${bottombar_time.year}")
+        (label :text "")
+        (label :text "${bottombar_time.hour}:${bottombar_time.min}:${bottombar_time.seconds}")
+        (label :text "|")
+        (label :text "Q${bottombar_time.quarter} W${bottombar_time.week}")
+        (_moonphase :phase_pos "${bottombar_moonphase.rounded_pos}")
+      )
+    )
+  )
+
+(defwidget bottombar_layout []
+  (revealer
+    :reveal {i3_fullscreen == "disable"}
+    ;;unfortunately, I cant seem to have the transitions be very smooth. they stall and dont show up after first play
+    :transition "none"
+    (centerbox :orientation "horizontal"
+      (bottombar_leftside)
+      ;;fill these out later
+      (box)
+      (box)
+      )
+  )
+)

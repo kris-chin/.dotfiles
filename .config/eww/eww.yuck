@@ -1,2 +1,9 @@
 ;;(include "./example/powermenu.yuck")
+
+;;for some reason, "eww update" hasn't been very consistent for me, so i'm just gonna keep polling a tmp file.
+(defpoll i3_fullscreen :interval "0.001s"
+  :initial "disable"
+  `cat /tmp/i3_fullscreen`
+  )
 (include "./topbar/topbar.yuck")
+(include "./bottombar/bottombar.yuck")

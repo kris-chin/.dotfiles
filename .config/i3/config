@@ -92,7 +92,7 @@ bindsym $mod+Ctrl+l resize grow width 1 px or 1 ppt
 bindsym $mod+minus exec --no-startup-id ~/.config/i3/bin/toggle-split
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+bindsym $mod+f exec --no-startup-id ~/.config/i3/bin/toggle-fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
 #bindsym $mod+s layout stacking
@@ -209,4 +209,4 @@ exec_always --no-startup-id picom -b --fade-in-step=1 --fade-out-step=1 --fade-d
 for_window [class="^.*"] border none
 
 #start eww topbar
-exec_always --no-startup-id ~/.local/bin/eww open topbar
+exec_always --no-startup-id ~/.local/bin/eww open-many topbar bottombar
