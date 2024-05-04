@@ -57,7 +57,7 @@
   )
 
 (defwidget bottombar_leftside []
-  (box :halign "start" :style "padding-left: 10px; padding-right: 10px; background-color: black; border-radius: 20px; border-style: solid; border-width: 2px" 
+  (box :halign "start" :style "padding-left: 10px; padding-right: 10px; color: ${colors.white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
       (box :spacing 15 :class "" :space-evenly false
         :halign "start"
         (label :text "")

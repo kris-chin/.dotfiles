@@ -5,5 +5,7 @@
   :initial "disable"
   `cat /tmp/i3_fullscreen`
   )
+
+(defvar colors `{"white": "#e6d6ac","black": "#2a2426"}`)
 (include "./topbar/topbar.yuck")
 (include "./bottombar/bottombar.yuck")
