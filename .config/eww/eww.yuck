@@ -1,10 +1,9 @@
 ;;(include "./example/powermenu.yuck")
 
-;;for some reason, "eww update" hasn't been very consistent for me, so i'm just gonna keep polling a tmp file.
-(defpoll i3_fullscreen :interval "0.001s"
-  :initial "disable"
-  `cat /tmp/i3_fullscreen`
-  )
+;; to future chin regarding fullscreen widget hiding:
+;; so I tried doing `eww update` to toggle the transitions for the topbar and bottom bar, that didnt work.
+;; I then tried using a revealer or toggling visiblity of the bars by variable, but that prevented mouse clicks
+;; so, it seems like i will run `eww open --toggle` when fullscreen is applied,
 
 (defvar colors `{"white": "#e6d6ac","black": "#2a2426"}`)
 (include "./topbar/topbar.yuck")

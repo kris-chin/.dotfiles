@@ -141,14 +141,9 @@
 )
 
 (defwidget topbar_layout []
-  (revealer
-    :reveal {i3_fullscreen == "disable"}
-    ;;unfortunately, I cant seem to have the transitions be very smooth. they stall and dont show up after first play
-    :transition "none"
-    (centerbox :class "topbar-box" :orientation "horizontal" :spacing 100
-      (topbar_leftside)
-      (topbar_middle)
-      (topbar_rightside)
-    )
+  (centerbox :class "topbar-box" :orientation "horizontal" :spacing 100
+    (topbar_leftside)
+    (topbar_middle)
+    (topbar_rightside)
   )
 )

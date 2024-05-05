@@ -4,6 +4,7 @@
 #This file will be used for eww revealer purposes
 
 FILEPATH="/tmp/i3_fullscreen"
+EWW_PATH="${HOME}/.local/bin/eww"
 
 DEFAULT_VALUE="disable"
 
@@ -25,3 +26,5 @@ fi
 # Write the new value in the file
 echo "$NEW_VALUE" > "$FILEPATH"
 i3-msg fullscreen $NEW_VALUE
+#Just toggle eww widgets
+$EWW_PATH open-many --toggle topbar bottombar

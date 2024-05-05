@@ -72,15 +72,10 @@
   )
 
 (defwidget bottombar_layout []
-  (revealer
-    :reveal {i3_fullscreen == "disable"}
-    ;;unfortunately, I cant seem to have the transitions be very smooth. they stall and dont show up after first play
-    :transition "none"
-    (centerbox :orientation "horizontal"
-      (bottombar_leftside)
-      ;;fill these out later
-      (box)
-      (box)
-      )
-  )
+  (centerbox :orientation "horizontal"
+    (bottombar_leftside)
+    ;;fill these out later
+    (box)
+    (box)
+    )
 )
