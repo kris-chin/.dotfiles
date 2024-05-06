@@ -1,0 +1,46 @@
+# Main Colors
+unrecognized_file: "{color3}"
+recognized_file:   "{color11}"
+executable_file:   "{color10}"
+dir:               "{color12}"
+
+# Link
+dead_link: "{color1}"
+link:      "{color14}"
+
+# special files
+socket:    green
+blockdev:  green
+chardev:   green
+
+# Access Modes
+write:     "{color11}"
+read:      "{color10}"
+exec:      "{color9}"
+no_access: "{color1}"
+
+# Age
+day_old:     "{color2}"
+hour_old:    "{color10}"
+no_modifier: "{color14}"
+
+# File Size
+file_large:  "{color11}"
+file_medium: "{color3}"
+file_small:  "{color5}"
+
+# Random
+report: "{color15}"
+user:   moccasin
+tree:   "{color14}"
+empty:  "{color11}"
+error:    "{color9}"
+normal: darkkhaki
+inode: moccasin
+
+# Git
+addition:     chartreuse
+modification: darkkhaki
+deletion:     darkred
+untracked:    darkorange
+unchanged:    forestgreen
