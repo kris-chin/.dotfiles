@@ -46,3 +46,7 @@
   -
     command: sudo chmod a+rw /tmp/
     description: adding permissions to the /tmp/ folder in case it is not writable
+  #create files that aren't in repo due to their dynamic properties as colorscheme files
+  - touch ~/.config/alacritty/colorscheme.toml
+  - touch ~/.config/colorls/dark_colors.yaml
+  - touch ~/.config/eww/wpg.json
