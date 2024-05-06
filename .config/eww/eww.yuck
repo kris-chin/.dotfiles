@@ -5,6 +5,7 @@
 ;; I then tried using a revealer or toggling visiblity of the bars by variable, but that prevented mouse clicks
 ;; so, it seems like i will run `eww open --toggle` when fullscreen is applied,
 
-(defvar colors `{"white": "#e6d6ac","black": "#2a2426"}`)
+;;TODO: change this so it isn't just needlessly polling this file
+(defpoll colors :interval "0.01s" `cat wpg.json`)
 (include "./topbar/topbar.yuck")
 (include "./bottombar/bottombar.yuck")
