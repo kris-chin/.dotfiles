@@ -31,6 +31,7 @@
         create: true
     ~/TUTORIAL.md: TUTORIAL.md
     ~/customize-device-input.sh: customize-device-input.sh
+    ~/.gtkrc-2.0: .gtkrc-2.0
 
 - create:
     - ~/downloads

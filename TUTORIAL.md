@@ -111,10 +111,19 @@ this is set again in i3 config on startup to keep the background
 NOTE: do not commit or edit **.fehbg**. This file gets auto-written to when the `feh` command is called with a background arg.
 However, for switchable themes, it would make sense to override this. But dont actually include a default .fehbg with the dotfiles!
 
-## configuring the themes
+## configuring the themes (keywords: gtk, GTK)
 
-we can set up X11 to use GTK themes to configure the common colors for all of our windows
-we do this via an app called `lxappearance`, which customizes X11
+any application that uses gtk to render GUI will read the current GTK theme that is set.
+
+**we don't need to modify any files** because we use an app called `lxappearance` to set our themes
+
+### gtk themes and WPG
+
+our GTK theme is able to be modified by wpg because we set our GTK theme to FlatColor. This theme is provided by wpgtk and is auto-set by wpgtk whenever you change colors.
+
+if we use a different theme, wpg won't be able to modify the colors of it. to continue, we either would need to modify the new theme or just stay on FlatColof
+
+tbh, flatcolor is fine. i think it looks nice when styled with colors correctly.
 
 ## What happens when you initially start up arch linux? (what is the login screen we see?)
 
