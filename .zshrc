@@ -1,3 +1,6 @@
+#Enable zsh profiling information
+zmodload zsh/zprof
+
 #Disable config wizard
 POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 
@@ -156,9 +159,9 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 
 #C-hjkl in zsh insert mode (these don't work and i dont fucking know why!!!)
 #TODO: wtf is a widget? (seems like a ZSH Concept)
-zvm_bindkey viins '^K' up-line-or-history zvm_readkeys_handler
-zvm_bindkey viins '^J' up-line-or-history zvm_readkeys_handler
-zvm_bindkey viins '^L' autosuggest-accept zvm_readkeys_handler
+#zvm_bindkey viins '^K' up-line-or-history zvm_readkeys_handler
+#zvm_bindkey viins '^J' up-line-or-history zvm_readkeys_handler
+#zvm_bindkey viins '^L' autosuggest-accept zvm_readkeys_handler
 
 #colored LS
 alias ls='ls --color=auto'
@@ -287,3 +290,9 @@ export PATH=$PATH:$HOME/.dotfiles/bin
 
 #add local bin to PATH (why is this not here already?)
 export PATH=$PATH:$HOME/.local/bin
+
+#time function to time zsh startup
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do time $shell -i -c exit; done
+}
