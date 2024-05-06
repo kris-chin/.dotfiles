@@ -18,6 +18,7 @@
     ~/.xinitrc: .xinitrc
     ~/.xmodmap: .xmodmap
     ~/.xprofile: .xprofile
+    ~/.profile: .profile
     ~/.yabairc: .yabairc
     ~/.zshrc: .zshrc
     ~/.p10k.zsh: .p10k.zsh
