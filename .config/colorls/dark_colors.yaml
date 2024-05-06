@@ -1,12 +1,12 @@
 # Main Colors
-unrecognized_file: '#e6d6ac'
-recognized_file:   '#d9bb80'
-executable_file:   '#87af87'
-dir:               '#87c095'
+unrecognized_file: "#607888"
+recognized_file:   "#607888"
+executable_file:   "#397084"
+dir:               "#A37788"
 
 # Link
-dead_link: red
-link:      cyan
+dead_link: "#8C6877"
+link:      "#6F8C99"
 
 # special files
 socket:    green
@@ -14,27 +14,27 @@ blockdev:  green
 chardev:   green
 
 # Access Modes
-write:     darkkhaki
-read:      limegreen
-exec:      red
-no_access: indianred
+write:     "#607888"
+read:      "#397084"
+exec:      "#8C6877"
+no_access: "#8C6877"
 
 # Age
-day_old:     mediumspringgreen
-hour_old:    lime
-no_modifier: seagreen
+day_old:     "#397084"
+hour_old:    "#397084"
+no_modifier: "#6F8C99"
 
 # File Size
-file_large:  orange
-file_medium: gold
-file_small:  peachpuff
+file_large:  "#607888"
+file_medium: "#607888"
+file_small:  "#C2768F"
 
 # Random
-report: white
+report: "#c8c0c7"
 user:   moccasin
-tree:   cyan
-empty:  yellow
-error:  red
+tree:   "#6F8C99"
+empty:  "#607888"
+error:    "#8C6877"
 normal: darkkhaki
 inode: moccasin
 
