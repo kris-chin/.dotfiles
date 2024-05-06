@@ -1,0 +1,24 @@
+#[GENERATED_CODE: alacritty/colorscheme]
+colors:
+  primary:
+    background: '#0a0a0a'
+    foreground: '#e5d3b8'
+  normal:
+    black: '#0a0a0a'
+    red: '#69574B'
+    green: '#B44A40'
+    yellow: '#9D6751'
+    blue: '#B19368'
+    magenta: '#D5A16F'
+    cyan: '#087088'
+    white: '#e5d3b8'
+  bright:
+    black: '#a09380'
+    red: '#69574B'
+    green: '#B44A40'
+    yellow: '#9D6751'
+    blue: '#B19368'
+    magenta: '#D5A16F'
+    cyan: '#087088'
+    white: '#e5d3b8'
+#[END_GENERATED_CODE: alacritty/colorscheme]
