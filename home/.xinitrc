@@ -1,3 +1,5 @@
+#!/bin/sh
+
 #Setup X keybindings
 xmodmap ~/.xmodmap
 
@@ -5,3 +7,5 @@ xmodmap ~/.xmodmap
 bash -c '
   $HOME/customize-device-input.sh
 '
+#Start i3
+i3

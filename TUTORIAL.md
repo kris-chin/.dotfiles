@@ -125,10 +125,6 @@ if we use a different theme, wpg won't be able to modify the colors of it. to co
 
 tbh, flatcolor is fine. i think it looks nice when styled with colors correctly.
 
-## What happens when you initially start up arch linux? (what is the login screen we see?)
-
-(TODO)
-
 ## xrandr - X11 + HDMI cable / other monitor
 
 you can use `xrandr` as a diagnostic tool for your monitors and sending certain commands to configure them
@@ -169,6 +165,11 @@ I've put my X keybinds in this file. Feel free to put any additional x-related s
 
 the file, `.xinitrc` only runs when X is started with `xstart`, when opened via a graphical loading screen, it looks for `.xprofile` instead of `.xinitrc`, so I just symlinked `.xprofile` to `.xinitrc`.
 
+# Display Managers (login screens)
+
+I guess I forgot about Display Managers. But they help the process of starting up the X server with a login screen.
+I use `ly`. I just installed it and enabled it's systemd service and its up-and-running just like that
+
 # nerd fonts
 Apparently, the upgrade to nerdfonts v3 moved some fonts and a lot of them are obsolete. This can affect some of the plugins in the terminal. 
 This can manifest itself in neovim showing an invalid font but the terminal is just fine.
@@ -195,3 +196,7 @@ There seems to be a strange conflict involving pipewire and pulseaudio. if pipew
 
 # force-closing windows
 You can use `xkill` to force-close all processes related to an X window (neat!)
+
+# pacman logs - cleaning out old packages
+You can look at every package ever installed in /var/log/pacman.log
+Good for trying to figure out what to get rid of
