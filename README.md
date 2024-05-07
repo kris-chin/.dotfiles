@@ -1,100 +1,29 @@
 # chin's Dotfiles
 
-Just my dotfiles! Working on making this nicer and easier to bootstrap
-TODO: OSX vs Arch support
-TODO: Bootstrapping scripts
+Just my dotfiles!
 
 ## Setup
 
-- OSX Window Manager - Yabai + Skhd
-- Terminal Emulator - Alacritty
-- Shell - Zsh + Oh-My-Zsh / Bash
-- Tmux
-- Neovim
-- Git
-- Vim (just as legacy, not really for normal usage)
-  - vim-plug
+1. Clone the .dotfiles repo into your home directory.
 
-## Installed Software (wip)
+2. Run the `install` script by itself to do the initial setup. Add additional arguments to also include system-specific setup.
 
-- ack (search tool alternative to grep)
-- brew
-- code-minimap (creates a minimap (for neovim))
-- fd (faster "find" alternative)
-- git-delta
-- htop
-- ispell (used for spelling on emacs)
-- koekeishiya/formulae/skhd
-- koekeishiya/formulae/yabai
-- neofetch
-- node
-- nvm (used to manage nodejs versions)
-- tmux
-- ripgrep
-- coreutils (helpful utilities)
-- python3
-- cloc (counts lines of code)
-- ripgrep
-- docker (installed as cask)
-- mysqlworkbench (installed as cask)
-- emacs (installed as cask)
-- ruby
-- rust (specifically for cargo)
+| Argument | Description |
+| --- | --- |
+| No Argument | Creates symlinks into the home directory |
+| `debian` | Installs debian packages and additional software |
+| `arch`   | Installs arch packages and additional software |
+| `emacs-debian` | Builds emacs from source, and then installs doom |
+| `emacs-arch` | Installs doom, assuming emacs is already installed |
 
-### Globally-Installed Node Modules
+Note: these confs can be found in the `setup/` directory. I'll add more as I continue to make changes.
 
-- @mermaid-js/mermaid-cli@10.4.0 (mermaid JS)
-- @angular/cli (used for terminal autocompletion)
+3. Done!
 
-### Globally-Installed Python Packages
+# Cool Stuff!
 
-- GitPython
-- jira
-- requests
-- urllib3
-
-### Installed Arch Packages (WIP)
-
-- picom
-- feh
-- xrandr
-- xmodmap
-- xbindkeys
-
-### Installed Ruby Gems
-
-- colorls
-
-### Installed MacOs Apps (WIP)
-
-- ubersicht
-- scroll reverser
-
-### Installed Cargo Packages
-
-- nerdfix
-
-## All potential spots for colorschemes
-
-- alacritty
-    - `alacritty.yml`
-    - I've been using `npx alacritty-themes` to easily manage a set number of themes, but I know there's more I can do
-- neovim
-    - `.config/nvim`
-- zsh -> powerlevel10k prompts
-    - `https://github.com/romkatv/powerlevel10k/blob/master/README.md#how-do-i-change-prompt-colors`
-- tmux powerline
-    - `.tmux.conf`
-    - (I think there's also a way to configure it manaully as well, I don't know this one yet)
-- ubersicht (macOS)
-    - I don't know yet. 
-- colorls  
-    - `https://github.com/athityakumar/colorls?tab=readme-ov-file#custom-configurations`
-    - why the hell is this so complicated?
-- vim
-    - `.vimrc`
-    - this is actually only used for the VERY few times vim is opened. (eg. git?) so no need to hyperfocus this being changed
-- doom emacs
-    - `.config/doom`
-- yabai (macOS)
-    - `.yabairc`
+- Cool scripts!
+- Fun eww widgets!
+- An emacs library!
+- Most colorschemes integrated with wpgtk! (No need to worry about colorschemes!)
+- A theme manager written in ruby!

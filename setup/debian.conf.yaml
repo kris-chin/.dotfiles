@@ -5,15 +5,14 @@
         stderr: true
 
 - shell: 
-    #install pacman required + optional packages
-    #(keyring might need to be updated for this to work, and that depends on distro probably (manjaro vs normal arch?)
+    #add the universe repository
     -
-        command: sudo pacman -Syu - < ./packages-arch.txt; sudo pacman -S --asdeps - < ./packages-arch-optional.txt
-        description: Installing all packages
-    #build and install yay from source
-    -
-        command: ./build-yay-latest.sh
-        description: building and installing yay
+        command: sudo apt-add-repository universe
+        description: "Add the universe repository for apt"
+    #install packages via apt
+    - 
+        command: ./setup/apt-get-packages ./setup/packages.txt
+        description: Installing packages via apt-get
     #install vim-plug (not sure why I want it though, other than to fix errors)
     -
         command: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -21,7 +20,7 @@
     #install rust and rustup
     -
         command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-        description: installing rust and rustup
+        description: Installing rust and rustup
     #install oh-my-zsh, delete auto-generated zshrc and pre-oh-my-zsh zshrc,
     -
         command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended; rm ~/.zshrc; rm ~/.zshrc.pre-oh-my-zsh
@@ -56,14 +55,21 @@
         description: install nvm, node 20, and angular/cli
     #install an Ubuntu Nerd Font
     -
-        command: sudo ./install_font.sh https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Ubuntu.zip
+        command: sudo ./setup/install-font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Ubuntu.zip
         description: Installing ubuntu font
-    #install colorls (TODO: Move this. I don't think this should be here)
-    #this shouldn't be called with sudo because this would install it to the wrong directory
+    #install the LATEST version of neovim (this is because apt is out of date)
     -
-        command: gem install colorls
+        command: sudo add-apt-repository ppa:neovim-ppa/unstable; sudo apt-get update; sudo apt-get install neovim
+        description: Get the latest version of neovim
+    #install colorls (TODO: Move this. I don't think this should be here)
+    -
+        command: sudo gem install colorls
         description: Install colorls
     #change permissions of ~/.local and ~/.local/share this should allow neovim to install packages properly
     -
         command: sudo chmod a+rwx ~/.local; sudo chmod a+rwx ~/.local/share
         description: Adding permissions to ~/.local and ~/.local/share
+    #enable the emacs daemon for faster startup and teardown
+    -
+        command: systemctl --user enable --now emacs
+        description: "Enabling the emacs daemon for faster startup and teardown"

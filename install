@@ -2,18 +2,23 @@
 
 set -e
 
-DEFAULT_CONFIG="default.conf.yaml"
+#This directory contains ALL of my files and scripts related to dotbot setup
+CONFIG_DIRECTORY="setup"
+
+#Configs are loaded from the setup/ directory.
+DEFAULT_CONFIG="default"
+CONFIG_PREFIX=".conf.yaml"
 
 DOTBOT_DIR="dotbot"
 
 DOTBOT_BIN="bin/dotbot"
+#The basedir is where the shell commands are run from. So write your scripts based on this
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 
 cd "${BASEDIR}"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
 for conf in ${DEFAULT_CONFIG} ${@}; do
-    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${conf}"
+    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_DIRECTORY}/${conf}${CONFIG_PREFIX}"
 done

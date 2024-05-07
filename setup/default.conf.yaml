@@ -10,29 +10,18 @@
 - clean: ['~']
 
 - link:
-    ~/.tmux.conf: .tmux.conf
-    ~/.vimrc: .vimrc
-    ~/.Xresources: .Xresources
-    ~/.bashrc: .bashrc
-    ~/.skhdrc: .skhdrc
-    ~/.xinitrc: .xinitrc
-    ~/.xmodmap: .xmodmap
-    ~/.xprofile: .xprofile
-    ~/.profile: .profile
-    ~/.yabairc: .yabairc
-    ~/.zshrc: .zshrc
-    ~/.p10k.zsh: .p10k.zsh
+    ~/:
+        glob: true
+        path: home/.*
     ~/.config/:
         glob: true
         path: .config/*
         create: true
     ~/.themes/:
         glob: true
-        path: .themes/*
+        path: themes/*
         create: true
     ~/TUTORIAL.md: TUTORIAL.md
-    ~/customize-device-input.sh: customize-device-input.sh
-    ~/.gtkrc-2.0: .gtkrc-2.0
 
 - create:
     - ~/downloads

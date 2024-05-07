@@ -13,7 +13,7 @@
         description: "Add the universe repository for apt"
     #build and install emacs, then delete the ~/.emacs.d folder
     -
-        command: ./build-emacs-latest.sh; sudo rm -rf ~/.emacs.d
+        command: ./setup/build-emacs-latest; sudo rm -rf ~/.emacs.d
         description: Build and install emacs. Then delete ~/.emacs.d
     #build an updated ripgrep binary with PCRE lookaheads (for doom)
     #NOTE: assumes cargo is installed. man, I gotta set up these configs so they can be independent of each other..
