@@ -17,5 +17,5 @@ window:
 font:
   normal:
     family: CozetteVector
-  size: 12
+  size: 8
 #[END_GENERATED_CODE: alacritty/font]
