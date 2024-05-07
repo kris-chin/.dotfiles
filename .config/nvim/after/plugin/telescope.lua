@@ -76,3 +76,6 @@ end, {noremap = true})
 
 --set a keymap for the frecency extension
 vim.keymap.set('n', '<C-p>;', "<Cmd>Telescope frecency workspace=CWD<CR>")
+
+--set a keymap for highlights
+vim.keymap.set('n', '<C-p>h', "<Cmd>Telescope highlights<CR>")

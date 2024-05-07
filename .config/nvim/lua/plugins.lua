@@ -72,6 +72,9 @@ require("lazy").setup({
   --light themes
   "sainnhe/everforest",
 
+  --lush, a colorscheme helper (live editing, easy colorscheme exports, etc)
+  "rktjmp/lush.nvim",
+
   --lsp-zero, combines autocomplete and LSP. basically intellisense
   {
       "VonHeikemen/lsp-zero.nvim",
