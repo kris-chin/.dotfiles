@@ -15,7 +15,7 @@
         path: home/.*
     ~/.config/:
         glob: true
-        path: .config/*
+        path: config/*
         create: true
     ~/.themes/:
         glob: true

@@ -1,11 +1,11 @@
 [submodule "zsh-autosuggestions"]
-	path = .config/zsh/custom/plugins/zsh-autosuggestions
+	path = config/zsh/custom/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule "zsh-vi-mode"]
-	path = .config/zsh/custom/plugins/zsh-vi-mode
+	path = config/zsh/custom/plugins/zsh-vi-mode
 	url = https://github.com/jeffreytse/zsh-vi-mode.git
 [submodule "powerlevel10k"]
-	path = .config/zsh/custom/themes/powerlevel10k
+	path = config/zsh/custom/themes/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k
 [submodule "dotbot"]
 	path = dotbot
