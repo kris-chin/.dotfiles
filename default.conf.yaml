@@ -50,3 +50,4 @@
   - touch ~/.config/alacritty/colorscheme.toml
   - touch ~/.config/colorls/dark_colors.yaml
   - touch ~/.config/eww/wpg.json
+  - touch ~/.config/nvim/lua/colorschemes/wpg/base16.lua
