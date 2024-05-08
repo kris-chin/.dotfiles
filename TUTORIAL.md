@@ -206,3 +206,11 @@ You can use `xkill` to force-close all processes related to an X window (neat!)
 # pacman logs - cleaning out old packages
 You can look at every package ever installed in /var/log/pacman.log
 Good for trying to figure out what to get rid of
+
+# spotify
+
+I use `spotifyd` to play spotify audio. It's config file requires me to put in a password, I've written a script to output the content of a secret file so I don't commit it here 
+
+I use spotify-tui as a tui for spotify, it uses spotifyd to actually play audio
+
+**If you need to debug spotifyd, try running it as `spotifyd --no-daemon` to get feedback**

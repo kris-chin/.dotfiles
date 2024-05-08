@@ -10,3 +10,4 @@ wpgtk
 yay
 yay-debug
 elogind
+spotify-tui
