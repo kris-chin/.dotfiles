@@ -22,6 +22,9 @@
         path: themes/*
         create: true
     ~/TUTORIAL.md: TUTORIAL.md
+    ~/.local/bin/:
+        glob: true
+        path: bin/*
 
 - create:
     - ~/downloads

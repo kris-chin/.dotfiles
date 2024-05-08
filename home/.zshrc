@@ -285,9 +285,6 @@ alias ls='colorls'
 #TODO: uncomment this once we can create a blank version of this file on startup
 #source ~/scripts/aliases
 
-#add dotfile bin to PATH
-export PATH=$PATH:$HOME/.dotfiles/bin
-
 #add local bin to PATH (why is this not here already?)
 export PATH=$PATH:$HOME/.local/bin
 

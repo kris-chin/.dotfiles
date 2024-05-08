@@ -5,7 +5,7 @@ xmodmap ~/.xmodmap
 
 #Customize devices with libinput
 bash -c '
-  $HOME/customize-device-input.sh
+  $HOME/.local/bin/customize-device-input
 '
 #Start i3
 i3
