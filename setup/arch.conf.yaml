@@ -15,9 +15,15 @@
         command: ./setup/build-yay-latest
         description: building and installing yay
     #install vim-plug (not sure why I want it though, other than to fix errors)
+    #TODO: install plugins without needing to press the keybind myself
     -
         command: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         description: Installing vim-plug
+    #install tmux plugin manager
+    #TODO: install plugins without needing to press the keybind myself.
+    -
+        command: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+        description: Installing tmux plugin manager
     #install rust and rustup
     -
         command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -30,7 +36,7 @@
 #briefly re-link .zshrc
 - link: 
     ~/.zshrc:
-        path: .zshrc
+        path: home/.zshrc
         create: true
         force: true
         relink: true

@@ -29,3 +29,7 @@
     - 
         command: sudo chmod a+rwx ~/.local/share/fonts
         description: Add permissions to ~/.local/share/fonts
+    #enable the emacs daemon for faster startup and teardown
+    -
+        command: systemctl --user enable --now emacs
+        description: "Enabling the emacs daemon for faster startup and teardown"

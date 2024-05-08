@@ -14,9 +14,15 @@
         command: ./setup/apt-get-packages ./setup/packages.txt
         description: Installing packages via apt-get
     #install vim-plug (not sure why I want it though, other than to fix errors)
+    #TODO: install plugins without needing to press the keybind myself
     -
         command: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         description: Installing vim-plug
+    #install tmux plugin manager
+    #TODO: install plugins without needing to press the keybind myself
+    -
+        command: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+        description: Installing tmux plugin manager
     #install rust and rustup
     -
         command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -29,7 +35,7 @@
 #briefly re-link .zshrc
 - link: 
     ~/.zshrc:
-        path: .zshrc
+        path: home/.zshrc
         create: true
         force: true
         relink: true
@@ -69,7 +75,3 @@
     -
         command: sudo chmod a+rwx ~/.local; sudo chmod a+rwx ~/.local/share
         description: Adding permissions to ~/.local and ~/.local/share
-    #enable the emacs daemon for faster startup and teardown
-    -
-        command: systemctl --user enable --now emacs
-        description: "Enabling the emacs daemon for faster startup and teardown"
