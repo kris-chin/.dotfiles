@@ -54,6 +54,11 @@
 ;;org-tidy: adds a new minor mode to hide property drawers
 (package! org-tidy)
 
+;;org-roam-ui: runs a web-server on localhost that you can access. it graphically displays your org-roam notes as a graph
+;;"org-roam-ui tries to keep up with the latest features of org-roam, which conflicts with Doom Emacs's desire for stabilitiy. to Make sure nothing breaks, use the latest version of org-roam by unpinning it"
+(unpin! org-roam)
+(package! org-roam-ui)
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
