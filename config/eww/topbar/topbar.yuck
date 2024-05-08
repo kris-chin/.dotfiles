@@ -133,7 +133,7 @@
     (box :class "topbar-box" :halign "end" :width "10%" :space-evenly false :orientation "horizontal" :style "color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
       (box
         (_system_buttons :shutdown "poweroff" :reboot "reboot"
-            :logout "loginctl kill-session self"
+            :logout "pkill -KILL -u $USER"
             :shutdown_icon "⏻" :reboot_icon "" :logout_icon ""
         )
       )

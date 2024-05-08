@@ -137,8 +137,14 @@ we have some scripts! `ultrawide_display.sh` will run the commands needed to swi
 
 i installed a program called `brightness-xrandr` to control the screen brightness via xrandr
 
-#shutting down
-there is not yet a key command for this from my understanding and this still needs to be made. for now I've just been manually shutting down with the power button
+# shutting down, rebooting, logging out
+So there is a command to shut down, and reboot. It is `reboot` and `poweroff` respectively. however, apparently, these commands require some sort of authentication to work.
+Apparently, you can add these commands to a group in `/etc/sudoers` and add a user to that group in order to prevent the password.
+I can't tell if I was able to get it to work or not, but it seems like I can finally run the commands again.
+
+## logging out
+This one doesn't have a command. I did set an alias for it though. For some reason, it bugs out with `ly` if we do the standard way to log out. Instead, we should kill all of the processess assocaited with a user in order to get the logout to work.
+
 
 # closing windows
 

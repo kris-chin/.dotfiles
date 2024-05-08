@@ -9,3 +9,4 @@ visual-studio-code-bin
 wpgtk
 yay
 yay-debug
+elogind
