@@ -103,6 +103,8 @@
 
 ;;enable line numbers when we enter treemacs
 (add-hook 'treemacs-mode-hook 'display-line-numbers-mode)
+;;enable follow mode so the tree follows the current file
+(add-hook 'treemacs-mode-hook 'treemacs-follow-mode)
 
 ;;remap the cmd key in MacOs to the meta key (makes life easier)
 ;;TODO: maybe some sort of way to detect this only macOs? (dont know if this doesnt matter in non mac-os
@@ -277,8 +279,10 @@
                             org-roam-ui-follow t
                             org-roam-ui-update-on-save t
                             org-roam-ui-open-on-start nil)) ;;disable opening in a new browser on start
-;;ALWAYS open the server on start
-(org-roam-ui-mode)
+;;ALWAYS open the server on start (if it isnt open yet)
+(when org-roam-ui-mode
+  (org-roam-ui-mode)
+  )
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an

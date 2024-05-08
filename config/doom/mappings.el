@@ -82,7 +82,7 @@
   ("r" #'org-roam-node-insert "insert link")
   ("e" #'org-roam-capture "capture")
   ;; This command is for finding a node, but why do this if I can search by file?
-  ;;("f" #'org-roam-node-find "find node")
+  ("f" #'org-roam-node-find "find node")
   )
 
 ;;keybinds for org capture / org agenda / org link handling
