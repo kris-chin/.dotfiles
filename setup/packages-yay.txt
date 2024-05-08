@@ -1,0 +1,11 @@
+bluetuith
+brightness-xrandr
+code-minimap-bin
+cozette-otb
+cozette-ttf
+gopreload-git
+gtk-theme-flat-color-git
+visual-studio-code-bin
+wpgtk
+yay
+yay-debug
