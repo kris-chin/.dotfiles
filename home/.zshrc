@@ -296,3 +296,8 @@ timezsh() {
 
 #logout alias 
 alias logout="pkill -KILL -u $USER"
+
+#alias emacs to open an emacsclient frame instead of a new emacs process 
+#for context, we should have the emacs daemon already running. this will just connect to the existing daemon
+#(INSANELY FASTER)
+alias emacs="emacsclient --no-wait --create-frame"
