@@ -75,10 +75,14 @@
 
 (defhydra hydra-org-roam ()
   "org-roam"
-  ("i" #'org-roam-node-insert "insert link")
-  ("f" #'org-roam-node-find "find node")
-  ("c" #'org-roam-capture "capture")
-  ("s" #'org-id-get-create "id")
+  ;; Right-hand side: IDs and aliases
+  ("i" #'org-id-get-create "create id")
+  ("j" #'org-roam-alias-add "add alias")
+  ;; Left-hand side: Adding links / creating new nodes
+  ("r" #'org-roam-node-insert "insert link")
+  ("e" #'org-roam-capture "capture")
+  ;; This command is for finding a node, but why do this if I can search by file?
+  ;;("f" #'org-roam-node-find "find node")
   )
 
 ;;keybinds for org capture / org agenda / org link handling
@@ -125,6 +129,8 @@
   )
 ;;this is kinda a crazy mapping but im down wit it..
 (map! :map evil-normal-state-map "C-o" #'hydra-org-mode/body)
+(map! :map evil-visual-state-map "C-o" #'hydra-org-mode/body)
+(map! :map evil-insert-state-map "C-o" #'hydra-org-mode/body)
 
 ;;(setq metadata-keywords
 ;;      '(("description" . "Description")
