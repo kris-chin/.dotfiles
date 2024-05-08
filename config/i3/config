@@ -51,7 +51,7 @@ bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
-bindsym $mod+d exec --no-startup-id rofi -show run
+bindsym $mod+d exec --no-startup-id rofi -show drun -show-icons
 
 # change focus and move mouse
 #TODO: figure out if I still want to use mod (for everything in the terminal) or use Ctrl. Using ctrl for this navigation actually conflicts with chrome's keybindings. I COULD change them, but that wouldn't be universal

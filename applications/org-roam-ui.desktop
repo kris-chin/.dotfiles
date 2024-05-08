@@ -1,0 +1,13 @@
+[Desktop Entry]
+
+#Only Name and Type are required
+Name=org-roam-ui
+Type=Application
+
+#Additional Stuff
+#GenericName=
+Exec=org-roam-ui
+#Categories=
+#Icon can either be an absolute path, or within $HOME/.icons, $XDG_DATA_DIRS/icons, or /usr/share/pixmaps
+#Icon=
+

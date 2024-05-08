@@ -25,6 +25,9 @@
     ~/.local/bin/:
         glob: true
         path: bin/*
+    ~/.local/share/applications/:
+        glob: true
+        path: applications/*
 
 - create:
     - ~/downloads

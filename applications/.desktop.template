@@ -1,0 +1,16 @@
+[Desktop Entry]
+#View complete keys here: https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#recognized-keys
+
+#Only Name and Type are required
+Name=
+Type=Application
+
+#Additional Stuff
+GenericName=
+Exec=
+Categories=
+#Icon can either be an absolute path, or within $HOME/.icons, $XDG_DATA_DIRS/icons, or /usr/share/pixmaps
+Icon=
+
+#Determines if the application should be run in a terminal or not
+Terminal=false
