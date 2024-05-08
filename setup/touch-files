@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check if a file path is provided as an argument
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <filename>"
+    exit 1
+fi
+
+# Check if the provided file path exists
+if [ ! -f "$1" ]; then
+    echo "File $1 does not exist."
+    exit 1
+fi
+
+# Read each line from the file
+while IFS= read -r line
+do
+    # Replace '~' with the home directory path
+    expanded_path="${line/#\~/$HOME}"
+    touch "$expanded_path"
+done < "$1"

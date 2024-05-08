@@ -43,3 +43,5 @@
   - touch ~/.config/colorls/dark_colors.yaml
   - touch ~/.config/eww/wpg.json
   - touch ~/.config/nvim/lua/colorschemes/wpg/base16.lua
+  #create all secret files
+  - ./setup/touch-files ./setup/secrets.txt
