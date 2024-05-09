@@ -2,7 +2,7 @@
 from argparse import ArgumentParser
 from i3ipc import Connection, Event
 from libtmux import Server
-from subprocess import check_output, run
+from subprocess import check_output, run, PIPE 
 from time import time
 from hashlib import sha1
 from time import sleep
@@ -14,6 +14,7 @@ from time import sleep
 #==========
 
 TERMINAL_INSTANCES = ["Alacritty"]
+EMACS_INSTANCES = ["emacs"]
 EDITOR_COMMANDS=["nvim", "vim"]
 
 #Helper Functions
@@ -62,10 +63,27 @@ args = parser.parse_args()
 if args.direction not in ["left", "down", "up", "right"]:
     raise Exception("direction must be \"left\", \"down\", \"up\" or \"right\"")
 
-#1. First, check the currently-focused window and ensure it is a terminal
+#1. First, check the currently-focused window
 focused_instance = i3.get_tree().find_focused().window_instance
 
-#2. If not a terminal, send the corresponding i3 message. EXIT.
+#1.5. If it is EMACS...
+if focused_instance in EMACS_INSTANCES:
+    #Attempt to move in direction in emacs
+    move_window_command = ["emacsclient", "-e", f"(progn (evil-window-{args.direction} 1))"]
+    try:
+        run(move_window_command, check=True, text=True, stdout=PIPE)
+        #If we are still here, then the move was successful. EXIT.
+        quit()
+    except Exception as e:
+        #If we are here, then emacsclient threw a 1 error code.
+        #Evil will throw a 1 error code if there is not another window to move to. So in this case, we will send the i3 message.
+        #TODO: This exception will catch other errors as well, we should account for this somehow.
+        i3.command(f"focus {args.direction}")
+        i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
+        i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
+        quit()
+
+#2. If not a terminal and not emacs, send the corresponding i3 message. EXIT.
 if focused_instance not in TERMINAL_INSTANCES:
     #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END (NOT TERMINAL)"])
     i3.command(f"focus {args.direction}")
