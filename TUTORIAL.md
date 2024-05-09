@@ -62,7 +62,7 @@ i3 configuration is stored in `~/.config/i3/`
 
 dmenu - application launcher
 xdotool - simulate keyboard presses in X
-nemo - my file manager
+thunar - my file manager
 
 some of these may be different from the ones I use at work (kinda weird, maybe I'll change it to reflect that)
 

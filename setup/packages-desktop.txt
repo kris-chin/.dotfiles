@@ -10,7 +10,6 @@ i3status
 keepassxc
 lxappearance
 ly
-nemo
 neofetch
 onefetch
 picom
@@ -63,3 +62,5 @@ xorg-xwininfo
 xorg-xwud
 yad
 spotifyd
+thunar
+tumbler
