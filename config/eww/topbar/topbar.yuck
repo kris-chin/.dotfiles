@@ -84,15 +84,21 @@
   )
 )
 
-(defwidget _system_buttons [shutdown shutdown_icon reboot reboot_icon logout logout_icon]
+;;TODO: I can't seem o figure out why my shutdown and reboot command sometimes doesn't work. It's like I suddently lose permissions to call the command.
+;; I'm just commenting it out for now and just relying on the logout, since it also has shutdown and reboot. AND its cooler
+(defwidget _system_buttons [
+                            ;;shutdown shutdown_icon
+                            ;;reboot reboot_icon
+                            logout logout_icon
+                            ]
   (box :spacing 15 :style ""
     :vexpand true :hexpand true
     :valign "end" :halign "end"
     :space-evenly  false
     :style "padding-left: 10px; padding-right: 10px;"
     (button :class "topbar--system-button" :onclick logout logout_icon)
-    (button :class "topbar--system-button" :onclick reboot reboot_icon)
-    (button :class "topbar--system-button" :onclick shutdown shutdown_icon)
+    ;;(button :class "topbar--system-button" :onclick reboot reboot_icon)
+    ;;(button :class "topbar--system-button" :onclick shutdown shutdown_icon)
   )
 )
 
@@ -132,9 +138,13 @@
 (defwidget topbar_rightside []
     (box :class "topbar-box" :halign "end" :width "10%" :space-evenly false :orientation "horizontal" :style "color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
       (box
-        (_system_buttons :shutdown "poweroff" :reboot "reboot"
+        (_system_buttons
+            ;;:shutdown "poweroff"
+            ;;:reboot "reboot"
             :logout "pkill X"
-            :shutdown_icon "⏻" :reboot_icon "" :logout_icon ""
+            ;;:shutdown_icon "⏻"
+            ;;:reboot_icon ""
+            :logout_icon ""
         )
       )
     )
