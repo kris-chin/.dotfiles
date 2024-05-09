@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=bluetuith
+Type=Application
+
+#Additional Stuff
+Exec=bluetuith
+
+#Determines if the application should be run in a terminal or not
+Terminal=true
