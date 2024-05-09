@@ -280,10 +280,9 @@
                             org-roam-ui-update-on-save t
                             org-roam-ui-open-on-start nil)) ;;disable opening in a new browser on start
 ;;ALWAYS open the server on start (if it isnt open yet)
-(when org-roam-ui-mode
+(unless org-roam-ui-mode
   (org-roam-ui-mode)
   )
-
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
