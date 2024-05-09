@@ -46,9 +46,9 @@ tiling_drag modifier titlebar
 # start a terminal
 bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 
-# instead of instantly closing the window, run xkill
-# note: --release is added so that the command is only ran after keys are released, since the keys are still being picked up
-bindsym --release $mod+Shift+q exec --no-startup-id xkill
+# Kill window (doesn't kill processes)
+# We DONT put xkill because that also kills daemons actually. not good for emacs.
+bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
