@@ -21,6 +21,20 @@
 ;;unmap evil-emacs state cuz why the hell would I use this
 (map! :map evil-motion-state-map "\\" nil)
 
+  ;;Helper function to call universal-argument with echo feedback
+(defun wrap-universal-argument ()
+  (interactive)
+  "Wraps universal0argument with echo feedback"
+  (progn
+    (universal-argument)
+    (message "Universal Argument Pressed")
+    )
+  )
+  ;;Map the universal argument to M-u, and also provide visual feedback that it was pressed
+  (map! :map evil-normal-state-map "M-u" #'wrap-universal-argument)
+  (map! :map evil-insert-state-map "M-u" #'wrap-universal-argument)
+  (map! :map evil-visual-state-map "M-u" #'wrap-universal-argument)
+
 ;;map \ + t to treemacs
 (map! :map evil-normal-state-map "\\ t" #'treemacs)
 (map! :map evil-normal-state-map "t" nil) ;;unmap treemacs with just t
@@ -85,12 +99,6 @@
   ("f" #'org-roam-node-find "find node")
   )
 
-;;keybinds for org capture / org agenda / org link handling
-(map! "C-c l" #'org-store-link)
-(map! "C-c a" #'org-agenda)
-(map! "C-c c" #'org-capture)
-(map! "C-c ," #'org-timestamp-inactive) ;;TODO: this doesn't work
-
 ;;toggle todo states with "shift - h" and "shift - l"
 (map! :map evil-normal-state-map "H" "S-<left>")
 (map! :map evil-normal-state-map "L" "S-<right>")
@@ -117,38 +125,39 @@
   ("t" #'org-tidy-toggle "tidy toggle")
   )
 
-(defhydra hydra-org-mode ()
-  ("r" #'hydra-org-roam/body "roam" :exit t)
+;;hydra for all flow
+(defhydra hydra-org-flow ()
   ("g" #'hydra-flow-git/body "Git" :exit t)
   ("j" #'hydra-flow-jira/body "JIRA" :exit t)
   ("t" #'hydra-flow-tmux/body "tmux" :exit t)
+  )
+
+  ;; Bindings related to GTD
+(defhydra hydra-gtd ()
+  ("a" #'org-agenda "agenda")
+  ("c" #'org-capture "capture")
+  ("r" #'org-refile "refile")
+  ("t" #'org-todo "toggle TODO state")
+  )
+
+  (defhydra hydra-org-timestamp ()
+    ("o" #'org-time-stamp-inactive "inactive timestamp")
+    ("i" #'org-time-stamp "active timestamp")
+    )
+
+(defhydra hydra-org-mode ()
+  ("r" #'hydra-org-roam/body "roam" :exit t)
+  ("f" #'hydra-org-flow/body "flow" :exit t)
+  ("d" #'hydra-gtd/body "GTD" :exit t)
   ("o" #'hydra-org-view-toggles/body "view toggles" :exit t)
-  ;;("8" #'org-toggle-heading "toggle heading")
+  ("i" #'hydra-org-timestamp/body "timestamp" :exit t)
   ("s" #'org-sort "sort heading")
-  ;;("T" #'org-todo "toggle TODO state")
+  ;;("8" #'org-toggle-heading "toggle heading")
   )
 ;;this is kinda a crazy mapping but im down wit it..
 (map! :map evil-normal-state-map "C-o" #'hydra-org-mode/body)
 (map! :map evil-visual-state-map "C-o" #'hydra-org-mode/body)
 (map! :map evil-insert-state-map "C-o" #'hydra-org-mode/body)
-
-;;(setq metadata-keywords
-;;      '(("description" . "Description")
-;;        )
-;;)
-;;(defun quick-keyword ()
-;;  "Easy Creation of #+KEYWORD metadata"
-;;  (interactive)
-;;  (
-;;   (let* (
-;;          (choice (completing-read "Type in Metadata: " metadata-keywords nil t))
-;;          (action (assoc choice metadata-keywords))
-;;         )
-;;   )
-;;   (message "You chose %s" action)
-;;  )
-;;)
-;;(quick-keyword)
 
 ;;Lets have M-z be a reliable key for embark
 (map! :map evil-normal-state-map "M-z" #'embark-act)
