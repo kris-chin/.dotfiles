@@ -136,25 +136,29 @@
 )
 (add-hook 'org-capture-mode-hook #'org-capture-modify-header-line)
 
-(defun focus-template-function ()
-  "Just a test function for testing out how to write in elisp"
+(setq org-agenda-files (file-expand-wildcards "~/org/gtd.org"))
+
+(setq org-agenda-custom-commands
+      '(
+        ("i" "Inbox" tags-todo "+TODO=\"TODO\"")
+        ))
+
+(defun inbox-template-function ()
+  "Template for new inbox entries"
   (concat ;;progn runs multiple args at a time
-     "* NOT_STARTED [#3] %?"
+     "* %^{TODO or PROJECT| TODO | TODO | PROJECT} %^{Insert Title}  %^G"
      "\n:PROPERTIES:"
-     "\n:Created: %T"
-     "\n:Jira:"
-     "\n:GitBranch:"
-     "\n:Page:"
+     "\n:CREATED: %T"
      "\n:END:"
-     "\n** Breakdown:"
-     "\n1."
+     "\n - %?"
   )
 )
 
 ;;templates for my org-capture
 (setq org-capture-templates
+      ;;TODO: Figure out how to do this for the current heading (I want to add the template to subtasks for projects.)
       '(
-        ("f" "Focus" entry (file+headline "~/org/focus.org" "Tasks") (function focus-template-function) )
+        ("f" "Inbox" entry (file+headline "~/gtd.org" "Inbox") (function inbox-template-function) )
        )
 )
 
@@ -162,9 +166,12 @@
 (setq embark-prompter 'embark-completing-read-prompter)
 
 ;;custom TODO workflow states
-;;TODO: Add BLOCKED and other stuff
-(setq org-todo-keywords '((sequence "TODO" "NOT_STARTED" "QUEUED" "ANALYSIS" "DESIGN" "CODE" "DONE_ON_LOCAL" "PR_FEEDBACK" "TESTING"
-                                    "|" "FOR_BACKEND" "FOR_THIS_RELEASE" "DONE")))
+;; the "!" flag adds to a logbook of state changes, @ asks for a note with timestamp
+(setq org-todo-keywords '((sequence "TODO(t!)" "PROJ(p!)" "WAIT(w@)"
+                                   "|" "DONE(!)")))
+
+(setq org-log-done nil)
+;;(setq org-log-into-drawer "LOGBOOK")
 
 ;;org priorities 0-9 
 ;;TODO: change this and also maybe make it cooler (easier to understand?) with org-fancy-priorities
