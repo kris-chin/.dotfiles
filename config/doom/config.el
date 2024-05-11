@@ -42,7 +42,26 @@
 ;;my own custom major mode to run external integration scripts
 (load! "~/.config/doom/flow-script.el")
 
-;;load mappings
+;; Customizes the Daily/Weekly agenda view
+;;This one is for TODAY
+(defun custom-agenda-today ()
+  "Custom agenda view"
+  (interactive)
+  (let ((org-agenda-span 'day) 
+        (org-agenda-start-day "0d") ;;show the tasks for TODAY only for this view
+        (org-super-agenda-groups
+          '((:name "Projects"
+                   :todo "PROJ"
+                   )
+            (:name "Tasks"
+                   :todo "TODO"
+                   )
+            ))
+        )
+    (org-agenda-list)
+  ))
+
+;;load mapping
 (load! "~/.config/doom/mappings.el")
 
 
@@ -138,27 +157,23 @@
 
 (setq org-agenda-files (file-expand-wildcards "~/org/gtd.org"))
 
-(setq org-agenda-custom-commands
-      '(
-        ("i" "Inbox" tags-todo "+TODO=\"TODO\"")
-        ))
 
 (defun inbox-template-function ()
   "Template for new inbox entries"
   (concat ;;progn runs multiple args at a time
-     "* %^{TODO or PROJECT| TODO | TODO | PROJECT} %^{Insert Title}  %^G"
+     "* %^{TODO or PROJ|TODO|TODO|PROJ} %^{Insert Title}  %^G"
      "\n:PROPERTIES:"
      "\n:CREATED: %T"
      "\n:END:"
-     "\n - %?"
+     "\n -  %?"
+     "\n** Log"
   )
 )
 
 ;;templates for my org-capture
 (setq org-capture-templates
-      ;;TODO: Figure out how to do this for the current heading (I want to add the template to subtasks for projects.)
       '(
-        ("f" "Inbox" entry (file+headline "~/gtd.org" "Inbox") (function inbox-template-function) )
+        ("c" "Inbox" entry (file+headline "~/org/gtd.org" "Inbox") (function inbox-template-function) )
        )
 )
 
@@ -171,7 +186,8 @@
                                    "|" "DONE(!)")))
 
 (setq org-log-done nil)
-;;(setq org-log-into-drawer "LOGBOOK")
+;;Put loging into a "LOGBOOK" drawer
+(setq org-log-into-drawer "LOGBOOK")
 
 ;;org priorities 0-9 
 ;;TODO: change this and also maybe make it cooler (easier to understand?) with org-fancy-priorities

@@ -132,9 +132,13 @@
   ("t" #'hydra-flow-tmux/body "tmux" :exit t)
   )
 
+  (defhydra hydra-agenda-views ()
+    ("a" #'custom-agenda-today "today")
+    )
+
   ;; Bindings related to GTD
 (defhydra hydra-gtd ()
-  ("a" #'org-agenda "agenda")
+  ("a" #'hydra-agenda-views/body "agenda" :exit t)
   ("c" #'org-capture "capture")
   ("r" #'org-refile "refile")
   ("t" #'org-todo "toggle TODO state")
