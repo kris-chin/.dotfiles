@@ -99,6 +99,18 @@
   ("f" #'org-roam-node-find "find node")
   )
 
+  ;;Change some of the org-super-agenda bindings so they are compatible with evil
+  (map! :after org-super-agenda :map org-super-agenda-header-map "j" 'evil-next-line)
+  (map! :after org-super-agenda :map org-super-agenda-header-map "k" 'evil-previous-line)
+
+;;hydra for agenda commands
+(defhydra hydra-org-agenda-commands ()
+  ("f" #'org-agenda-refile "refile")
+  ("g" #'org-agenda-redo "rebuild buffer")
+  ("s" #'org-agenda-schedule "schedule an item")
+  )
+  (map! :map org-agenda-mode-map "C-i" #'hydra-org-agenda-commands/body )
+
 ;;toggle todo states with "shift - h" and "shift - l"
 (map! :map evil-normal-state-map "H" "S-<left>")
 (map! :map evil-normal-state-map "L" "S-<right>")
@@ -133,15 +145,20 @@
   )
 
   (defhydra hydra-agenda-views ()
-    ("a" #'custom-agenda-today "today")
+    ("a" #'custom-agenda-next-actions "Next Actions")
+    ("d" #'custom-agenda-inbox "Inbox")
     )
 
   ;; Bindings related to GTD
 (defhydra hydra-gtd ()
+  ;;Left-Hand Side: Agenda / Capture
   ("a" #'hydra-agenda-views/body "agenda" :exit t)
   ("c" #'org-capture "capture")
-  ("r" #'org-refile "refile")
-  ("t" #'org-todo "toggle TODO state")
+  ("d" #'org-refile "refile")
+  ;;RIght-Hand Side: Individual Org entry Modification
+  ("o" #'org-todo "toggle TODO state")
+  ("i" #'org-set-tags-command "set tags")
+  ("k" #'org-schedule "Schedule")
   )
 
   (defhydra hydra-org-timestamp ()

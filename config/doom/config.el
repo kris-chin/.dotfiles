@@ -42,23 +42,114 @@
 ;;my own custom major mode to run external integration scripts
 (load! "~/.config/doom/flow-script.el")
 
-;; Customizes the Daily/Weekly agenda view
-;;This one is for TODAY
-(defun custom-agenda-today ()
-  "Custom agenda view"
+;;Helper function to convert org timestamp to formatted string
+(defun format-org-timestamp (timestamp format-string)
+  "Format an Org Mode TIMESTAMP according to FORMAT-STRING."
+  (if timestamp
+    (let ((time-value (org-time-string-to-time timestamp)))
+      (format-time-string format-string time-value))
+  "")
+  )
+
+;;Custom formatter for org-ql entries since org-ql STILL doesnt support it
+;;Mostly not written by me. Just heavily modified
+;;Taken from https://github.com/alphapapa/org-ql/issues/23
+(defun zdo/org-ql-view--format-element (orig-fun &rest args)
+   "This function will intercept the original function and
+   add the category to the result.
+    
+
+   ARGS is `element' in `org-ql-view--format-element'"
+    (if (not args)
+        ""
+      (let* ((element args)
+             (properties (cadar element))
+             (result (apply orig-fun element))
+             (category (org-entry-get (plist-get properties :org-marker) "CATEGORY"))
+             (created (org-entry-get (plist-get properties :org-marker) "CREATED")))
+        (org-add-props
+            (format "   %-10s %-12s %s"  category (format-org-timestamp created "%m.%d %H:%M")  (substring result 2 nil) )
+            (text-properties-at 0 result)
+            ;;TODO: apply text properties in certain areas of the string, and add more conditionals
+            ;;ALSO: these will override the above properties. we should try and mix the properties together
+            ;;'face '(:foreground "spring green")
+          ))))
+(advice-add 'org-ql-view--format-element :around #'zdo/org-ql-view--format-element)
+
+(defun custom-agenda-inbox ()
+  "Opens the Inbox / Someday Agenda"
   (interactive)
-  (let ((org-agenda-span 'day) 
-        (org-agenda-start-day "0d") ;;show the tasks for TODAY only for this view
-        (org-super-agenda-groups
-          '((:name "Projects"
-                   :todo "PROJ"
-                   )
-            (:name "Tasks"
-                   :todo "TODO"
-                   )
-            ))
-        )
-    (org-agenda-list)
+  (progn
+    (setq org-agenda-custom-commands
+            '(("i" "Custom Agenda - Inbox"
+               (
+                ;;Get the Inbox
+                (org-ql-block '(and (todo) (ancestors (heading "Inbox"))) ((org-ql-block-header "Inbox")) )
+                ;;Get Someday Tasks
+                (org-ql-block '(and (todo) (ancestors (heading "Someday"))) ((org-ql-block-header "Someday")) )
+               )))
+          org-super-agenda-groups '((:discard))
+          )
+    (org-agenda nil "i")
+  ))
+
+;;testing out a custom super-agenda predicate
+;;It looks like if the predicate returns true, it adds to the group
+(defun test-p (item)
+  (message (concat "\"" (string-trim item) "\""))
+  )
+
+(defun custom-agenda-next-actions ()
+  "Opens the Next Actions / Delegate / Wait Agenda"
+  (interactive)
+  (progn
+    ;;TODO: parse entries and update entry metadata
+    (setq org-agenda-custom-commands
+            '(("t" "Custom agenda - Next Actions"
+               (
+                ;;Get only the items under "Next Actions"
+                (org-ql-block '(and (todo) (ancestors (heading "Next Actions"))) ((org-ql-block-header "Next Actions" )) )
+                ;;Get Delegated Tasks
+                (org-ql-block '(and (todo) (ancestors (heading "Delegate"))) ((org-ql-block-header "Delegate")) )
+               )))
+          
+          org-super-agenda-groups '(
+                                     (:name "Projects"
+                                           :children todo
+                                           )
+                                     (:name "Overdue"
+                                            :face (:foreground "red")
+                                            :scheduled past)
+                                     (:name "Unscheduled"
+                                            :face (:foreground "gold")
+                                            :scheduled nil)
+                                     (:name "Waiting"
+                                           :todo "WAIT")
+                                     (:name "To Book"
+                                           :tag "booking"
+                                           )
+                                     (:name "Requires Contacting Someone"
+                                           :tag "calling"
+                                           )
+                                     (:name "Tasks"
+                                           :todo "TODO"
+                                     )
+                                   )
+          ;;NOTE: org-ql doesnt support prefix formatting. As of 5/11/24, they're working on it, but it looks like the only way to add it is via function advice.
+          org-agenda-prefix-format '(
+                                      (agenda . " %i %-12:c%?-12t%s")
+                                      (timeline . " %i %-12:c%?-12t%s")
+                                      (todo . " %i %-12:c%?-12t%s")
+                                      (tags . " %i %-12:c%?-12t%s")
+                                      (search . " %i %-12:c%?-12t%s")
+                                      )
+          )
+          ;;Yes, I know this is a permanent change. I dont care. Change this later when needed.
+          ;;(set-face-attribute 'org-agenda-structure nil
+          ;;                    :width 'extra-expanded
+          ;;                    ;;TODO: add more stuff here
+          ;;                    )
+    (org-agenda nil "t")
   ))
 
 ;;load mapping
@@ -157,11 +248,14 @@
 
 (setq org-agenda-files (file-expand-wildcards "~/org/gtd.org"))
 
+;;Enable super agenda mode
+(org-super-agenda-mode)
+
 
 (defun inbox-template-function ()
   "Template for new inbox entries"
   (concat ;;progn runs multiple args at a time
-     "* %^{TODO or PROJ|TODO|TODO|PROJ} %^{Insert Title}  %^G"
+     "* TODO %^{Insert Title}  %^G"
      "\n:PROPERTIES:"
      "\n:CREATED: %T"
      "\n:END:"
@@ -182,7 +276,7 @@
 
 ;;custom TODO workflow states
 ;; the "!" flag adds to a logbook of state changes, @ asks for a note with timestamp
-(setq org-todo-keywords '((sequence "TODO(t!)" "PROJ(p!)" "WAIT(w@)"
+(setq org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@)"
                                    "|" "DONE(!)")))
 
 (setq org-log-done nil)
