@@ -209,9 +209,19 @@
 
 (defhydra hydra-zoom ()
   "zoom"
-  ("-" #'text-scale-decrease "zoom out")
-  ("=" #'text-scale-increase "zoom in")
+  ("[" #'text-scale-decrease "zoom out (BUFFER)")
+  ("]" #'text-scale-increase "zoom in (BUFFER)")
+  ("-" #'zoom-frm-out "zoom in (FRAME)")
+  ("=" #'zoom-frm-in "zoom in (FRAME)")
   )
 
+;;Apply this keybinding to ALL evil states
 (map! :map evil-normal-state-map "M--" #'hydra-zoom/body)
 (map! :map evil-normal-state-map "M-=" #'hydra-zoom/body)
+(map! :map evil-insert-state-map "M--" #'hydra-zoom/body)
+(map! :map evil-insert-state-map "M-=" #'hydra-zoom/body)
+(map! :map evil-visual-state-map "M--" #'hydra-zoom/body)
+(map! :map evil-visual-state-map "M-=" #'hydra-zoom/body)
+;;Apply this keybinding to all modes that DONT use evil (eg. treemacs, org-agenda)
+(map! "M--" #'hydra-zoom/body)
+(map! "M-=" #'hydra-zoom/body)

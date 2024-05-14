@@ -59,6 +59,9 @@
 (unpin! org-roam)
 (package! org-roam-ui)
 
+;;enable zooming the text of the entire emacs frame, rather than a single buffer
+(package! zoom-frm)
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
