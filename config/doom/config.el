@@ -170,13 +170,21 @@
           org-super-agenda-groups '(
                                      (:name "Projects"
                                            :children todo
+                                           :order 10
                                            )
                                      (:name "Overdue"
                                             :face (:foreground "red")
                                             :scheduled past)
                                      (:name "Unscheduled"
                                             :face (:foreground "gold")
-                                            :scheduled nil)
+                                            :scheduled nil
+                                            :order 8
+                                            )
+                                     (:name "Get Ahead"
+                                            :face (:foreground "spring green")
+                                            :scheduled future
+                                            :order 9 ;;Put this at the end
+                                            )
                                      (:name "Waiting"
                                            :todo "WAIT")
                                      (:name "To Book"
