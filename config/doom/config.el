@@ -69,6 +69,7 @@
             )
         ;;if todo-state is NOT nil, then we have a parent task.
         (when todo-state
+          ;;TODO: Maybe I could prompt if I'm SURE I want to refile. I could see this getting annoying
           (error (concat "Cannot refile task since it is a subtask of \"" heading "\"") )
         )
       ))))
@@ -95,7 +96,6 @@
 (defun zdo/org-ql-view--format-element (orig-fun &rest args)
    "This function will intercept the original function and
    add the category to the result.
-    
 
    ARGS is `element' in `org-ql-view--format-element'"
     (if (not args)
@@ -104,10 +104,24 @@
              (properties (cadar element))
              (result (apply orig-fun element))
              (category (org-entry-get (plist-get properties :org-marker) "CATEGORY"))
-             (created (org-entry-get (plist-get properties :org-marker) "CREATED")))
+             (created (org-entry-get (plist-get properties :org-marker) "CREATED"))
+             (is-subtask (org-with-point-at (plist-get properties :org-hd-marker)
+                        (org-back-to-heading t)
+                        ;;Go up to heading
+                        (org-up-heading-safe)
+                        (let (
+                              ;;I'm keeping this heading information here just in case I'll need it
+                              (heading (nth 4 (org-heading-components)))
+                              (todo-state (nth 2 (org-heading-components)))
+                              ) 
+                            ;;Return a "[s] " if a task is a subtask. Return emptry string if not.
+                            (if todo-state "[s] " "")
+                          )
+                      )
+                     ))
         (org-add-props
             ;;TODO: display org custom properties here
-            (format "   %-10s %-12s %s"  category (format-org-timestamp created "%m.%d %H:%M")  (substring result 2 nil) )
+            (format "   %-10s %-12s %s%s"  category (format-org-timestamp created "%m.%d %H:%M") is-subtask (substring result 2 nil) )
             (text-properties-at 0 result)
             ;;TODO: apply text properties in certain areas of the string, and add more conditionals
             ;;ALSO: these will override the above properties. we should try and mix the properties together
