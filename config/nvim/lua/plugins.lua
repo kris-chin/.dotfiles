@@ -308,5 +308,14 @@ require("lazy").setup({
     --yuck.vim syntax highlighting for .yuck files
     "elkowar/yuck.vim",
     --rasi.vim (add rasi syntax highlighting for .rasi files
-    "Fymyte/rasi.vim"
+    "Fymyte/rasi.vim",
+    --rainbow_parenthese: finally adds rainbow parentheses (fuck you lisp)
+    {
+      "junegunn/rainbow_parentheses.vim",
+      config = function()
+        --auto enable by default. 
+        --NOTE TO FUTURE CHIN: you can also disable this as you please. it doesnt have to be enabled at all times
+        vim.cmd([[:RainbowParentheses]])
+      end
+    }
 })
