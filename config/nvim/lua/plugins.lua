@@ -316,6 +316,10 @@ require("lazy").setup({
         --auto enable by default. 
         --NOTE TO FUTURE CHIN: you can also disable this as you please. it doesnt have to be enabled at all times
         vim.cmd([[:RainbowParentheses]])
+        --99 max levels!
+        vim.cmd("let g:rainbow#max_level = 99")
+        --Add handling for '(  for elisp. Also add handling for { for curly brackets
+        vim.cmd("let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], [\"'(\", \")\"] ]")
       end
     }
 })
