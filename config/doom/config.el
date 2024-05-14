@@ -206,13 +206,18 @@
                                       (search . " %i %-12:c%?-12t%s")
                                       )
           )
-          ;;Yes, I know this is a permanent change. I dont care. Change this later when needed.
-          ;;(set-face-attribute 'org-agenda-structure nil
-          ;;                    :width 'extra-expanded
-          ;;                    ;;TODO: add more stuff here
-          ;;                    )
+    ;;Customize the agenda faces
+    ;;TODO: eventually, make these temporary so we can save these per-agenda view
+    (set-face-attribute 'org-agenda-structure nil
+                        :height 1.2
+                        )
+    (set-face-attribute 'org-super-agenda-header nil
+                        :height 1.2
+                        )
     (org-agenda nil "t")
   ))
+
+
 
 ;;load mapping
 (load! "~/.config/doom/mappings.el")
