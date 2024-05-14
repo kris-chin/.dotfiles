@@ -162,11 +162,13 @@
             '(("t" "Custom agenda - Next Actions"
                (
                 ;;Get only the items under "Next Actions"
-                (org-ql-block '(and (todo) (ancestors (heading "Next Actions"))) ((org-ql-block-header "Next Actions" )) )
+                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :to today)) ((org-ql-block-header "Next Actions" )) )
                 ;;Get Delegated Tasks
                 (org-ql-block '(and (todo) (ancestors (heading "Delegate"))) ((org-ql-block-header "Delegate")) )
                 ;;Get the closed items for today
                 (org-ql-block '(and (todo "DONE") (closed :on today)) ((org-ql-block-header "Closed")))
+                ;;Get the items scheduled in the future
+                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :from 1)) ((org-ql-block-header "Get Ahead")))
                )))
           
           org-super-agenda-groups '(
@@ -185,11 +187,6 @@
                                             :face (:foreground "gold")
                                             :scheduled nil
                                             :order 8
-                                            )
-                                     (:name "Get Ahead"
-                                            :face (:foreground "spring green")
-                                            :scheduled future
-                                            :order 9 ;;Put this at the end
                                             )
                                      (:name "Waiting"
                                            :todo "WAIT")
