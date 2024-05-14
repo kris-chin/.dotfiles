@@ -42,6 +42,24 @@
 ;;my own custom major mode to run external integration scripts
 (load! "~/.config/doom/flow-script.el")
 
+;;Toggle general-override-mode depending on if we enter org-agenda
+;;This is because I have some keybindings that override major keysequences for that mode
+(defun override-org-agenda-maps () 
+  "Toggles general-override mode alongside org-agenda-mode"
+  (if (and (eq major-mode #'org-agenda-mode) (not (active-minibuffer-window)))
+      (progn
+        (general-override-mode 1)
+      )
+    (progn
+      (general-override-mode 0)
+    )
+  ))
+
+;;Toggle general-override-mode only when we are in org-agenda
+(add-hook 'org-agenda-mode-hook 'override-org-agenda-maps)
+;;Disable general-override-mode when we exit the agenda
+(advice-add 'org-agenda-quit :after 'override-org-agenda-maps)
+
 ;;Helper function to convert org timestamp to formatted string
 (defun format-org-timestamp (timestamp format-string)
   "Format an Org Mode TIMESTAMP according to FORMAT-STRING."
@@ -68,6 +86,7 @@
              (category (org-entry-get (plist-get properties :org-marker) "CATEGORY"))
              (created (org-entry-get (plist-get properties :org-marker) "CREATED")))
         (org-add-props
+            ;;TODO: display org custom properties here
             (format "   %-10s %-12s %s"  category (format-org-timestamp created "%m.%d %H:%M")  (substring result 2 nil) )
             (text-properties-at 0 result)
             ;;TODO: apply text properties in certain areas of the string, and add more conditionals
@@ -88,8 +107,9 @@
                 ;;Get Someday Tasks
                 (org-ql-block '(and (todo) (ancestors (heading "Someday"))) ((org-ql-block-header "Someday")) )
                )))
-          org-super-agenda-groups '((:discard))
-          )
+          org-super-agenda-groups '(
+                                    (:auto-category t)
+                                    ))
     (org-agenda nil "i")
   ))
 
@@ -129,7 +149,7 @@
                                            :tag "booking"
                                            )
                                      (:name "Requires Contacting Someone"
-                                           :tag "calling"
+                                           :tag ("calling" "emailing" "texting")
                                            )
                                      (:name "Tasks"
                                            :todo "TODO"
@@ -246,7 +266,7 @@
 )
 (add-hook 'org-capture-mode-hook #'org-capture-modify-header-line)
 
-(setq org-agenda-files (file-expand-wildcards "~/org/gtd.org"))
+(setq org-agenda-files (file-expand-wildcards "~/org/gtd"))
 
 ;;Enable super agenda mode
 (org-super-agenda-mode)
@@ -267,7 +287,8 @@
 ;;templates for my org-capture
 (setq org-capture-templates
       '(
-        ("c" "Inbox" entry (file+headline "~/org/gtd.org" "Inbox") (function inbox-template-function) )
+        ("c" "Inbox - Personal" entry (file+headline "~/org/gtd/personal.org" "Inbox") (function inbox-template-function) )
+        ("d" "Inbox - Tinkering" entry (file+headline "~/org/gtd/tinkering.org" "Inbox") (function inbox-template-function) )
        )
 )
 

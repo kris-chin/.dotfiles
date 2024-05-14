@@ -103,13 +103,13 @@
   (map! :after org-super-agenda :map org-super-agenda-header-map "j" 'evil-next-line)
   (map! :after org-super-agenda :map org-super-agenda-header-map "k" 'evil-previous-line)
 
-;;hydra for agenda commands
-(defhydra hydra-org-agenda-commands ()
-  ("f" #'org-agenda-refile "refile")
-  ("g" #'org-agenda-redo "rebuild buffer")
-  ("s" #'org-agenda-schedule "schedule an item")
-  )
-  (map! :map org-agenda-mode-map "C-i" #'hydra-org-agenda-commands/body )
+(map! :map org-agenda-mode-map "r" #'org-agenda-refile)
+(map! :map org-agenda-mode-map "t" #'org-agenda-todo)
+(map! :map org-agenda-mode-map "=" #'org-agenda-set-tags)
+;;These two bindings are actually prefix keys to a fuck-ton of keysequences, so I'm just overriding ALL of them with in general-override-mode
+;;This means that I will just enable and disable general-override-mode for org agenda
+(map! :map 'override :nvm "s" #'org-agenda-schedule :desc "Overrides all 's' bindings in override-mode")
+(map! :map 'override :nvm "g" #'org-agenda-redo :desc "Overrides all 'g' bindings in override-mode")
 
 ;;toggle todo states with "shift - h" and "shift - l"
 (map! :map evil-normal-state-map "H" "S-<left>")
