@@ -55,6 +55,26 @@
     )
   ))
 
+;;TODO: I COULD make this generic. However, I'll only do it if I need to.
+(defun throw-if-agenda-is-subtask (&rest r)
+  (interactive)
+  (let ((marker (or (org-get-at-bol 'org-hd-marker)
+                    (org-agenda-error))))
+    (org-with-point-at marker
+      (org-back-to-heading t)
+      ;;Go up to heading
+      (org-up-heading-safe)
+      (let ((todo-state (nth 2 (org-heading-components)))
+            (heading (nth 4 (org-heading-components)))
+            )
+        ;;if todo-state is NOT nil, then we have a parent task.
+        (when todo-state
+          (error (concat "Cannot refile task since it is a subtask of \"" heading "\"") )
+        )
+      ))))
+;;Block agenda-refiling if the task is a subtask
+(advice-add 'org-agenda-refile :before 'throw-if-agenda-is-subtask)
+
 ;;Toggle general-override-mode only when we are in org-agenda
 (add-hook 'org-agenda-mode-hook 'override-org-agenda-maps)
 ;;Disable general-override-mode when we exit the agenda
