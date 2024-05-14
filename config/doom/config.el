@@ -165,9 +165,15 @@
                 (org-ql-block '(and (todo) (ancestors (heading "Next Actions"))) ((org-ql-block-header "Next Actions" )) )
                 ;;Get Delegated Tasks
                 (org-ql-block '(and (todo) (ancestors (heading "Delegate"))) ((org-ql-block-header "Delegate")) )
+                ;;Get the closed items for today
+                (org-ql-block '(and (todo "DONE") (closed :on today)) ((org-ql-block-header "Closed")))
                )))
           
           org-super-agenda-groups '(
+                                     ;;Hide tasks that were completed in the past
+                                     (:name "Closed Today" :todo "DONE"
+                                            :face (:strike-through t) 
+                                            )
                                      (:name "Projects"
                                            :children todo
                                            :order 10
@@ -347,7 +353,7 @@
 (setq org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@)"
                                    "|" "DONE(!)")))
 
-(setq org-log-done nil)
+(setq org-log-done 'time)
 ;;Put loging into a "LOGBOOK" drawer
 (setq org-log-into-drawer "LOGBOOK")
 
