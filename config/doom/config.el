@@ -318,6 +318,9 @@
 
 (setq org-agenda-files (file-expand-wildcards "~/org/gtd"))
 
+;;start all org documents folded
+(setq org-startup-folded t)
+
 ;;Enable super agenda mode
 (org-super-agenda-mode)
 
