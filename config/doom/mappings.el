@@ -38,7 +38,10 @@
 ;;map \ + t to treemacs
 (map! :map evil-normal-state-map "\\ t" #'treemacs)
 (map! :map evil-normal-state-map "t" nil) ;;unmap treemacs with just t
-(map! :after treemacs :map treemacs-mode-map "\\ t" #'treemacs) ;;also do this for the treemacs buffer
+;;map this for treemacs
+(map! :after treemacs :map treemacs-mode-map "\\ t" #'treemacs)
+;;Do this for override-mode (used with org-agenda)
+(map! :map 'override :nvm "\\ t" #'treemacs)
 
 ;;useful file-manipulation treemacs keybindings :)
 (map! :after treemacs :map treemacs-mode-map "a" #'treemacs-create-file)
