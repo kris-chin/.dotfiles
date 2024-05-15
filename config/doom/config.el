@@ -129,6 +129,37 @@
           ))))
 (advice-add 'org-ql-view--format-element :around #'zdo/org-ql-view--format-element)
 
+;;define some groups here so I can reuse them for both the "today" view and the "get ahead" view
+(setq shared-super-agenda-groups '(
+                                    ;;Hide tasks that were completed in the past
+                                    (:name "Closed Today" :todo "DONE"
+                                           :face (:strike-through t) 
+                                           )
+                                    (:name "Projects"
+                                          :children todo
+                                          :order 10
+                                          )
+                                    (:name "Overdue"
+                                           :face (:foreground "red")
+                                           :scheduled past)
+                                    (:name "Unscheduled"
+                                           :face (:foreground "gold")
+                                           :scheduled nil
+                                           :order 8
+                                           )
+                                    (:name "Waiting"
+                                          :todo "WAIT")
+                                    (:name "To Book"
+                                          :tag "booking"
+                                          )
+                                    (:name "Requires Contacting Someone"
+                                          :tag ("calling" "emailing" "texting")
+                                          )
+                                    (:name "Tasks"
+                                          :todo "TODO"
+                                    )
+                                  ))
+
 (defun custom-agenda-inbox ()
   "Opens the Inbox / Someday Agenda"
   (interactive)
@@ -153,53 +184,56 @@
   (message (concat "\"" (string-trim item) "\""))
   )
 
+(defun custom-agenda-get-ahead ()
+  "Opens a view for Next Actions that are scheduled in the future"
+  (interactive)
+  (progn
+    (setq org-agenda-custom-commands
+            '(("g" "Custom agenda - Next Actions -> Get Ahead"
+               (
+                ;;Get the items scheduled in the future
+                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :from 1)) ((org-ql-block-header "Get Ahead")))
+                ;;Get the closed items for today
+                (org-ql-block '(and (todo "DONE") (closed :on today)) ((org-ql-block-header "Closed")))
+               )))
+          
+          org-super-agenda-groups shared-super-agenda-groups
+          ;;NOTE: org-ql doesnt support prefix formatting. As of 5/11/24, they're working on it, but it looks like the only way to add it is via function advice.
+          org-agenda-prefix-format '(
+                                      (agenda . " %i %-12:c%?-12t%s")
+                                      (timeline . " %i %-12:c%?-12t%s")
+                                      (todo . " %i %-12:c%?-12t%s")
+                                      (tags . " %i %-12:c%?-12t%s")
+                                      (search . " %i %-12:c%?-12t%s")
+                                      )
+          )
+    ;;Customize the agenda faces
+    (set-face-attribute 'org-agenda-structure nil
+                        :height 1.2
+                        )
+    (set-face-attribute 'org-super-agenda-header nil
+                        :height 1.2
+                        )
+    (org-agenda nil "g")
+    ))
+
 (defun custom-agenda-next-actions ()
   "Opens the Next Actions / Delegate / Wait Agenda"
   (interactive)
   (progn
     ;;TODO: parse entries and update entry metadata
     (setq org-agenda-custom-commands
-            '(("t" "Custom agenda - Next Actions"
+            '(("t" "Custom agenda - Next Actions for Today"
                (
                 ;;Get only the items under "Next Actions"
-                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :to today)) ((org-ql-block-header "Next Actions" )) )
+                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :to today)) ((org-ql-block-header "Next Actions (Today)" )) )
                 ;;Get Delegated Tasks
                 (org-ql-block '(and (todo) (ancestors (heading "Delegate"))) ((org-ql-block-header "Delegate")) )
                 ;;Get the closed items for today
                 (org-ql-block '(and (todo "DONE") (closed :on today)) ((org-ql-block-header "Closed")))
-                ;;Get the items scheduled in the future
-                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :from 1)) ((org-ql-block-header "Get Ahead")))
                )))
           
-          org-super-agenda-groups '(
-                                     ;;Hide tasks that were completed in the past
-                                     (:name "Closed Today" :todo "DONE"
-                                            :face (:strike-through t) 
-                                            )
-                                     (:name "Projects"
-                                           :children todo
-                                           :order 10
-                                           )
-                                     (:name "Overdue"
-                                            :face (:foreground "red")
-                                            :scheduled past)
-                                     (:name "Unscheduled"
-                                            :face (:foreground "gold")
-                                            :scheduled nil
-                                            :order 8
-                                            )
-                                     (:name "Waiting"
-                                           :todo "WAIT")
-                                     (:name "To Book"
-                                           :tag "booking"
-                                           )
-                                     (:name "Requires Contacting Someone"
-                                           :tag ("calling" "emailing" "texting")
-                                           )
-                                     (:name "Tasks"
-                                           :todo "TODO"
-                                     )
-                                   )
+          org-super-agenda-groups shared-super-agenda-groups
           ;;NOTE: org-ql doesnt support prefix formatting. As of 5/11/24, they're working on it, but it looks like the only way to add it is via function advice.
           org-agenda-prefix-format '(
                                       (agenda . " %i %-12:c%?-12t%s")

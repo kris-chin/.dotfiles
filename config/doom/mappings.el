@@ -148,7 +148,8 @@
   )
 
   (defhydra hydra-agenda-views ()
-    ("a" #'custom-agenda-next-actions "Next Actions")
+    ("a" #'custom-agenda-next-actions "Next Actions (Today)")
+    ("s" #'custom-agenda-get-ahead "Get Ahead")
     ("d" #'custom-agenda-inbox "Inbox")
     )
 
