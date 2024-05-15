@@ -49,6 +49,12 @@ def echo_vim(tmux_pane, echo_command_input, marker, char_offset):
         return output[start:end]
     return None
 
+#Helper function for running i3 commands
+def run_i3_commands(direction):
+    i3.command(f"focus {direction}")
+    i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
+    i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
+
 #Set up i3ipc and tmux
 i3 = Connection()
 tmux = Server()
@@ -78,17 +84,13 @@ if focused_instance in EMACS_INSTANCES:
         #If we are here, then emacsclient threw a 1 error code.
         #Evil will throw a 1 error code if there is not another window to move to. So in this case, we will send the i3 message.
         #TODO: This exception will catch other errors as well, we should account for this somehow.
-        i3.command(f"focus {args.direction}")
-        i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
-        i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
+        run_i3_commands(args.direction)
         quit()
 
 #2. If not a terminal and not emacs, send the corresponding i3 message. EXIT.
 if focused_instance not in TERMINAL_INSTANCES:
     #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END (NOT TERMINAL)"])
-    i3.command(f"focus {args.direction}")
-    i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
-    i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
+    run_i3_commands(args.direction)
     quit()
 
 #3. Get the PID of the terminal.
@@ -113,9 +115,7 @@ except IndexError: #no client found
 #5. If no client is found, send the corresponding i3 message. EXIT.
 if terminal_client == None:
     #run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END (NOT TMUX)"])
-    i3.command(f"focus {args.direction}")
-    i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
-    i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
+    run_i3_commands(args.direction)
     quit()
 
 #7. Hop into the session ID
@@ -176,7 +176,4 @@ if (current_pane_id == new_pane_id):
             quit()
 
 #16. If you are here, either we were on the same tmux pane, or on the same vim pane. Send the i3 command
-i3.command(f"focus {args.direction}")
-#run(["yad", "--progress", "--on-top", "--splash", "--close-on-unfocus", "--text", "END"])
-i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
-i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
+run_i3_commands(args.direction)
