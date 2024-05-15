@@ -53,7 +53,7 @@ def echo_vim(tmux_pane, echo_command_input, marker, char_offset):
 def run_i3_commands(direction):
     i3.command(f"focus {direction}")
     i3.command(f"exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused")
-    i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-orientation")
+    #i3.command(f"exec --no-startup-id ~/.config/i3/bin/update-focused-information")
 
 #Set up i3ipc and tmux
 i3 = Connection()

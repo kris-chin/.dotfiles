@@ -14,16 +14,10 @@
   `nmcli -t -f SSID,SIGNAL,ACTIVE device wifi \
   | awk -F':' '{if($3=="yes")print"{\\\"signal\\\":\\\"\"$2\"\\\",\\\"ssid\\\":\\\"\"$1\"\\\"}"}'`)
 
-;;return current i3 split
-;;TODO: is this 1ms interval bad for performance?
-(defpoll topbar_split :interval "0.01s"
-  :initial "horizontal"
-  `cat /tmp/i3_split`)
-
 ;;get i3 workspace info
-(defpoll topbar_i3_workspaces :interval "0.01s"
+(defpoll topbar_i3 :interval "0.01s"
   :initial "N/A"
-  `./bin/get-i3-workspace-info`)
+  `./bin/get-i3-info`)
 
 (defpoll topbar_volume :interval "0.01s"
   :initial "N/A"
@@ -70,9 +64,18 @@
     )
   )
 
-(defwidget _i3_split [split]
+(defwidget _i3_split [split floating]
   (box 
-    (label :style "color: ${colors.bright_magenta}" :text {split == "horizontal" ? "󰯍" : "󰯎"})
+    (label :style "color: ${colors.bright_magenta}" :text {
+      floating == "true" ? "f" :
+      split == "horizontal" ? "󰯍" : "󰯎"
+      })
+    )
+  )
+
+(defwidget _i3_floating [floating]
+  (box 
+    (label :style "color: ${colors.bright_blue}" :text {floating})
     )
   )
 
@@ -125,12 +128,13 @@
          :width "10%" :space-evenly false
          :orientation "horizontal" :spacing 10
          :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
-        (_i3_split :split "${topbar_split}")
+      (_i3_split :split "${topbar_i3.orientation}" :floating "${topbar_i3.isFloating}" )
+      (_i3_floating :floating "${topbar_i3.isFloating}")
       (label :text "|")
       (_i3_workspaces
-        :focused_window "${topbar_i3_workspaces.focused_window}"
-        :focused_workspace "${topbar_i3_workspaces.focused_workspace}"
-        :workspaces_yuck "${topbar_i3_workspaces.workspaces}"
+        :focused_window "${topbar_i3.focused_window}"
+        :focused_workspace "${topbar_i3.focused_workspace}"
+        :workspaces_yuck "${topbar_i3.workspaces}"
       )
     )
 )
