@@ -7,5 +7,6 @@
 
 ;;TODO: change this so it isn't just needlessly polling this file
 (defpoll colors :interval "0.01s" `cat wpg.json`)
+(include "./shared/index.yuck")
 (include "./topbar/topbar.yuck")
 (include "./bottombar/bottombar.yuck")

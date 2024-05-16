@@ -1,0 +1,20 @@
+(defpoll _volume_data :interval "0.01s"
+  :initial "N/A"
+  `./bin/topbar-volume`
+)
+
+(defwidget _volume [left right mute]
+  (box :style "" :spacing 8
+    ;;just ignore the right. when will i EVER care about both?
+    (label :style "" :text {mute == "yes" ? "" : 
+      left < 10 ? "" :
+      left < 50 ? "" : ;;im considering >50 as loud
+      ""
+      })
+    (label :text {mute == "yes" ? "MUTE" : `${left}\%`})
+  )
+)
+
+(defwidget Volume []
+  (_volume :left "${_volume_data.left}" :right "${_volume_data.right}" :mute "${_volume_data.mute}")
+  )

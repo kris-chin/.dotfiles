@@ -1,0 +1,47 @@
+(defpoll _moonphase_data :interval "3600s"
+  :initial "N/A"
+  `./bin/moonphase`
+  )
+
+(defwidget _moonphase [phase_pos]
+  (box :spacing 8 :space-evenly false
+    ;;moonphase.py has a looser calculation, nf-weather moon DOES have more chill spacing of moon phases, but for some reason, I decided to go with their detailed implementation.
+    ;;(label :text "${phase_name}")
+    ;;nf-weather-moon's phases are by 6ths. after putting these all together, im dividing by 1/28. (0.035)
+    (label :text {
+      phase_pos < 0.035 ? "" : ;;new
+      phase_pos < 0.070 ? "" : ;;waxing crescent 1
+      phase_pos < 0.105 ? "" : ;;waxing crescent 2
+      phase_pos < 0.140 ? "" : ;;waxing crescent 3
+      phase_pos < 0.175 ? "" : ;;waxing crescent 4
+      phase_pos < 0.210 ? "" : ;;waxing crescent 5
+      phase_pos < 0.245 ? "" : ;;waxing crescent 6
+      phase_pos < 0.280 ? "" : ;;first quarter
+      phase_pos < 0.315 ? "" : ;;waxing gibbous 1
+      phase_pos < 0.350 ? "" : ;;waxing gibbous 2
+      phase_pos < 0.385 ? "" : ;;waxing gibbous 3
+      phase_pos < 0.420 ? "" : ;;waxing gibbous 4
+      phase_pos < 0.455 ? "" : ;;waxing gibbous 5
+      phase_pos < 0.490 ? "" : ;;waxing gibbous 6
+      phase_pos < 0.525 ? "" : ;;full moon
+      phase_pos < 0.560 ? "" : ;;waning gibbous 1
+      phase_pos < 0.595 ? "" : ;;waning gibbous 2
+      phase_pos < 0.630 ? "" : ;;waning gibbous 3
+      phase_pos < 0.665 ? "" : ;;waning gibbous 4
+      phase_pos < 0.700 ? "" : ;;waning gibbous 5
+      phase_pos < 0.735 ? "" : ;;waning gibbous 6
+      phase_pos < 0.770 ? "󰽣" : ;;third quarter
+      phase_pos < 0.805 ? "" : ;;waning crescent 1
+      phase_pos < 0.840 ? "" : ;;waning crescent 2
+      phase_pos < 0.875 ? "" : ;;waning crescent 3
+      phase_pos < 0.910 ? "" : ;;waning crescent 4
+      phase_pos < 0.945 ? "" : ;;waning crescent 5
+      phase_pos < 0.980 ? "" : ;;waning crescent 6
+      "" ;;new moon
+      })
+    )
+  )
+
+(defwidget Moonphase []
+  (_moonphase :phase_pos "${_moonphase_data.rounded_pos}")
+  )

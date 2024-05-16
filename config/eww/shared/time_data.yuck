@@ -1,0 +1,21 @@
+(defpoll _time_data :interval "1s"
+  :initial `date +'{"month":"%B","day":"%d","year":"%Y","quarter":"%q","weekday":"%A","week":"%U","hour":"%H","min":"%M","seconds":"%S"}'`
+  `date +'{"month":"%B","day":"%d","year":"%Y","quarter":"%q","weekday":"%A","week":"%U","hour":"%H","min":"%M","seconds":"%S"}'`)
+
+(defwidget Time_Date []
+  (box :space-evenly false :spacing 4
+    (label :text "")
+    (label :text "${_time_data.weekday} ${_time_data.month} ${_time_data.day} ${_time_data.year}")
+    )
+  )
+
+(defwidget Time_Time []
+  (box :space-evenly false :spacing 4
+    (label :text "")
+    (label :text "${_time_data.hour}:${_time_data.min}:${_time_data.seconds}")
+    )
+  )
+
+(defwidget Time_Year []
+    (label :text "Q${_time_data.quarter} W${_time_data.week}")
+  )

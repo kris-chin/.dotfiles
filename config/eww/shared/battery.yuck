@@ -1,0 +1,16 @@
+(defwidget _battery [battery status]
+  (box :class "" :space-evenly false :spacing 8
+    (label :style `color: ${battery < 15 ? colors.bright_red : colors.bright_white }` :text `${battery}%`)
+    (label :style `color: ${battery < 15 ? colors.bright_red : colors.bright_white }` :text {status == 'Charging' ? "󰂄" :
+      battery < 15 ? "󱃍" :
+      battery < 30 ? "󰁼" :
+      battery < 45 ? "󰁽" :
+      battery < 68 ? "󰁾" :
+      battery < 75 ? "󰁿" :
+      battery < 95 ? "󰂁" : "󰂂"})))
+
+(defwidget Battery []
+  (_battery
+    :battery {EWW_BATTERY.BAT0.capacity}
+    :status {EWW_BATTERY.BAT0.status}
+  ))

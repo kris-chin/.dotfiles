@@ -1,9 +1,13 @@
+(defpoll _bluetooth_data :interval "0.01s"
+  :initial "N/A"
+  `./bin/get-bluetooth-devices`)
+
 (deflisten _bluetooth_counter
   :initial 0
   ;;iterate up to the number 10 in 5 second intervals, with a 250ms flash
   `./bin/cyclic-counter 10 5 0.25`)
 
-(defwidget _bluetooth_widget [powered devices]
+(defwidget _bluetooth [powered devices]
     (box :orientation "h" :space-evenly false :spacing 5
       (label :text {powered == "yes" ? "󰂯" : "󰂲"})
       ;;TODO: The vision: display total and show currently displayed
@@ -36,3 +40,7 @@
         )
       )
   ))
+
+(defwidget Bluetooth []
+  (_bluetooth :powered "${_bluetooth_data.powered}" :devices "${_bluetooth_data.devices}")
+  )

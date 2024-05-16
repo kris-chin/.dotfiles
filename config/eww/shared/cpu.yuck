@@ -1,0 +1,10 @@
+(defwidget cpu_usage [avg]
+  (box :space-evenly false :spacing 8
+    (label :text "")
+    (label :text "${round(avg, 0)}%")
+  )
+)
+
+(defwidget Cpu_Usage []
+  (cpu_usage :avg {EWW_CPU.avg} )
+  )

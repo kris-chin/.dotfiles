@@ -1,6 +1,3 @@
-(include "./topbar/workspace-item.yuck")
-(include "./topbar/bluetooth-widget.yuck")
-
 (defwindow topbar
   :stacking "fg"
   :windowtype "dock"
@@ -9,134 +6,16 @@
   (topbar_layout)
 )
 
-;;returns a json object: {signal: signal_strength, ssid: name_of_network)
-(defpoll topbar_net :interval "1s"
-  :initial "N/A"
-  `nmcli -t -f SSID,SIGNAL,ACTIVE device wifi \
-  | awk -F':' '{if($3=="yes")print"{\\\"signal\\\":\\\"\"$2\"\\\",\\\"ssid\\\":\\\"\"$1\"\\\"}"}'`)
-
-;;get i3 workspace info
-(deflisten topbar_i3
-  :initial "N/A"
-  `./bin/get-i3-info`)
-
-(defpoll topbar_volume :interval "0.01s"
-  :initial "N/A"
-  `./bin/topbar-volume`
-)
-
-(defpoll topbar_bluetooth :interval "0.01s"
-  :initial "N/A"
-  `./bin/get-bluetooth-devices`)
-
-(defwidget _network [strength ssid offline excellent good okay slow]
-  (box :class ""
-       :space-evenly false
-       :spacing 8
-       :style "color: ${colors.bright_green}"
-    (label :text ssid)
-    (label :text {strength == "" ? offline :
-      strength < 26 ? slow :
-      strength < 51 ? okay :
-      strength < 76 ? good : excellent})
-    (label :text strength)
-    ))
-
-(defwidget _bluetooth [powered devices]
-  (_bluetooth_widget :powered powered :devices devices))
-
-(defwidget _battery [battery status]
-  (box :class "" :space-evenly false :spacing 8
-    (label :style `color: ${battery < 15 ? colors.bright_red : colors.bright_white }` :text `${battery}%`)
-    (label :style `color: ${battery < 15 ? colors.bright_red : colors.bright_white }` :text {status == 'Charging' ? "󰂄" :
-      battery < 15 ? "󱃍" :
-      battery < 30 ? "󰁼" :
-      battery < 45 ? "󰁽" :
-      battery < 68 ? "󰁾" :
-      battery < 75 ? "󰁿" :
-      battery < 95 ? "󰂁" : "󰂂"})))
-
-(defwidget _cpu_usage [avg]
-  (box :space-evenly false :spacing 8
-    (label :text "")
-    (label :text "${round(avg, 0)}%")
-  )
-)
-
-(defwidget _i3_workspaces [focused_window focused_workspace workspaces_yuck]
-  (box :class "" :space-evenly false :spacing 8 
-    (image :icon "${focused_window}")
-    (label :style "min-width: 80px; color: ${colors.bright_cyan}" :text "${focused_window}")
-    (label :text "|")
-    (label :text "${focused_workspace}")
-    (box :valign "center"
-      (literal :content workspaces_yuck)
-    )
-    )
-  )
-
-(defwidget _i3_split [split floating]
-  (box 
-    (label :style "color: ${colors.bright_magenta}" :text {
-      floating == "true" ? "" :
-      split == "horizontal" ? "󰹳" : "󰹹"
-      })
-    )
-  )
-
-(defwidget _i3_floating [floating]
-  (box 
-    (label :style "color: ${colors.bright_blue}" :text {
-      floating == "true" ? "󰨦" : "󰕰"
-      })
-    )
-  )
-
-(defwidget _volume [left right mute]
-  (box :style "" :spacing 8
-    ;;just ignore the right. when will i EVER care about both?
-    (label :style "" :text {mute == "yes" ? "" : 
-      left < 10 ? "" :
-      left < 50 ? "" : ;;im considering >50 as loud
-      ""
-      })
-    (label :text {mute == "yes" ? "MUTE" : `${left}\%`})
-  )
-)
-
-;;TODO: I can't seem o figure out why my shutdown and reboot command sometimes doesn't work. It's like I suddently lose permissions to call the command.
-;; I'm just commenting it out for now and just relying on the logout, since it also has shutdown and reboot. AND its cooler
-(defwidget _system_buttons [
-                            ;;shutdown shutdown_icon
-                            ;;reboot reboot_icon
-                            logout logout_icon
-                            ]
-  (box :spacing 15 :style ""
-    :vexpand true :hexpand true
-    :valign "end" :halign "end"
-    :space-evenly  false
-    :style "padding-left: 10px; padding-right: 10px;"
-    (button :class "topbar--system-button" :onclick logout logout_icon)
-    ;;(button :class "topbar--system-button" :onclick reboot reboot_icon)
-    ;;(button :class "topbar--system-button" :onclick shutdown shutdown_icon)
-  )
-)
-
 (defwidget topbar_leftside []
   (box :class "topbar-box" :halign "start"
        :space-evenly false :orientation "horizontal"
-        :spacing 10
+       :spacing 10
        :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
-      (_battery :status {EWW_BATTERY.BAT0.status}
-                :battery {EWW_BATTERY.BAT0.capacity})
+      (Time_Time)
       (label :text "|")
-      (_volume :left "${topbar_volume.left}" :right "${topbar_volume.right}" :mute "${topbar_volume.mute}")
+      (Battery)
       (label :text "|")
-      (_network :strength "${topbar_net.signal}" :ssid "${topbar_net.ssid}"  :offline "󰣼" :excellent "󰣺" :good "󰣸" :okay "󰣶" :slow "󰣴")
-      (label :text "|")
-      (_cpu_usage :avg {EWW_CPU.avg} )
-      (label :text "|")
-      (_bluetooth :powered "${topbar_bluetooth.powered}" :devices "${topbar_bluetooth.devices}")
+      (Volume)
     )
   )
 
@@ -145,28 +24,25 @@
          :width "10%" :space-evenly false
          :orientation "horizontal" :spacing 10
          :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
-      (_i3_split :split "${topbar_i3.orientation}" :floating "${topbar_i3.isFloating}" )
-      (_i3_floating :floating "${topbar_i3.isFloating}")
+      (I3_Split)
+      (I3_Floating)
       (label :text "|")
-      (_i3_workspaces
-        :focused_window "${topbar_i3.focused_window}"
-        :focused_workspace "${topbar_i3.focused_workspace}"
-        :workspaces_yuck "${topbar_i3.workspaces}"
-      )
+      (I3_Workspaces)
     )
 )
 
 (defwidget topbar_rightside []
-    (box :class "topbar-box" :halign "end" :width "10%" :space-evenly false :orientation "horizontal" :style "color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
+    (box
+      :class "topbar-box"
+      :halign "end"
+      :width "10%"
+      :orientation "horizontal"
+      :style "color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
       (box
-        (_system_buttons
-            ;;:shutdown "poweroff"
-            ;;:reboot "reboot"
-            :logout "pkill X"
-            ;;:shutdown_icon "⏻"
-            ;;:reboot_icon ""
-            :logout_icon ""
-        )
+        :space-evenly false
+        :spacing 4
+        :style "padding-left: 10px"
+        (System_Buttons)
       )
     )
 )

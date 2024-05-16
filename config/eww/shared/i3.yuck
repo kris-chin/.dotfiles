@@ -1,0 +1,58 @@
+;;get i3 workspace info
+(deflisten _i3_data
+  :initial "N/A"
+  `./bin/get-i3-info`)
+
+(defwidget _workspace_item [name focused]
+  (box :class "" :space-evenly false :style "padding-left: 5px; padding-right: 5px"
+    (label :text {
+      name == "1" ? (focused == "true" ? "󰣑" : "󱢲")
+      : focused == "false" ? "" : ""}
+      )
+  )
+)
+
+(defwidget _i3_workspaces [focused_window focused_workspace workspaces_yuck]
+  (box :class "" :space-evenly false :spacing 8 
+    (image :icon "${focused_window}")
+    (label :style "min-width: 80px; color: ${colors.bright_cyan}" :text "${focused_window}")
+    (label :text "|")
+    (label :text "${focused_workspace}")
+    (box :valign "center"
+      (literal :content workspaces_yuck)
+    )
+    )
+  )
+
+(defwidget I3_Workspaces []
+      (_i3_workspaces
+        :focused_window "${_i3_data.focused_window}"
+        :focused_workspace "${_i3_data.focused_workspace}"
+        :workspaces_yuck "${_i3_data.workspaces}"
+      )
+  )
+
+(defwidget _i3_split [split floating]
+  (box 
+    (label :style "color: ${colors.bright_magenta}" :text {
+      floating == "true" ? "" :
+      split == "horizontal" ? "󰹳" : "󰹹"
+      })
+    )
+  )
+
+(defwidget I3_Split []
+  (_i3_split :split "${_i3_data.orientation}" :floating "${_i3_data.isFloating}" )
+  )
+
+(defwidget _i3_floating [floating]
+  (box 
+    (label :style "color: ${colors.bright_blue}" :text {
+      floating == "true" ? "󰨦" : "󰕰"
+      })
+    )
+  )
+
+(defwidget I3_Floating []
+    (_i3_floating :floating "${_i3_data.isFloating}")
+  )

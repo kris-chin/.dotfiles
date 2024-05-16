@@ -1,0 +1,21 @@
+(defpoll _network_data :interval "1s"
+  :initial "N/A"
+  `nmcli -t -f SSID,SIGNAL,ACTIVE device wifi \
+  | awk -F':' '{if($3=="yes")print"{\\\"signal\\\":\\\"\"$2\"\\\",\\\"ssid\\\":\\\"\"$1\"\\\"}"}'`)
+
+(defwidget _network [strength ssid offline excellent good okay slow]
+  (box :class ""
+       :space-evenly false
+       :spacing 8
+       :style "color: ${colors.bright_green}"
+    (label :text ssid)
+    (label :text {strength == "" ? offline :
+      strength < 26 ? slow :
+      strength < 51 ? okay :
+      strength < 76 ? good : excellent})
+    (label :text strength)
+    ))
+
+(defwidget Network []
+  (_network :strength "${_network_data.signal}" :ssid "${_network_data.ssid}"  :offline "󰣼" :excellent "󰣺" :good "󰣸" :okay "󰣶" :slow "󰣴")
+  )
