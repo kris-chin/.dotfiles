@@ -70,7 +70,6 @@ some of these may be different from the ones I use at work (kinda weird, maybe I
 
 `MOD + d` open dmenu, which is an application launcher that hides the terminal in the background
 
-`shift + MOD + Space` - toggle floating for window
 `shift + MOD + q` - close focused window
 `MOD + r` - resize mode
 
@@ -79,6 +78,14 @@ some of these may be different from the ones I use at work (kinda weird, maybe I
 the way that i3 splits it's windows is through "split" modes.
 when you are in "vertical" mode, new windows will split vertically,
 when you are in "horizontal" mode, new windows will split horizontally
+
+### Floating Windows
+
+I have it set up such that when you hold $MOD, you can move a window from anywhere. It doesn't need to be just the title bar
+MOD+Left Mouse = Move a window. MOD+Right Mouse = Resize a window.
+
+I have some keybindings to toggle focus between the focused window and the non-focused window
+MOD+o will toggle which types of windows to focus
 
 ### Reloading i3 config
 
