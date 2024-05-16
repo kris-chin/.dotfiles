@@ -67,15 +67,17 @@
 (defwidget _i3_split [split floating]
   (box 
     (label :style "color: ${colors.bright_magenta}" :text {
-      floating == "true" ? "f" :
-      split == "horizontal" ? "󰯍" : "󰯎"
+      floating == "true" ? "" :
+      split == "horizontal" ? "󰹳" : "󰹹"
       })
     )
   )
 
 (defwidget _i3_floating [floating]
   (box 
-    (label :style "color: ${colors.bright_blue}" :text {floating})
+    (label :style "color: ${colors.bright_blue}" :text {
+      floating == "true" ? "󰨦" : "󰕰"
+      })
     )
   )
 
