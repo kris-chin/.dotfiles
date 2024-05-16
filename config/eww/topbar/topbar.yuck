@@ -56,11 +56,13 @@
 )
 
 (defwidget _i3_workspaces [focused_window focused_workspace workspaces_yuck]
-  (box :class "" :space-evenly false :spacing 8
-    (label :style "color: ${colors.bright_cyan}" :text "${focused_window}")
+  (box :class "" :space-evenly false :spacing 8 
+    (label :style "min-width: 80px; color: ${colors.bright_cyan}" :text "${focused_window}")
     (label :text "|")
     (label :text "${focused_workspace}")
-    (literal :content workspaces_yuck)
+    (box :valign "center"
+      (literal :content workspaces_yuck)
+    )
     )
   )
 

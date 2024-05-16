@@ -1,5 +1,8 @@
 (defwidget _workspace_item [name focused]
-  (box :class "" :space-evenly false
-    (label :text {focused == "false" ? "" : ""})
+  (box :class "" :space-evenly false :style "padding-left: 5px; padding-right: 5px"
+    (label :text {
+      name == "1" ? (focused == "true" ? "󰣑" : "󱢲")
+      : focused == "false" ? "" : ""}
+      )
   )
 )

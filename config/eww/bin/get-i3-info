@@ -3,6 +3,8 @@ from i3ipc import Connection, Event
 from json import dumps
 import sys
 
+MINIMUM_WORKSPACES = 5
+
 #Takes a search id, and attempts to find the parent of the search_id
 #Copy-and-pasted from bsp
 def search_for_parent(con, search_id):
@@ -53,22 +55,42 @@ def get_info(i3, e):
 
     parent = search_for_parent(i3.get_tree(), focused.id)
     output["orientation"] = parent.orientation if parent is not None else None
+    
+    #Set up a map of our workspaces
+    workspace_info = {}
 
-    workspace_info = []
+    #Record our existing workspace data
     for workspace in workspaces:
         if workspace.focused == True:
             output["focused_workspace"] = workspace.name
         workspace_output = {
-            "name": workspace.name,
+            #NOTE: We're assuming we have numbered workspace names. If this changes, we'll need to refactor this
+            "name" : int(workspace.name),
             "focused": workspace.focused
         }
-        workspace_info.append(workspace_output)
+        workspace_info[int(workspace.name)] = workspace_output
+    
+    #Go through and add the minimum workspaces if and only if they don't already exist yet
+    for i in range(1, MINIMUM_WORKSPACES + 1):
+        #Assume the name is a number
+        workspace_name = i
+        
+        #if defined, skip
+        if (bool(workspace_info.get(workspace_name))):
+            continue
+        
+        workspace_output = {
+            "name": str(i),
+            "focused": False
+        }
+        workspace_info[workspace_name] = workspace_output
 
     #For eww. convert array into a single string of eww code
     def convert_to_eww(workspace):
         return f'(_workspace_item :name \'{workspace["name"]}\' :focused \'{str(workspace["focused"]).lower()}\')'
 
-    joined_workspaces = ''.join([convert_to_eww(workspace) for workspace in workspace_info])
+    #We are sorting the workspaces dict by key. this will return a 2-tuple of key-value pairs, but we will only pass the value into the conversion function
+    joined_workspaces = ''.join([convert_to_eww(workspace[1]) for workspace in sorted(workspace_info.items())])
     outer = f"(box {joined_workspaces})"
     output["workspaces"] = outer
 
