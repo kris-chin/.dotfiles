@@ -313,13 +313,16 @@ require("lazy").setup({
     {
       "junegunn/rainbow_parentheses.vim",
       config = function()
-        --auto enable by default. 
-        --NOTE TO FUTURE CHIN: you can also disable this as you please. it doesnt have to be enabled at all times
-        vim.cmd([[:RainbowParentheses]])
-        --99 max levels!
         vim.cmd("let g:rainbow#max_level = 99")
         --Add handling for '(  for elisp. Also add handling for { for curly brackets
         vim.cmd("let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], [\"'(\", \")\"] ]")
+        --activate this only for parentheses-heavy languages
+        vim.cmd([[
+        augroup rainbow_lisp
+          autocmd!
+          autocmd FileType lisp,yuck RainbowParentheses
+        augroup END
+        ]])
       end
     }
 })
