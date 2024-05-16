@@ -112,7 +112,16 @@
 ;;These two bindings are actually prefix keys to a fuck-ton of keysequences, so I'm just overriding ALL of them with in general-override-mode
 ;;This means that I will just enable and disable general-override-mode for org agenda
 (map! :map 'override :nvm "s" #'org-agenda-schedule :desc "Overrides all 's' bindings in override-mode")
-(map! :map 'override :nvm "g" #'org-agenda-redo :desc "Overrides all 'g' bindings in override-mode")
+
+;;Function that calls both rebuild AND save
+(defun rebuild-and-save ()
+  (interactive)
+  (progn
+    (org-agenda-redo)
+    (org-save-all-org-buffers)
+    )
+  )
+(map! :map 'override :nvm "g" #'rebuild-and-save :desc "Overrides all 'g' bindings in override-mode")
 
 ;;toggle todo states with "shift - h" and "shift - l"
 (map! :map evil-normal-state-map "H" "S-<left>")
