@@ -80,11 +80,11 @@ bindsym $mod+Ctrl+j move down 50 px
 bindsym $mod+Ctrl+k move up 50 px
 bindsym $mod+Ctrl+l move right 50 px
 
-# resize window
-bindsym $mod+Shift+h resize shrink width 10 px or 10 ppt
-bindsym $mod+Shift+j resize shrink height 10 px or 10 ppt
-bindsym $mod+Shift+k resize grow height 10 px or 10 ppt
-bindsym $mod+Shift+l resize grow width 10 px or 10 ppt
+# resize window relative to its position on the display
+bindsym $mod+Shift+h exec --no-startup-id ~/.config/i3/bin/resize-relative left 50
+bindsym $mod+Shift+l exec --no-startup-id ~/.config/i3/bin/resize-relative right 50
+bindsym $mod+Shift+j exec --no-startup-id ~/.config/i3/bin/resize-relative down 50
+bindsym $mod+Shift+k exec --no-startup-id ~/.config/i3/bin/resize-relative up 50
 
 #toggle the split orientation
 bindsym $mod+minus split toggle
