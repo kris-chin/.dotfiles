@@ -1,0 +1,40 @@
+#!/bin/python3
+from argparse import ArgumentParser
+import sys
+import time
+from json import dumps
+
+#Just a helper function that counts up to the argument it was provided before looping
+#I will just have this running in the background in eww as a way to provide timed loops
+#Provides a json of both a number AND a flash counter for animations
+
+def main():
+  parser = ArgumentParser("iterate-arrays", "")
+  parser.add_argument("count", help="The number to count to")
+  parser.add_argument("interval", help="Interval to wait in seconds")
+  parser.add_argument("off_interval", help="Interval between between flashes")
+
+  #Parse args
+  args = parser.parse_args()
+
+  current = 0
+
+  while True:
+    output = {"current" : current, "flash" : False}
+    #First print the number AND an OFF flash counter
+    print(dumps(output))
+    sys.stdout.flush()
+
+    #Wait off_inverval seconds after, turn flash on. (i hope this triggers the animation
+    time.sleep(float(args.off_interval))
+    output["flash"] = True
+    print(dumps(output))
+    sys.stdout.flush()
+
+    #Then increment it, accounting for loops
+    current = (current + 1) % (int(args.count) + 1)
+    #Wait for interval amount
+    time.sleep(int(args.interval))
+
+if __name__ == "__main__":
+    main()

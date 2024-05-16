@@ -1,0 +1,30 @@
+#!/bin/bash
+#Shoutout ChatGPT I hate sed.
+
+#First get info about our connected devices
+devices_info=$(bluetoothctl -- devices Connected)
+
+#Then, we format our json. This json object contains the mac address, the name of the device, and their index wihtin the array (for eww purposes)
+if [ -z "$devices_info" ]; then
+    devices_json='{"devices": []}'
+else
+    devices_json=$(echo "$devices_info" | awk 'BEGIN {print "{\"devices\": ["} 
+    {printf "%s{\"mac\": \"%s\", \"name\": \"%s\", \"index\": %d}", separator, $2, substr($0, index($0,$3)), NR-1; separator = ", "} 
+    END {print " ]}"}')
+fi
+
+#Then, just in-case, get information about our bluetooth controller
+controller_info=$(bluetoothctl -- show)
+#Get our respective information from the output
+powered=$(echo "$controller_info" | sed -n 's/^.*Powered: \(.*\)$/\1/p')
+discoverable=$(echo "$controller_info" | sed -n 's/^.*Discoverable: \(.*\)$/\1/p')
+pairable=$(echo "$controller_info" | sed -n 's/^.*Pairable: \(.*\)$/\1/p')
+discovering=$(echo "$controller_info" | sed -n 's/^.*Discovering: \(.*\)$/\1/p')
+#Get them in json format
+controller_json=$(printf '{"powered": "%s", "discoverable": "%s", "pairable": "%s", "discovering": "%s"}' "$powered" "$discoverable" "$pairable" "$discovering")
+
+
+#Finally, combine the jsons
+combined=$(jq -s '.[0] + .[1]' <(echo $devices_json) <(echo $controller_json))
+
+echo $combined

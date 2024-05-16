@@ -1,4 +1,5 @@
 (include "./topbar/workspace-item.yuck")
+(include "./topbar/bluetooth-widget.yuck")
 
 (defwindow topbar
   :stacking "fg"
@@ -24,6 +25,10 @@
   `./bin/topbar-volume`
 )
 
+(defpoll topbar_bluetooth :interval "0.01s"
+  :initial "N/A"
+  `./bin/get-bluetooth-devices`)
+
 (defwidget _network [strength ssid offline excellent good okay slow]
   (box :class ""
        :space-evenly false
@@ -36,6 +41,9 @@
       strength < 76 ? good : excellent})
     (label :text strength)
     ))
+
+(defwidget _bluetooth [powered devices]
+  (_bluetooth_widget :powered powered :devices devices))
 
 (defwidget _battery [battery status]
   (box :class "" :space-evenly false :spacing 8
@@ -127,6 +135,8 @@
       (_network :strength "${topbar_net.signal}" :ssid "${topbar_net.ssid}"  :offline "󰣼" :excellent "󰣺" :good "󰣸" :okay "󰣶" :slow "󰣴")
       (label :text "|")
       (_cpu_usage :avg {EWW_CPU.avg} )
+      (label :text "|")
+      (_bluetooth :powered "${topbar_bluetooth.powered}" :devices "${topbar_bluetooth.devices}")
     )
   )
 

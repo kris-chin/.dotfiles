@@ -1,0 +1,38 @@
+(deflisten _bluetooth_counter
+  :initial 0
+  ;;iterate up to the number 10 in 5 second intervals, with a 250ms flash
+  `./bin/cyclic-counter 10 5 0.25`)
+
+(defwidget _bluetooth_widget [powered devices]
+    (box :orientation "h" :space-evenly false :spacing 5
+      (label :text {powered == "yes" ? "󰂯" : "󰂲"})
+      ;;TODO: The vision: display total and show currently displayed
+      (label
+        :visible {arraylength(devices) >= 1}
+        :text {powered == "yes" ? arraylength(devices) == 0 ? "" : `(${ ((_bluetooth_counter.current) % arraylength(devices)) + 1 }/${arraylength(devices)})` : ""})
+      (label
+        :style "padding-left: 10px"
+        :visible {powered == "yes"} :text "|")
+      (box :visible {powered == "yes"}
+           :space-evenly false
+        (label 
+          :visible {arraylength(devices) == 0}
+          :text "No Devices")
+        ;;As of 5/16/2024, I cant use this for-loop in a stack widget :( So I'm manually updating it..
+        (revealer
+          :visible {arraylength(devices) == 1}
+          :reveal {(_bluetooth_counter.flash == true || arraylength(devices) == 1)}
+          :transition "crossfade"
+          :duration "1000ms"
+          (box :style "min-width: 100px"
+            (for device in devices
+                (label
+                  :visible {  ((_bluetooth_counter.current % arraylength(devices) ) == device.index) }
+                  :truncate true
+                  :limit-width 10
+                  :style "opacity: ${(_bluetooth_counter.flash == true || arraylength(devices) == 1) ? 1 : 0}" ;;clean transition
+                  :text "${device.name}")
+              ))
+        )
+      )
+  ))
