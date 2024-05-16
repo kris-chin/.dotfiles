@@ -1,2 +1,12 @@
 #!/bin/bash
-pactl get-sink-volume @DEFAULT_SINK@  | sed -n 's/.*front-left:.* \([0-9]*%\).*front-right:.* \([0-9]*%\).*/{"left": "\1", "right": "\2"}/p'
+#Fuck sed. I chatGPT'd this shit
+
+#First get the volume and mute from PulseAudio. Run it through sed to get good formatted data in JSON format
+volume=$(pactl get-sink-volume @DEFAULT_SINK@  | sed -n 's/.*front-left:.* \([0-9]*\)%.*front-right:.* \([0-9]*\)%.*$/{"left": "\1", "right":"\2"}/p')
+mute=$(pactl get-sink-mute @DEFAULT_SINK@  | sed -n 's/^Mute: \(.*\)$/{"mute":"\1"}/p')
+
+#Then, run the two JSONs in jq to get a big json
+combined=$(jq -s '.[0] + .[1]' <(echo $volume) <(echo $mute))
+
+#Reuturn the combined json
+echo $combined
