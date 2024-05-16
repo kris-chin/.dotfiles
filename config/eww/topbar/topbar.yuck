@@ -15,7 +15,7 @@
   | awk -F':' '{if($3=="yes")print"{\\\"signal\\\":\\\"\"$2\"\\\",\\\"ssid\\\":\\\"\"$1\"\\\"}"}'`)
 
 ;;get i3 workspace info
-(defpoll topbar_i3 :interval "0.01s"
+(deflisten topbar_i3
   :initial "N/A"
   `./bin/get-i3-info`)
 

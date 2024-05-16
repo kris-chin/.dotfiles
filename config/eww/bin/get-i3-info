@@ -1,16 +1,12 @@
 #!/bin/python3
-from i3ipc import Connection
+from i3ipc import Connection, Event
 from json import dumps
-from subprocess import check_output
 import sys
 
 #Takes a search id, and attempts to find the parent of the search_id
 #Copy-and-pasted from bsp
 def search_for_parent(con, search_id):
     nodes = con.nodes
-
-    #print(f"VISITING {con.name} ({con.id})")
-    #print(f"title: {con.name}, floating_nodes: {[node.id for node in con.floating_nodes]}")
 
     #base case 1: we found the id
     if con.id == search_id:
@@ -20,7 +16,6 @@ def search_for_parent(con, search_id):
     if len(nodes) == 0:
         return None
 
-    #print(f"[STARTING CHILDREN of {con.name} ({con.id})")
     #recursive case: check children
     for node in nodes:
         attempt = search_for_parent(node, search_id)
@@ -30,61 +25,62 @@ def search_for_parent(con, search_id):
                 return node
 
             return attempt
-    #print(f"[ENDING CHILDREN of {con.name} ({con.id})")
     return None
 
-#Gets information from the i3ipc and outputs it in a json format
-#MAX_FOCUSED_LENGTH = 20
-
 i3 = Connection()
-workspaces = i3.get_workspaces()
 
-output = {}
+#So it turns out, just like the BSP script, the tree also is not up-to-date with focused information. So we need to subscribe to the window focus event.
+def get_info(i3, e):
+    workspaces = i3.get_workspaces()
+    output = {}
+    focused = i3.get_tree().find_focused()
+    #truncate the name if it is too long
+    #commented out because im using window instances instead of titles. (these c
+    #new_focused_name = ('..' + focused.name[MAX_FOCUSED_LENGTH:]) if len(focused.name) > MAX_FOCUSED_LENGTH else focused.name
+    new_focused_name = focused.window_instance
+    output["focused_window"] = new_focused_name
 
-#test = check_output(['xdotool', 'getwindowfocus', "-f"],universal_newlines=True).strip()
+    #For some reason, the "floating" property doesnt get updated per window, so we need to re-aqcuire it
+    #I guess i3 creates a TOP-LEVEL container for each individual floating window. So not only do we have to go through workspace.floating_nodes, we need to go through their OWN children as well
+    workspace = focused.workspace()
+    top_level_float_containers = workspace.floating_nodes
+    floating_containers = []
+    for con in top_level_float_containers:
+        for node in con.nodes:
+            floating_containers.append(node.id)
+    isFloating = focused.id in floating_containers
+    output["isFloating"] = isFloating;
 
-focused = i3.get_tree().find_focused()
-#truncate the name if it is too long
-#commented out because im using window instances instead of titles. (these c
-#new_focused_name = ('..' + focused.name[MAX_FOCUSED_LENGTH:]) if len(focused.name) > MAX_FOCUSED_LENGTH else focused.name
-new_focused_name = focused.window_instance
-output["focused_window"] = new_focused_name
-#output["focused_window"] = i3.get_tree().find_focused().id
-#output["focused_window"] = test
+    parent = search_for_parent(i3.get_tree(), focused.id)
+    output["orientation"] = parent.orientation if parent is not None else None
 
-#For some reason, the "floating" property doesnt get updated per window, so we need to re-qcuire it
-#I guess i3 creates a TOP-LEVEL container for each individual floating window. So not only do we have to go through workspace.floating_nodes, we need to go through their OWN children as well
-workspace = focused.workspace()
-top_level_float_containers = workspace.floating_nodes
-floating_containers = []
-for con in top_level_float_containers:
-    for node in con.nodes:
-        floating_containers.append(node.id)
-isFloating = focused.id in floating_containers
-output["isFloating"] = isFloating;
-#output["isFloating"] = str(floating_containers)
+    workspace_info = []
+    for workspace in workspaces:
+        if workspace.focused == True:
+            output["focused_workspace"] = workspace.name
+        workspace_output = {
+            "name": workspace.name,
+            "focused": workspace.focused
+        }
+        workspace_info.append(workspace_output)
 
-parent = search_for_parent(i3.get_tree(), focused.id)
-output["orientation"] = parent.orientation
+    #For eww. convert array into a single string of eww code
+    def convert_to_eww(workspace):
+        return f'(_workspace_item :name \'{workspace["name"]}\' :focused \'{str(workspace["focused"]).lower()}\')'
 
-workspace_info = []
-for workspace in workspaces:
-    if workspace.focused == True:
-        output["focused_workspace"] = workspace.name
-    workspace_output = {
-        "name": workspace.name,
-        "focused": workspace.focused
-    }
-    workspace_info.append(workspace_output)
+    joined_workspaces = ''.join([convert_to_eww(workspace) for workspace in workspace_info])
+    outer = f"(box {joined_workspaces})"
+    output["workspaces"] = outer
 
-#For eww. convert array into a single string of eww code
-def convert_to_eww(workspace):
-    return f'(_workspace_item :name \'{workspace["name"]}\' :focused \'{str(workspace["focused"]).lower()}\')'
+    #Print to stdout, eww will pick this up
+    print(dumps(output))
+    sys.stdout.flush()
 
-joined_workspaces = ''.join([convert_to_eww(workspace) for workspace in workspace_info])
-outer = f'(box {joined_workspaces})'
-output["workspaces"] = outer
-
-
-#Export data
-sys.stdout.write(dumps(output))
+#Run handler so we get some initial data
+get_info(i3, None)
+#Subscribe to Events that we want to update info on
+i3.on(Event.WINDOW_FOCUS, get_info)
+i3.on(Event.WORKSPACE_FOCUS, get_info)
+i3.on(Event.WINDOW_URGENT, get_info)
+i3.on(Event.BINDING, get_info)
+i3.main()
