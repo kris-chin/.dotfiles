@@ -99,7 +99,7 @@ bindsym $mod+e layout toggle split
 
 # Toggle the focused window to either float / tile
 # If it's now floating, moves it to the mouse
-bindsym $mod+i [con_id=__focused__] floating toggle, move position mouse
+bindsym $mod+Shift+o [con_id=__focused__] floating toggle, move position mouse
 # Toggle focus between tiled windows vs floating windows
 bindsym $mod+o focus mode_toggle; exec --no-startup-id ~/.config/i3/bin/move-cursor-to-focused
 
