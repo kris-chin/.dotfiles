@@ -64,3 +64,4 @@ yad
 spotifyd
 thunar
 tumbler
+autorandr
