@@ -1,9 +1,9 @@
 ;; These mappings were created from a tangled config file in ~/org/doom-config/mappings.org
 
-(map! "C-h" #'evil-window-left)
+(map! :map evil-normal-state-map "C-h" #'evil-window-left)
 (map! :map evil-normal-state-map "C-j" #'evil-window-down)
 (map! :map evil-normal-state-map "C-k" #'evil-window-up)
-(map! "C-l" #'evil-window-right)
+(map! :map evil-normal-state-map "C-l" #'evil-window-right)
 
 ;;window resize maps
 (map! "C-a C-h" #'shrink-window-horizontally)
