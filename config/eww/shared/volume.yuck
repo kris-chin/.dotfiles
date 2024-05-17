@@ -4,14 +4,18 @@
 )
 
 (defwidget _volume [left right mute]
-  (box :style "" :spacing 8
+  (box
+    :space-evenly false
+    :spacing 4
     ;;just ignore the right. when will i EVER care about both?
     (label :style "" :text {mute == "yes" ? "" : 
       left < 10 ? "" :
       left < 50 ? "" : ;;im considering >50 as loud
       ""
       })
-    (label :text {mute == "yes" ? "MUTE" : `${left}\%`})
+    (label
+      :hexpand true
+      :text {mute == "yes" ? "MUTE" : `${left}\%`})
   )
 )
 

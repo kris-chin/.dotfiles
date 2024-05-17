@@ -5,8 +5,8 @@
 
 (defwidget _brightness [amount max]
   (box :space-evenly false :spacing 8
-    (label :text "${round(amount/max, 1) * 100}%")
     (label :text "󰃞")
+    (label :text "${round(amount/max, 1) * 100}%")
   )
   )
 
