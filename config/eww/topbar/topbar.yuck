@@ -16,6 +16,8 @@
       (Battery)
       (label :text "|")
       (Volume)
+      (label :text "|")
+      (Brightness)
     )
   )
 

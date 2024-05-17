@@ -1,0 +1,18 @@
+(defpoll _brightness_data
+  :initial "0"
+  :interval "0.01s"
+  `blight get`)
+
+(defwidget _brightness [amount max]
+  (box :space-evenly false :spacing 8
+    (label :text "${round(amount/max, 1) * 100}%")
+    (label :text "󰃞")
+  )
+  )
+
+(defwidget Brightness []
+  (_brightness
+    :amount {_brightness_data}
+    :max 96000 ;;this is just hardcoded from my personal laptop. this could be very different depending on hardware
+    )
+  )
