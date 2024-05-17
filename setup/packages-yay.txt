@@ -11,3 +11,5 @@ yay
 yay-debug
 elogind
 spotify-tui
+blight
+illum-git

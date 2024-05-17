@@ -221,3 +221,11 @@ I use `spotifyd` to play spotify audio. It's config file requires me to put in a
 I use spotify-tui as a tui for spotify, it uses spotifyd to actually play audio
 
 **If you need to debug spotifyd, try running it as `spotifyd --no-daemon` to get feedback**
+
+# Screen Brightness and Keyboard Backlight
+
+It's apparently kinda complicated according to the arch wiki, however, there are some useful programs that we can install.
+
+I ended up installing. One to handle keypresses and one to get number info. It's kinda redundant because I'm sure I could do it in one, but I'm too lazy.
+- blight
+- illum
