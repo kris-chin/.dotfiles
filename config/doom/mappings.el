@@ -175,8 +175,8 @@
   )
 
   (defhydra hydra-org-timestamp ()
-    ("o" #'org-time-stamp-inactive "inactive timestamp")
-    ("i" #'org-time-stamp "active timestamp")
+    ("i" #'org-time-stamp-inactive "inactive timestamp")
+    ("o" #'org-time-stamp "active timestamp")
     )
 
 (defhydra hydra-org-mode ()
