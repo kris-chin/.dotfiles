@@ -67,3 +67,4 @@ tumbler
 autorandr
 tlp
 tlpui
+btop
