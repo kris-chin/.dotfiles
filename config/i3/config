@@ -182,9 +182,15 @@ bindsym $mod+r mode "resize"
 #        position top
 #}
 
-#window gaps 
+#default window gaps 
+#(weirdly enough, defining the gaps needs to be like this for the config. but the actual message has different syntax)
 gaps inner 20px
 gaps outer 30px
+#keybinds for modifying gaps per workspace
+bindsym $mod+w gaps outer current minus 10 px
+bindsym $mod+q gaps outer current plus 10 px
+bindsym $mod+s gaps inner current minus 10 px
+bindsym $mod+a gaps inner current plus 10 px
 
 #open feh on startup to load background image
 exec_always --no-startup-id ~/.fehbg &
