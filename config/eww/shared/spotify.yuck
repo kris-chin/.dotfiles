@@ -1,0 +1,25 @@
+(deflisten _spotify_data 
+  :initial "N/A"
+  `tail -f /tmp/spotifyd_watch`)
+
+(defwidget _spotify [artistname songtitle albumtitle artworkpath]
+  (box :space-evenly false :spacing 8
+    (box :valign "center"
+      (image :image-height 25
+             :image-width 25
+             :path "${artworkpath}")
+      )
+    ;;TODO: make this look nice
+    (box :space-evenly false
+         :orientation "v"
+         :valign "center"
+      (label :text "${artistname} - ${songtitle}")
+      )
+  ))
+
+(defwidget Spotify []
+  (_spotify :artistname "${_spotify_data.artistname}"
+            :songtitle "${_spotify_data.songtitle}"
+            :albumtitle "${_spotify_data.albumtitle}"
+            :artworkpath "${_spotify_data.filepath}")
+  )

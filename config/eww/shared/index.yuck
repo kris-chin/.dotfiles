@@ -5,6 +5,7 @@
 (include "./shared/i3.yuck")
 (include "./shared/moonphase.yuck")
 (include "./shared/network.yuck")
+(include "./shared/spotify.yuck")
 (include "./shared/system-actions.yuck")
 (include "./shared/time_data.yuck")
 (include "./shared/volume.yuck")

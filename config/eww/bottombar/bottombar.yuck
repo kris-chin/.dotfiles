@@ -18,6 +18,12 @@
     )
   )
 
+(defwidget bottombar_middle []
+  (box :halign "center" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
+    (Spotify)
+    )
+  )
+
 (defwidget bottombar_rightside []
   (box :halign "end" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
       (box :spacing 15 :class "" :space-evenly false
@@ -34,8 +40,7 @@
 (defwidget bottombar_layout []
   (centerbox :orientation "horizontal"
     (bottombar_leftside)
-    ;;fill these out later
-    (box)
+    (bottombar_middle)
     (bottombar_rightside)
     )
 )
