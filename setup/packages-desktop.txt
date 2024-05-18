@@ -65,3 +65,5 @@ spotifyd
 thunar
 tumbler
 autorandr
+tlp
+tlpui

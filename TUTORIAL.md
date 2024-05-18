@@ -229,3 +229,8 @@ It's apparently kinda complicated according to the arch wiki, however, there are
 I ended up installing. One to handle keypresses and one to get number info. It's kinda redundant because I'm sure I could do it in one, but I'm too lazy.
 - blight
 - illum
+
+# Power Saving
+
+I have `tlp` installed as a power-management daemon. It's supposed to automatically handle power-saving so it shouldn't need any additional config.
+Additionally, I have `tlpui` installed, which is a graphical interface for tlp. Normally I don't use these, but this one made sense since its a bit more complicated.
