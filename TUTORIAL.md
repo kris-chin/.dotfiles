@@ -234,3 +234,17 @@ I ended up installing. One to handle keypresses and one to get number info. It's
 
 I have `tlp` installed as a power-management daemon. It's supposed to automatically handle power-saving so it shouldn't need any additional config.
 Additionally, I have `tlpui` installed, which is a graphical interface for tlp. Normally I don't use these, but this one made sense since its a bit more complicated.
+
+## Xorg and power consumption
+
+I've noticed that xorg can sometimes have a LARGE CPU consumption. unfortunately, in order to figure out which Xorg applications are using all the power, it does involve a deeper analysis..
+
+Its good to know this though.
+
+## chromium and power consumption
+as a reminder, chromium can also be a big canidate for power consumption. this one is obvious
+
+## eww and power consumption
+
+bruh. eww uses a LOT of CPU. I watched my CPU usage for Xorg drop from 50% to 3% when I killed it..
+I don't have a fix for this yet, but it's good to know.
