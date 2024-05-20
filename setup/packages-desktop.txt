@@ -69,3 +69,4 @@ tlp
 tlpui
 btop
 pavucontrol
+gnome-font-viewer
