@@ -1,3 +1,8 @@
+(defpoll _battery_remaining
+  :initial "N/A"
+  :interval "10s"
+  `acpi | grep "Battery 0" | awk -F "," '{print $3}' | awk '{print $1}' | awk -F ":" '{printf("%sh %sm", $1, $2)}'`)
+
 (defwidget _battery [battery status]
   (box :class "" :space-evenly false :spacing 8
     (label :style `color: ${battery < 15 ? colors.bright_red : colors.bright_white }` :text {status == 'Charging' ? "󰂄" :
@@ -8,6 +13,7 @@
       battery < 75 ? "󰁿" :
       battery < 95 ? "󰂁" : "󰂂"})
     (label :style `color: ${battery < 15 ? colors.bright_red : colors.bright_white }` :text `${battery}%`)
+    (label :text `${_battery_remaining}`)
     ))
 
 (defwidget Battery []
