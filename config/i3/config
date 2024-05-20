@@ -196,9 +196,8 @@ bindsym $mod+a gaps inner current plus 10 px
 exec_always --no-startup-id ~/.fehbg &
 
 #open picom in the background (this is a compositor that allows for transparent windows)
-#this setting also disables fade animations
 #psst. use `pkill picom` to kill the picom daemon good for tweaking configs.
-exec_always --no-startup-id picom -b --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --corner-radius=10
+exec_always --no-startup-id picom -b
 
 #hide window titlebars
 for_window [class="^.*"] border none
