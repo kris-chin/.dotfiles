@@ -129,10 +129,44 @@
           ))))
 (advice-add 'org-ql-view--format-element :around #'zdo/org-ql-view--format-element)
 
+;;testing out a custom super-agenda predicate
+;;It looks like if the predicate returns true, it adds to the group
+(defun test-p (item)
+  (message (concat "TEST:\"" (string-trim item) "\""))
+  )
+
+;;Returns a dynamic regex that matches for a habit that was last repeated today.
+(defun get-habit-last-repeat-regex ()
+ (format-time-string "LAST_REPEAT: \\[%Y-%m-%d" (seconds-to-time (float-time)))
+  )
+
 ;;define some groups here so I can reuse them for both the "today" view and the "get ahead" view
-(setq shared-super-agenda-groups '(
+(setq shared-super-agenda-groups `(
                                     ;;Hide tasks that were completed in the past
-                                    (:name "Closed Today" :todo "DONE"
+                                    ;;NOTE: Marking a habit as done will NOT update the todo, instead, it will move the scheduled date to the next day, and update some additional metadata.
+                                    (:name "Tasks Closed Today" :todo "DONE"
+                                           :face (:strike-through t) 
+                                           )
+                                    (:name "Habits for Today"
+                                           :and (
+                                             :habit t
+                                             :scheduled today
+                                             :not (:scheduled future)
+                                           )
+                                    )
+                                    (:name "Habits coming up"
+                                           :and (
+                                             :habit t
+                                             :scheduled future
+                                             :not (:regexp ,(get-habit-last-repeat-regex))
+                                           )
+                                    )
+                                    (:name "Habits Completed Today"
+                                           :and (
+                                             :habit t
+                                             :regexp ,(get-habit-last-repeat-regex)
+                                             :scheduled future
+                                           )
                                            :face (:strike-through t) 
                                            )
                                     (:name "Projects"
@@ -178,11 +212,6 @@
     (org-agenda nil "i")
   ))
 
-;;testing out a custom super-agenda predicate
-;;It looks like if the predicate returns true, it adds to the group
-(defun test-p (item)
-  (message (concat "\"" (string-trim item) "\""))
-  )
 
 (defun custom-agenda-get-ahead ()
   "Opens a view for Next Actions that are scheduled in the future"
@@ -191,10 +220,30 @@
     (setq org-agenda-custom-commands
             '(("g" "Custom agenda - Next Actions -> Get Ahead"
                (
-                ;;Get the items scheduled in the future
-                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :from 1)) ((org-ql-block-header "Get Ahead")))
-                ;;Get the closed items for today
-                (org-ql-block '(and (todo "DONE") (closed :on today)) ((org-ql-block-header "Closed")))
+                ;;Get the items scheduled in the future, excluding habits.
+                (org-ql-block '(or
+                                 (and
+                                   (todo)
+                                   (ancestors (heading "Next Actions"))
+                                   (scheduled :from 1)
+                                   (not (habit))
+                                  )
+                                 (and 
+                                   (habit)
+                                   (scheduled :from 1)
+                                   (not (regexp (get-habit-last-repeat-regex)))
+                                  )
+                                 )
+                               ((org-ql-block-header "Get Ahead")))
+                ;;Get the closed items for today, including habits
+                (org-ql-block '(or
+                                (and (todo "DONE") (closed :on today))
+                                ;;Select Habits that are NOT completed today, but are scheduled in the future
+                                (and (habit)
+                                     (regexp (get-habit-last-repeat-regex) )
+                                     )
+                                )
+                               ((org-ql-block-header "Closed")))
                )))
           
           org-super-agenda-groups shared-super-agenda-groups
@@ -229,8 +278,13 @@
                 (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :to today)) ((org-ql-block-header "Next Actions (Today)" )) )
                 ;;Get Delegated Tasks
                 (org-ql-block '(and (todo) (ancestors (heading "Delegate"))) ((org-ql-block-header "Delegate")) )
-                ;;Get the closed items for today
-                (org-ql-block '(and (todo "DONE") (closed :on today)) ((org-ql-block-header "Closed")))
+                ;;Get the closed items for today, including habits
+                (org-ql-block '(or
+                                (and (todo "DONE") (closed :on today))
+                                (and (habit) (regexp (get-habit-last-repeat-regex)))
+                                )
+                                ((org-ql-block-header "Closed"))
+                                )
                )))
           
           org-super-agenda-groups shared-super-agenda-groups
