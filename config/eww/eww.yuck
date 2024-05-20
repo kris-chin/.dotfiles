@@ -10,3 +10,4 @@
 (include "./shared/index.yuck")
 (include "./topbar/topbar.yuck")
 (include "./bottombar/bottombar.yuck")
+(include "./desktop/desktop.yuck")

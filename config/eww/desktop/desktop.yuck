@@ -1,0 +1,18 @@
+(defwindow dashboard
+  :geometry (geometry :x "50%" :y "50%" ;;this is just temporary, specifically for dev purporses
+                      :width "50%"
+                      :height "50%")
+  ;;You can open this dashboard as a 
+  :wm-ignore false ;;for debug purposes. change to false when actually using
+  :windowtype "normal"
+  (_dashboard_layout)
+  )
+
+(defwidget _dashboard_layout []
+  (box
+    (box :orientation "v" :space-evenly false :valign "center"
+      (label :style 'font-family: Helvetica; font-weight: bold; font-size: 15em' :text "${_time_data.hour}:${_time_data.min}:${_time_data.seconds}")
+      (label :style 'font-family: Helvetica; font-weight: bold; font-size: 7em' :text "hi chin.")
+      )
+  )
+  )

@@ -1,0 +1,18 @@
+#!/bin/python3
+from i3ipc import Connection, Event
+
+def handle_on_window(i3,e):
+    #Just move ALL eww windows to workspace 1
+    window_instance = (e.container.window_instance)
+    if (window_instance == "eww"):
+        e.container.command("floating disable")
+        e.container.command("move window to workspace 1")
+
+def main():
+  i3 = Connection()   
+  i3.on(Event.WINDOW_NEW, handle_on_window)
+  i3.on(Event.WINDOW_MOVE, handle_on_window)
+  i3.main()
+
+if __name__ == "__main__":
+  main()

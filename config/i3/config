@@ -204,6 +204,9 @@ exec_always --no-startup-id picom -b --fade-in-step=1 --fade-out-step=1 --fade-d
 for_window [class="^.*"] border none
 
 #start eww topbar and bottom bar
-exec_always --no-startup-id ~/.local/bin/eww open-many topbar bottombar
+exec_always --no-startup-id ~/.local/bin/eww open-many topbar bottombar dashboard
 #add a quick keybinding to toggle the widgets (basically fullscreen mode without fullscreen)
-bindsym $mod+Shift+f exec --no-startup-id  ~/.local/bin/eww open-many --toggle topbar bottombar
+bindsym $mod+Shift+f exec --no-startup-id  ~/.local/bin/eww open-many --toggle topbar bottombar dashboard
+
+#always move ALL eww window instances to workspace 1
+exec_always --no-startup-id ~/.config/i3/bin/always-move-eww
