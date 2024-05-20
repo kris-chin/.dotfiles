@@ -1,6 +1,6 @@
 (defpoll _weather_data
   :initial "N/A"
-  :interval "60s"
+  :interval "3600s"
   `curl "wttr.in/?format=j1"`
   )
 
