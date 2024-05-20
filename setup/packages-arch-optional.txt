@@ -4,3 +4,4 @@ libvoikko
 hunspell
 aspell
 aspell-en
+file-roller

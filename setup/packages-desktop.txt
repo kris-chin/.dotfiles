@@ -63,6 +63,7 @@ xorg-xwud
 yad
 spotifyd
 thunar
+thunar-archive-plugin
 tumbler
 autorandr
 tlp
