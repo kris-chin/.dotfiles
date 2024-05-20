@@ -203,5 +203,7 @@ exec_always --no-startup-id picom -b --fade-in-step=1 --fade-out-step=1 --fade-d
 #hide window titlebars
 for_window [class="^.*"] border none
 
-#start eww topbar
+#start eww topbar and bottom bar
 exec_always --no-startup-id ~/.local/bin/eww open-many topbar bottombar
+#add a quick keybinding to toggle the widgets (basically fullscreen mode without fullscreen)
+bindsym $mod+Shift+f exec --no-startup-id  ~/.local/bin/eww open-many --toggle topbar bottombar
