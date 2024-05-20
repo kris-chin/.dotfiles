@@ -248,3 +248,7 @@ as a reminder, chromium can also be a big canidate for power consumption. this o
 
 bruh. eww uses a LOT of CPU. I watched my CPU usage for Xorg drop from 50% to 3% when I killed it..
 I don't have a fix for this yet, but it's good to know.
+
+# HDMI Audio
+
+Regarding HDMI audio, as much as I really want to have a script for it, just use `pavucontrol`, you can use it to specify which output your audio comes out of

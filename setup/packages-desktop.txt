@@ -68,3 +68,4 @@ autorandr
 tlp
 tlpui
 btop
+pavucontrol
