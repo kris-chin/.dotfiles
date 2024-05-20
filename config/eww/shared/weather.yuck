@@ -1,0 +1,55 @@
+(defpoll _weather_data
+  :initial "N/A"
+  :interval "60s"
+  `curl "wttr.in/?format=j1"`
+  )
+
+(defwidget _weather_day_item [maxtempF mintempF astronomy date]
+  (box :space-evenly true :orientation "v" :style "padding: 20px"
+    (label
+      :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 2em'
+      :text "${date}")
+    (label
+      :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 2em'
+      :text "High: ${maxtempF}°F / Low: ${mintempF}°F")
+    ;;(label :visible false :text "${astronomy}")
+    )
+  )
+
+(defwidget _weather [nearest_area current_condition weather]
+  (box :space-evenly false :orientation "h" :halign "center"
+    (box :space-evenly false :orientation "v"
+      (label
+             :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 3em'
+             :text "${nearest_area.areaName[0].value}, ${nearest_area.region[0].value}"
+      )
+      (label
+             :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 3em'
+             :text "${current_condition.weatherDesc[0].value}"
+      )
+      (label
+             :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 3em'
+             :text "Feels like ${current_condition.FeelsLikeF}°F"
+        ) 
+      )
+    (box :style "padding-top: 30px"
+      (for item in weather
+        (_weather_day_item
+          :maxtempF "${item.maxtempF}"
+          :mintempF "${item.mintempF}"
+          :astronomy "${item.astronomy}"
+          :date "${item.date}"
+          )
+      ))
+    )
+    )
+
+;;This one assumes that this is displayed on desktop
+;;I can probably re-write this to account for bar version
+(defwidget Weather []
+  (_weather
+    :current_condition "${_weather_data.current_condition[0]}"
+    :nearest_area "${_weather_data.nearest_area[0]}"
+    :weather "${_weather_data.weather}"
+    )
+  )

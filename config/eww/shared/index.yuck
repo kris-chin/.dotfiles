@@ -9,3 +9,4 @@
 (include "./shared/system-actions.yuck")
 (include "./shared/time_data.yuck")
 (include "./shared/volume.yuck")
+(include "./shared/weather.yuck")
