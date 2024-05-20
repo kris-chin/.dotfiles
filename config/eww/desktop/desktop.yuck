@@ -11,8 +11,8 @@
 (defwidget _dashboard_layout []
   (box
     (box :orientation "v" :space-evenly false :valign "center"
-      (label :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 15em' :text "${_time_data.hour}:${_time_data.min}:${_time_data.seconds}")
-      (label :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 7em' :text "hi chin.")
+      (label :class "dashboard-text" :style "font-size:10em" :text "${_time_data.hour}:${_time_data.min}:${_time_data.seconds}")
+      (label :class "dashboard-text" :style "font-size:7em" :text "hi chin.")
       (box :style "padding-top: 30px")
       (Weather)
       )

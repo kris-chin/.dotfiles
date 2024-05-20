@@ -7,12 +7,18 @@
 (defwidget _weather_day_item [maxtempF mintempF astronomy date]
   (box :space-evenly true :orientation "v" :style "padding: 20px"
     (label
-      :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 2em'
+      :class 'dashboard-text'
+      :style "font-size: 2em"
       :text "${date}")
     (label
-      :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 2em'
+      :class 'dashboard-text'
+      :style "font-size: 2em"
       :text "High: ${maxtempF}°F / Low: ${mintempF}°F")
-    ;;(label :visible false :text "${astronomy}")
+    (label :class 'dashboard-text'
+           ;;TODO: I don't know how wttr.in's moon_illumination number works.
+           ;;So far, it's waxing gibbous nearing 100. But.. Does it go back down from there?
+           ;;Depending on this behavior, I'm gonna have to handle this accordingly
+           :text "${astronomy[0].moon_phase} ${astronomy[0].moon_illumination}")
     )
   )
 
@@ -20,15 +26,18 @@
   (box :space-evenly false :orientation "h" :halign "center"
     (box :space-evenly false :orientation "v"
       (label
-             :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 3em'
+            :class 'dashboard-text'
+            :style "font-size: 3em"
              :text "${nearest_area.areaName[0].value}, ${nearest_area.region[0].value}"
       )
       (label
-             :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 3em'
+             :class 'dashboard-text'
+             :style "font-size: 3em"
              :text "${current_condition.weatherDesc[0].value}"
       )
       (label
-             :style 'text-shadow: 30px 30px 20px black; font-family: Helvetica; font-weight: bold; font-size: 3em'
+             :class 'dashboard-text'
+             :style "font-size: 3em"
              :text "Feels like ${current_condition.FeelsLikeF}°F"
         ) 
       )
