@@ -207,6 +207,10 @@
                 (org-ql-block '(and (todo) (ancestors (heading "Someday"))) ((org-ql-block-header "Someday")) )
                )))
           org-super-agenda-groups '(
+                                    (:name "Scheduled. Please move!" 
+                                           :scheduled t
+                                           :face (:foreground "spring green")
+                                           )
                                     (:auto-category t)
                                     ))
     (org-agenda nil "i")
