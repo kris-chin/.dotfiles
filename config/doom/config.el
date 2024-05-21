@@ -296,7 +296,7 @@
             '(("t" "Custom agenda - Next Actions for Today"
                (
                 ;;Get only the items under "Next Actions"
-                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (scheduled :to today)) ((org-ql-block-header "Next Actions (Today)" )) )
+                (org-ql-block '(and (todo) (ancestors (heading "Next Actions")) (or (scheduled :to today) (not (scheduled)))) ((org-ql-block-header "Next Actions (Today)" )) )
                 ;;Get Delegated Tasks
                 (org-ql-block '(and (todo) (ancestors (heading "Delegate"))) ((org-ql-block-header "Delegate")) )
                 ;;Get the closed items for today, including habits
