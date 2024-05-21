@@ -97,8 +97,8 @@
   ("j" #'org-roam-alias-add "add alias")
   ;; Left-hand side: Adding links / creating new nodes
   ("r" #'org-roam-node-insert "insert link")
+  ;;These two are ALMOST the same thing, but imma just keep them
   ("e" #'org-roam-capture "capture")
-  ;; This command is for finding a node, but why do this if I can search by file?
   ("f" #'org-roam-node-find "find node")
   )
 
@@ -185,7 +185,8 @@
   ("d" #'hydra-gtd/body "GTD" :exit t)
   ("o" #'hydra-org-view-toggles/body "view toggles" :exit t)
   ("i" #'hydra-org-timestamp/body "timestamp" :exit t)
-  ("s" #'org-sort "sort heading")
+  ("l" #'org-insert-link "insert link")
+  ;;("s" #'org-sort "sort heading")
   ;;("8" #'org-toggle-heading "toggle heading")
   )
 ;;this is kinda a crazy mapping but im down wit it..
