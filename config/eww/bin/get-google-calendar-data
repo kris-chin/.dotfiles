@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#Get the calendar data
+calendar_data=$(gcalcli agenda --details calendar --tsv)
+
+#Parse each row into a json item
+calendar_json=$(echo "$calendar_data" | awk -F "\t" '
+BEGIN {
+  printf("%s","{\"items\": [")
+}{
+  printf ("{\"startDate\": \"%s\",\"startTime\":\"%s\",\"endDate\":\"%s\",\"endTime\":\"%s\",\"name\":\"%s\",\"calendar\":\"%s\"},", $1, $2, $3, $4, $5, $6)
+} END {
+  print "]}"
+}
+# Get rid of the last comma with a sed lol
+' | sed 's/},]}/}]}/' )
+
+echo "$calendar_json"

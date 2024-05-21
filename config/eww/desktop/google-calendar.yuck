@@ -1,0 +1,25 @@
+(defpoll _google_calendar_data
+  :interval "3600s"
+  :initial "N/A"
+  `./bin/get-google-calendar-data`
+  )
+
+(defwidget _google_calendar_item [eventData]
+  (box :orientation "h" :space-evenly false
+    (label
+      :class "google-calendar-text" :style "font-size:1em"
+      :text "[${eventData.startDate}] ${eventData.startTime} to ${eventData.endTime} - (${eventData.calendar}) ${eventData.name}")
+    )
+  )
+
+(defwidget _google_calendar_desktop [calendar_items]
+  (box :orientation "v" :space-evenly false :spacing 4 :halign "center"
+    (for item in calendar_items
+      (_google_calendar_item :eventData item)
+      )
+  )
+  )
+
+(defwidget Google_Calendar_Desktop []
+  (_google_calendar_desktop :calendar_items "${_google_calendar_data.items}")
+  )
