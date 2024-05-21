@@ -186,6 +186,11 @@
                                            )
                                            :face (:strike-through t) 
                                            )
+                                    (:name "Vague Tasks"
+                                           :face (:foreground "medium purple" :slant t)
+                                           :tag "vague"
+                                           :order 9
+                                           )
                                     (:name "Projects"
                                           :children todo
                                           :order 10
@@ -200,11 +205,12 @@
                                            )
                                     (:name "Waiting"
                                           :todo "WAIT")
-                                    (:name "To Book"
-                                          :tag "booking"
+                                    (:name "Contacting/Booking"
+                                          :tag ("calling" "emailing" "texting" "contacting" "booking")
                                           )
-                                    (:name "Requires Contacting Someone"
-                                          :tag ("calling" "emailing" "texting")
+                                    ;;I don't want to use the word "research", in case I ever do it in the future.
+                                    (:name "Digging around"
+                                          :tag ("digging" "searching" "investigation")
                                           )
                                     (:name "Tasks"
                                           :todo "TODO"
@@ -324,7 +330,7 @@
                         :height 1.2
                         )
     (set-face-attribute 'org-super-agenda-header nil
-                        :height 1.2
+                        :height 1.05
                         )
     (org-agenda nil "t")
   ))
