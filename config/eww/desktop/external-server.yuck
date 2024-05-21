@@ -1,0 +1,21 @@
+(defpoll _external_server_data
+  :initial "N/A"
+  :interval "3600s"
+  `./bin/get-external-server-data`)
+
+(defwidget _external_server_info [percent used avail size]
+  (box
+    (label
+      :class "dashboard-text"
+      :style "font-size:2em"
+      :text "Server usage: ${used} of ${size} (${percent}) used. ${avail} Available"
+    )
+  ))
+
+(defwidget External_Server_Info []
+  (_external_server_info
+    :percent "${_external_server_data.percent}"
+    :used "${_external_server_data.used}"
+    :avail "${_external_server_data.avail}"
+    :size "${_external_server_data.size}"
+  ))

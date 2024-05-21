@@ -13,3 +13,4 @@
 
 (include "./desktop/desktop.yuck")
 (include "./desktop/google-calendar.yuck")
+(include "./desktop/external-server.yuck")
