@@ -81,6 +81,23 @@
 ;;Disable general-override-mode when we exit the agenda
 (advice-add 'org-agenda-quit :after 'override-org-agenda-maps)
 
+;;Function advice to add metadata to item whenever it is scheduled
+(defun add-schedule-metadata (&rest r)
+  (interactive "P")
+  (let ((marker (or (org-get-at-bol 'org-hd-marker)
+                    (org-agenda-error))))
+      (org-with-point-at marker
+        (org-back-to-heading t)
+        (let ((schedule_count (org-entry-get (point) "SCHEDULE_COUNT")))
+          (if schedule_count 
+            ;;If defined increment it by 1
+            (org-entry-put (point) "SCHEDULE_COUNT" (number-to-string (+ (string-to-number schedule_count) 1)))
+            ;;If undefined, add a schedule_count property as 1
+            (org-entry-put (point) "SCHEDULE_COUNT" "1"))))))
+
+;;Add advice to track schedule count after rescheduling 
+(advice-add #'org-agenda-schedule :after-while #'add-schedule-metadata)
+
 ;;Helper function to convert org timestamp to formatted string
 (defun format-org-timestamp (timestamp format-string)
   "Format an Org Mode TIMESTAMP according to FORMAT-STRING."
