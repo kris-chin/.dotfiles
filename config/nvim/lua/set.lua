@@ -6,6 +6,8 @@ vim.opt.relativenumber = true
 
 --set the cursor line so it's easier to see the current line
 vim.opt.cursorline = true
+--enable cursorcolumn highlighting as well
+vim.opt.cursorcolumn = true
 
 --Tabs
 vim.opt.shiftwidth = 2 --note: this is listened to over prettier? prettier seems to not help with this
@@ -31,3 +33,4 @@ end
 vim.opt.foldmethod = "indent"
 --auto open all folds
 vim.opt.foldlevel = 99
+
