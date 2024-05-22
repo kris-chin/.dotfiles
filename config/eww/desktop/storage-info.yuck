@@ -1,0 +1,31 @@
+(defpoll _storage_data
+  :initial "N/A"
+  :interval "3600s"
+  `./bin/get-storage-data`)
+
+(defwidget _filesystem_info [filesystem percent used avail size mount]
+  (box
+    (label
+      :class "dashboard-text"
+      :style "font-size:2em"
+      :text "[\"${filesystem}\" mounted at \"${mount}\"] Server usage: ${used} of ${size} (${percent}) used. ${avail} Available"
+    )
+  ))
+
+(defwidget _storage_info [filesystems]
+  (box :orientation "v" :space-evenly false
+    (for fs_data in filesystems
+      (box
+        (_filesystem_info
+          :percent "${fs_data.percent}"
+          :used "${fs_data.used}"
+          :avail "${fs_data.avail}"
+          :size "${fs_data.size}"
+          :filesystem "${fs_data.filesystem}"
+          :mount "${fs_data.mount}"
+          )
+    ))))
+
+(defwidget Storage_Info []
+  (_storage_info :filesystems "${_storage_data.filesystems}")
+  )

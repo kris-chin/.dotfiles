@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#Get the start of the json array
+final_output=$(printf "%s" "{\"filesystems\":[")
+
+#Get information from external server 
+external_server_login_data=$(cat ~/.external_server_login)
+external_server_ssh_command="df -h"
+external_server_output=$(ssh "$external_server_login_data" "$external_server_ssh_command" 2>&1)
+external_server_filesystem="/dev/vda1"
+external_server_data=$(echo "$external_server_output" | grep -w $external_server_filesystem | awk '{
+printf("{\"filesystem\":\"%s\",\"size\":\"%s\",\"used\":\"%s\",\"avail\":\"%s\",\"percent\":\"%s\",\"mount\":\"%s\"},",$1, $2, $3, $4, $5, $6)
+}' | sed 's/G/GB/g')
+
+final_output+=$(printf "%s" "$external_server_data")
+
+#Get information from our computer
+personal_computer_filesystems=( "/dev/nvme0n1p6" "/dev/nvme0n1p8" )
+
+for personal_computer_filesystem in "${personal_computer_filesystems[@]}" ; do
+  personal_computer_data=$(echo "$(df -h)" | grep -w "$personal_computer_filesystem" | awk '{
+    printf("{\"filesystem\":\"%s\",\"size\":\"%s\",\"used\":\"%s\",\"avail\":\"%s\",\"percent\":\"%s\",\"mount\":\"%s\"},",$1, $2, $3, $4, $5, $6)
+    }' | sed 's/G/GB/g')
+  final_output+=$(printf "%s" "$personal_computer_data")
+done
+
+#Add the the end of the json
+final_output+=$(printf "%s\n" "]}")
+
+#Format then echo the final output
+echo "$final_output" | sed 's/},]}/}]}/'
