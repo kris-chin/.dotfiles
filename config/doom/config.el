@@ -152,6 +152,72 @@
   (message (concat "TEST:\"" (string-trim item) "\""))
   )
 
+;;shorthand function to return a string with the following format:
+;;"keyname":"keyvalue"
+(defun json-str-property (key value)
+  (format "\"%s\":\"%s\"" key value)
+  )
+
+;;shorthand function to return an array with the following format:
+;;"keyname": [list contents, no modifications done, you'll still need to do that yourself]
+(defun json-array-property (key listvalue)
+  (format "\"%s\":[%s]" key (mapconcat (lambda (x)
+                                         (if (eq (car (last listvalue)) x)
+                                           (format "%s" x) ;;if last item
+                                           (format "%s," x)
+                                           ))
+                                       listvalue)))
+
+;;Helper function that removes the last character of a string only if it is a comma
+(defun remove-last-comma (str)
+  (if (and str (> (length str) 0) (string= (substring str -1) ","))
+      (substring str 0 -1)
+    str
+  ))
+
+;;Go through agenda files and get data on TODO items
+(defun get-org-data-as-json ()
+  ;;First, set up the beginning of the json-output
+  (let ((json-output "{\"entries\":["))
+    ;;Then, call a function on every org element that matches our criteria.
+    (org-map-entries (lambda () (let ((element (org-element-at-point)))
+        (setq json-output (concat json-output (format "{%s,%s,%s,%s,%s,%s,%s}"
+          (json-str-property "name" (org-element-property :title element))
+          (json-str-property "created_date" (org-entry-get (point) "CREATED"))
+          (json-str-property "scheduled_date" (org-entry-get (point) "SCHEDULED"))
+          (json-str-property "closed_date" (org-entry-get (point) "CLOSED"))
+          (json-str-property "schedule_count" (org-entry-get (point) "SCHEDULE_COUNT"))
+          (json-str-property "bucket" (org-with-point-at (org-element-property :org-hd-marker element)
+                          (org-back-to-heading t)
+                          ;;Go up to heading
+                          (org-up-heading-safe)
+                          (let (
+                                (heading (nth 4 (org-heading-components)))
+                                (todo-state (nth 2 (org-heading-components)))
+                                ) 
+                              ;;Return nil if a task is a subtask. Return heading if not.
+                              (if todo-state nil heading)
+                            )
+                        ))
+          (json-array-property "tags" (mapcar '(lambda (x) (format "\"%s\"" x) ) (org-element-property :tags element)))
+        ) "," )))
+      )
+      "TODO=\"TODO\"|TODO=\"WAIT\"|TODO=\"DONE\"" ;;the documentation for this is crap, I didn't know I could do this.
+      'agenda ;;call the function on all agenda files
+    )
+    ;;Lastly, trim the last comma, and end the json off
+    (concat (remove-last-comma json-output) "]}" )
+    )
+  )
+
+;;Write the org json data to a hard-coded file. I'm not gonna bother :P
+(defun write-json-org-data (&rest r)
+  (interactive)
+  (write-region (get-org-data-as-json) nil (concat (expand-file-name "~") "/org-data.json") )
+  )
+
+(advice-add #'org-save-all-org-buffers :after #'write-json-org-data)
+
 ;;Returns a dynamic regex that matches for a habit that was last repeated today.
 (defun get-habit-last-repeat-regex ()
  (format-time-string "LAST_REPEAT: \\[%Y-%m-%d" (seconds-to-time (float-time)))
