@@ -154,8 +154,9 @@
 
 ;;shorthand function to return a string with the following format:
 ;;"keyname":"keyvalue"
+;;has some additional handling to return null if "value" is nil
 (defun json-str-property (key value)
-  (format "\"%s\":\"%s\"" key value)
+  (format "\"%s\":%s" key (if value (format "\"%s\"" value) "null"))
   )
 
 ;;shorthand function to return an array with the following format:
@@ -168,24 +169,31 @@
                                            ))
                                        listvalue)))
 
-;;Helper function that removes the last character of a string only if it is a comma
-(defun remove-last-comma (str)
-  (if (and str (> (length str) 0) (string= (substring str -1) ","))
-      (substring str 0 -1)
+;;Helper function that removes the last character of a string only if it matches the substring
+(defun remove-last-substring (str sub)
+  (if (and str (> (length str) 0) (string= (substring str (* -1 (length sub))) sub))
+      (substring str 0 (* -1 (length sub)))
     str
   ))
+
+;;Formats an org timestamp to iso8601
+(defun format-org-timestamp-to-iso (timestamp)
+  (format-org-timestamp timestamp "%Y-%m-%dT%H:%M:%S%:z")
+  )
 
 ;;Go through agenda files and get data on TODO items
 (defun get-org-data-as-json ()
   ;;First, set up the beginning of the json-output
-  (let ((json-output "{\"entries\":["))
+  (let ((json-output "{\n\t\"entries\":[\n"))
     ;;Then, call a function on every org element that matches our criteria.
     (org-map-entries (lambda () (let ((element (org-element-at-point)))
-        (setq json-output (concat json-output (format "{%s,%s,%s,%s,%s,%s,%s}"
+        (setq json-output (concat json-output "\t\t" (format "{%s,%s,%s,%s,%s,%s,%s,%s,%s}"
           (json-str-property "name" (org-element-property :title element))
-          (json-str-property "created_date" (org-entry-get (point) "CREATED"))
-          (json-str-property "scheduled_date" (org-entry-get (point) "SCHEDULED"))
-          (json-str-property "closed_date" (org-entry-get (point) "CLOSED"))
+          (json-str-property "todo_keyword" (org-element-property :todo-keyword element))
+          (json-str-property "priority" (org-element-property :priority element))
+          (json-str-property "created_date" (format-org-timestamp-to-iso (org-entry-get (point) "CREATED")))
+          (json-str-property "scheduled_date" (format-org-timestamp-to-iso (org-entry-get (point) "SCHEDULED")))
+          (json-str-property "closed_date" (format-org-timestamp-to-iso (org-entry-get (point) "CLOSED")))
           (json-str-property "schedule_count" (org-entry-get (point) "SCHEDULE_COUNT"))
           (json-str-property "bucket" (org-with-point-at (org-element-property :org-hd-marker element)
                           (org-back-to-heading t)
@@ -200,13 +208,13 @@
                             )
                         ))
           (json-array-property "tags" (mapcar '(lambda (x) (format "\"%s\"" x) ) (org-element-property :tags element)))
-        ) "," )))
+        ) ",\n" )))
       )
       "TODO=\"TODO\"|TODO=\"WAIT\"|TODO=\"DONE\"" ;;the documentation for this is crap, I didn't know I could do this.
       'agenda ;;call the function on all agenda files
     )
     ;;Lastly, trim the last comma, and end the json off
-    (concat (remove-last-comma json-output) "]}" )
+    (concat (remove-last-substring json-output ",\n") "\n\t],\n\t\"last_updated\":\"" (format-time-string "%Y-%m-%dT%H:%M:%S%:z" (seconds-to-time (float-time) )) "\"\n}\n" )
     )
   )
 
