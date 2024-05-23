@@ -1,0 +1,54 @@
+#!/bin/python3
+from argparse import ArgumentParser
+import datetime
+import json
+import sys
+
+#Reads the org data file and generates metadata 
+
+def main():
+    #Setup
+    parser = ArgumentParser("Org-Agenda Metadata");
+    parser.add_argument("filepath",help="filepath to open")
+    args = parser.parse_args()
+    
+    try:
+        with open(args.filepath, "r") as f:
+            org_data = json.loads(''.join(f.readlines()))
+
+            completed_count = 0
+            todays_tasks = []
+            inbox_count = 0
+
+            for entry in org_data["entries"]:
+                if entry["bucket"] == "Inbox":
+                    inbox_count += 1
+                if entry["todo_keyword"] == "DONE":
+                    completed_count += 1
+                elif entry["bucket"] == "Next Actions":
+                    #Check schedule date relative to today
+                    scheduled_date = datetime.datetime.fromisoformat(entry["scheduled_date"]).date()
+                    today = datetime.datetime.today().astimezone().date()
+                    date_difference = (scheduled_date - today).days
+                    if (scheduled_date < today):
+                        entry["name"] = f"[OVERDUE] {entry['name']} in {date_difference}d"
+                    else:
+                        entry["name"] = f"{entry['name']} in {date_difference}d"
+
+                    todays_tasks.append(entry)
+            output = {
+                    "completed_count": completed_count,
+                    "todays_tasks": todays_tasks,
+                    "inbox_count": inbox_count,
+                    "last_updated": str(datetime.datetime.fromisoformat(org_data["last_updated"]).date())
+                    }
+            print(json.dumps(output))
+            sys.stdout.flush()
+
+    except FileNotFoundError:
+        print("File doesn't exist")
+    except Exception as e:
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()

@@ -17,7 +17,10 @@
       (label :class "dashboard-text" :style "font-size:7em" :text "hi chin.")
       (box :style "padding-top: 30px")
       (Weather)
-      (Google_Calendar_Desktop)
+      (box :orientation "h"
+          (Google_Calendar_Desktop)
+          (Org_Agenda_Info)
+      )
       (Storage_Info)
       )
   )

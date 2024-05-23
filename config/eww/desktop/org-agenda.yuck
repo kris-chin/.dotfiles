@@ -1,0 +1,47 @@
+(defpoll _org_agenda_metadata 
+  :interval "3600s" ;;I'll change this later
+  :initial "N/A"
+  `./bin/generate-org-metadata /home/krischin/org-data.json`)
+
+(defwidget _org_agenda_entry [entry]
+  (box 
+    (label :halign "start"
+      :class "org-agenda-text"
+      :style "font-size:1em"
+      :text "${entry.name}")
+    )
+  )
+
+(defwidget _org_agenda_info [entries last_updated completed_count inbox_count]
+  (box :orientation "v" :space-evenly false
+    (box :orientation "h" 
+      (box :orientation "v" :space-evenly true
+        (label :class "org-agenda-text" :style "font-size:1.2em" :text "Last Updated:")
+        (label :class "org-agenda-text" :style "font-size:2em" :text "${last_updated}")
+      )
+      (box :orientation "v" :space-evenly true
+        (label :class "org-agenda-text" :style "font-size:1.2em" :text "Completed Tasks:")
+        (label :class "org-agenda-text" :style "font-size:2em" :text "${completed_count}")
+      )
+      (box :orientation "v" :space-evenly true
+        (label :class "org-agenda-text" :style "font-size:1.2em" :text "Inbox:")
+        (label :class "org-agenda-text" :style "font-size:2em" :text "${inbox_count}")
+      )
+      )
+    ;;the scroll widget is buggy?
+    ;;(scroll :vscroll true
+      (box :orientation "v" :space-evenly false
+        (for entry in entries
+          (_org_agenda_entry :entry "${entry}")
+          )
+        )
+      ;;)
+  ))
+
+(defwidget Org_Agenda_Info []
+  (_org_agenda_info
+    :entries "${_org_agenda_metadata.todays_tasks}"
+    :last_updated "${_org_agenda_metadata.last_updated}"
+    :completed_count "${_org_agenda_metadata.completed_count}"
+    :inbox_count "${_org_agenda_metadata.inbox_count}"
+  ))
