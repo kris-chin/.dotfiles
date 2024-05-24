@@ -10,6 +10,8 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+#For some reason, Mod1 is alt, not "Alt"
+set $alt Mod1
 
 #Font  (default: monospace 8)
 font pango:Cozette 10
@@ -57,6 +59,7 @@ bindsym $mod+Shift+q kill
 #bindsym $mod+d exec --no-startup-id dmenu_run
 bindsym $mod+Return exec --no-startup-id rofi -show drun -show-icons
 bindsym $mod+Shift+Return exec --no-startup-id rofi -show run
+bindsym $mod+Ctrl+Return exec --no-startup-id env NO_TMUX=true alacritty
 
 # change focus and move mouse
 #TODO: figure out if I still want to use mod (for everything in the terminal) or use Ctrl. Using ctrl for this navigation actually conflicts with chrome's keybindings. I COULD change them, but that wouldn't be universal
