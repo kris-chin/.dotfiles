@@ -8,11 +8,11 @@
     (label :halign "start"
       :class "org-agenda-text"
       :style "font-size:1em"
-      :text "${entry.name}")
+      :text "${entry.name} [Logbook Entries: ${arraylength(entry.logbook_entries)}]")
     )
   )
 
-(defwidget _org_agenda_info [entries last_updated completed_count inbox_count]
+(defwidget _org_agenda_info [todays_tasks habits last_updated completed_count inbox_count]
   (box :orientation "v" :space-evenly false
     (box :orientation "h" 
       (box :orientation "v" :space-evenly true
@@ -31,7 +31,14 @@
     ;;the scroll widget is buggy?
     ;;(scroll :vscroll true
       (box :orientation "v" :space-evenly false
-        (for entry in entries
+        (label :class "org-agenda-text" :style "font-size:2em" :halign "start" :text "today's tasks")
+        (for entry in todays_tasks
+          (_org_agenda_entry :entry "${entry}")
+          )
+        )
+      (box :orientation "v" :space-evenly false
+        (label :class "org-agenda-text" :style "font-size:2em" :halign "start" :text "habits")
+        (for entry in habits
           (_org_agenda_entry :entry "${entry}")
           )
         )
@@ -40,7 +47,8 @@
 
 (defwidget Org_Agenda_Info []
   (_org_agenda_info
-    :entries "${_org_agenda_metadata.todays_tasks}"
+    :todays_tasks "${_org_agenda_metadata.todays_tasks}"
+    :habits "${_org_agenda_metadata.habits}"
     :last_updated "${_org_agenda_metadata.last_updated}"
     :completed_count "${_org_agenda_metadata.completed_count}"
     :inbox_count "${_org_agenda_metadata.inbox_count}"

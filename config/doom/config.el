@@ -165,7 +165,7 @@
   (format "\"%s\":[%s]" key (mapconcat (lambda (x)
                                          (if (eq (car (last listvalue)) x)
                                            (format "%s" x) ;;if last item
-                                           (format "%s," x)
+                                           (format "%s,\n" x)
                                            ))
                                        listvalue)))
 
@@ -181,13 +181,42 @@
   (format-org-timestamp timestamp "%Y-%m-%dT%H:%M:%S%:z")
   )
 
+(defun escape-double-quotes (str)
+  "Escape double quotes in the given string."
+  (replace-regexp-in-string "\"" "\\\\\"" str))
+
+;;ChatGPT-ass funnction to get the logbook entries of an org element
+(defun get-element-logbook-entries ()
+  "Retrieve logbook entries for the Org element at point, even if point is not directly on the :LOGBOOK: keyword."
+  (interactive)
+  (save-excursion
+    (let* ((element (org-element-at-point))
+           (beg (org-element-property :begin element))
+           (end (org-element-property :end element))
+           (logbook-entries))
+      (goto-char beg)
+      (while (re-search-forward ":LOGBOOK:" end t)
+        (let* ((drawer (org-element-at-point))
+               (drawer-name (org-element-property :drawer-name drawer)))
+          (when (string= drawer-name "LOGBOOK")
+            (let ((contents (buffer-substring-no-properties
+                             (org-element-property :contents-begin drawer)
+                             (org-element-property :contents-end drawer))))
+              (setq logbook-entries
+                    (append logbook-entries
+                            (mapcar #'escape-double-quotes
+                                    (split-string contents "\n" t))))))))
+      (if logbook-entries
+          (message "Logbook entries: %s" logbook-entries)
+        (message "No logbook entries found"))
+      logbook-entries)))
 ;;Go through agenda files and get data on TODO items
 (defun get-org-data-as-json ()
   ;;First, set up the beginning of the json-output
   (let ((json-output "{\n\t\"entries\":[\n"))
     ;;Then, call a function on every org element that matches our criteria.
     (org-map-entries (lambda () (let ((element (org-element-at-point)))
-        (setq json-output (concat json-output "\t\t" (format "{%s,%s,%s,%s,%s,%s,%s,%s,%s}"
+        (setq json-output (concat json-output "\t\t" (format "{%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s}"
           (json-str-property "name" (org-element-property :title element))
           (json-str-property "todo_keyword" (org-element-property :todo-keyword element))
           (json-str-property "priority" (org-element-property :priority element))
@@ -195,6 +224,7 @@
           (json-str-property "scheduled_date" (format-org-timestamp-to-iso (org-entry-get (point) "SCHEDULED")))
           (json-str-property "closed_date" (format-org-timestamp-to-iso (org-entry-get (point) "CLOSED")))
           (json-str-property "schedule_count" (org-entry-get (point) "SCHEDULE_COUNT"))
+          (json-str-property "style" (org-entry-get (point) "STYLE"))
           (json-str-property "bucket" (org-with-point-at (org-element-property :org-hd-marker element)
                           (org-back-to-heading t)
                           ;;Go up to heading
@@ -208,6 +238,7 @@
                             )
                         ))
           (json-array-property "tags" (mapcar '(lambda (x) (format "\"%s\"" x) ) (org-element-property :tags element)))
+          (json-array-property "logbook_entries" (mapcar '(lambda (x) (format "\t\t\"%s\"" x) ) (get-element-logbook-entries)))
         ) ",\n" )))
       )
       "TODO=\"TODO\"|TODO=\"WAIT\"|TODO=\"DONE\"" ;;the documentation for this is crap, I didn't know I could do this.

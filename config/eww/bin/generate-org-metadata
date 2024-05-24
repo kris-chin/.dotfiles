@@ -19,6 +19,7 @@ def main():
             completed_count = 0
             todays_tasks = []
             inbox_count = 0
+            habits = []
 
             for entry in org_data["entries"]:
                 if entry["bucket"] == "Inbox":
@@ -35,12 +36,17 @@ def main():
                     else:
                         entry["name"] = f"{entry['name']} in {date_difference}d"
 
-                    todays_tasks.append(entry)
+                    #if a habit, move to the habit list instead
+                    if entry["style"] == "habit":
+                        habits.append(entry)
+                    else:
+                        todays_tasks.append(entry)
             output = {
                     "completed_count": completed_count,
                     "todays_tasks": todays_tasks,
                     "inbox_count": inbox_count,
-                    "last_updated": str(datetime.datetime.fromisoformat(org_data["last_updated"]).date())
+                    "last_updated": str(datetime.datetime.fromisoformat(org_data["last_updated"]).date()),
+                    "habits": habits
                     }
             print(json.dumps(output))
             sys.stdout.flush()
