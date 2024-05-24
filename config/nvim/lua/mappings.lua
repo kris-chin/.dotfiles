@@ -3,6 +3,10 @@
 --Delete current buffer and replace it with new buffer
 vim.keymap.set('n', '<leader>bd', ':bp<bar>sp<bar>bn<bar>bd<CR>')
 
+--bind Alt-J and Alt+K to increment and decrement numbers
+vim.keymap.set('n', '<A-k>','<C-a>')
+vim.keymap.set('n', '<A-j>','<C-x>')
+
 --use CTRL + hjkl in insert mode to move cursor (wont work for certain plugins, only insert mode.
 --this is safe with tmux (probably thanks to tmux + neovim)
 --vim.keymap.set('i', '<C-j>', '<Down>')
