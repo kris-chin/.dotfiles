@@ -217,7 +217,7 @@
     ;;Then, call a function on every org element that matches our criteria.
     (org-map-entries (lambda () (let ((element (org-element-at-point)))
         (setq json-output (concat json-output "\t\t" (format "{%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s}"
-          (json-str-property "name" (org-element-property :title element))
+          (json-str-property "name" (escape-double-quotes (org-element-property :title element)))
           (json-str-property "todo_keyword" (org-element-property :todo-keyword element))
           (json-str-property "priority" (org-element-property :priority element))
           (json-str-property "created_date" (format-org-timestamp-to-iso (org-entry-get (point) "CREATED")))
