@@ -4,6 +4,7 @@
 (include "./shared/cpu.yuck")
 (include "./shared/i3.yuck")
 (include "./shared/moonphase.yuck")
+(include "./shared/most-cpu.yuck")
 (include "./shared/network.yuck")
 (include "./shared/spotify.yuck")
 (include "./shared/system-actions.yuck")

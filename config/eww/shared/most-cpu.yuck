@@ -1,0 +1,30 @@
+(defpoll _most_cpu_data 
+  :interval "1s"
+  :initial "N/A"
+  "./bin/get-most-cpu"
+)
+
+(defwidget _most_cpu [top-processes]
+  (box
+    :orientation "h"
+    :space-evenly false
+    (for process in top-processes
+      (box
+        :style "min-width: 125px;"
+        :space-evenly false
+        :spacing 8
+          (label
+            :style "font-weight: bold;"
+            :text "| ${round(process.cpu_percent, 0)}%")
+          (label
+            :limit-width 8
+            :halign "end"
+            :text "${process.process_name}")
+        )
+      )
+  )
+)
+
+(defwidget Most_Cpu []
+  (_most_cpu :top-processes "${_most_cpu_data}")
+  )

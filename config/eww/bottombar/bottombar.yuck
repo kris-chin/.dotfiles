@@ -7,32 +7,42 @@
 )
 
 (defwidget bottombar_leftside []
-  (box :halign "start" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
-      (box :spacing 15 :class "" :space-evenly false
-        :halign "start"
-        (Time_Date)
-        (label :text "|")
-        (Time_Year)
-        (Moonphase)
+  (box :halign "start" :orientation "v"
+    (box)
+    (box :halign "start" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
+        (box :spacing 15 :class "" :space-evenly false
+          :halign "start"
+          (Time_Date)
+          (label :text "|")
+          (Time_Year)
+          (Moonphase)
+        )
       )
     )
   )
 
 (defwidget bottombar_middle []
-  (box :halign "center" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
-    (Spotify)
-    )
+  (box :halign "center" :orientation "v"
+    (box :halign "center" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
+      (Spotify)
+      )
+  )
   )
 
 (defwidget bottombar_rightside []
-  (box :halign "end" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
-      (box :spacing 15 :class "" :space-evenly false
-        :halign "start"
-        (Cpu_Usage)
-        (label :text "|")
-        (Network)
-        (label :text "|")
-        (Bluetooth)
+  (box :halign "end" :orientation "v"
+    (box :halign "end" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
+      (Most_Cpu)
+      )
+    (box :halign "end" :style "padding-left: 10px; padding-right: 10px; color: ${colors.bright_white}; background-color: ${colors.black}; border-radius: 20px; border-style: solid; border-width: 2px" 
+        (box :spacing 15 :class "" :space-evenly false
+          :halign "start"
+          (Cpu_Usage)
+          (label :text "|")
+          (Network)
+          (label :text "|")
+          (Bluetooth)
+        )
       )
     )
   )
