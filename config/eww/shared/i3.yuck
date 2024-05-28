@@ -1,7 +1,7 @@
 ;;get i3 workspace info
 (deflisten _i3_data
   :initial "N/A"
-  `./bin/get-i3-info`)
+  `tail -f /tmp/i3_data`)
 
 (defwidget _workspace_item [name focused]
   (box :class "" :space-evenly false :style "padding-left: 5px; padding-right: 5px"

@@ -94,7 +94,8 @@ bindsym $mod+Shift+k exec --no-startup-id ~/.config/i3/bin/resize-relative up 50
 bindsym $mod+minus split toggle
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f exec --no-startup-id ~/.config/i3/bin/toggle-fullscreen
+#bindsym $mod+f exec --no-startup-id ~/.config/i3/bin/toggle-fullscreen
+bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 #bindsym $mod+s layout stacking
@@ -210,11 +211,12 @@ exec_always --no-startup-id picom -b
 
 #hide window titlebars
 for_window [class="^.*"] border none
+#start background process to write i3 data
+exec_always --no-startup-id ~/.config/i3/bin/get-i3-info
 
 #start eww topbar and bottom bar
 exec_always --no-startup-id ~/.local/bin/eww open-many topbar bottombar dashboard
 #add a quick keybinding to toggle the widgets (basically fullscreen mode without fullscreen)
 bindsym $mod+Shift+f exec --no-startup-id  ~/.local/bin/eww open-many --toggle topbar bottombar dashboard
-
 #always move ALL eww window instances to workspace 1
 exec_always --no-startup-id ~/.config/i3/bin/always-move-eww

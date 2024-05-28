@@ -1,9 +1,19 @@
 #!/bin/python3
 from i3ipc import Connection, Event
 from json import dumps
+import subprocess
 import sys
+import os
 
 MINIMUM_WORKSPACES = 5
+EWW_PATH = os.path.expanduser("~/.local/bin/eww")
+EWW_WIDGETS = ["topbar", "bottombar"]
+TMP_FILEPATH = "/tmp/i3_data"
+
+#Create tmpdata if it doesnt exist
+if not os.path.isfile(TMP_FILEPATH):
+    with open(TMP_FILEPATH, 'w') as f:
+        pass
 
 #Takes a search id, and attempts to find the parent of the search_id
 #Copy-and-pasted from bsp
@@ -55,6 +65,29 @@ def get_info(i3, e):
 
     parent = search_for_parent(i3.get_tree(), focused.id)
     output["orientation"] = parent.orientation if parent is not None else None
+
+    #If a window is in fullscreen, disable the widgets. Otherwise, re-enable them
+    isFullscreen = len(workspace.find_fullscreen()) > 0
+    
+    def isWorkspaceChange(event):
+        if event == None:
+            return False
+        if event.change != "run":
+            return False
+        if event.binding == None:
+            return False
+        if event.binding.command == None:
+            return False
+        if any(x in event.binding.command for x in ["workspace number", "fullscreen toggle"]):
+            return True
+        else:
+            return False
+
+    if (isWorkspaceChange(e)):
+        if (isFullscreen):
+            subprocess.run([EWW_PATH, "close", *EWW_WIDGETS], stdout = subprocess.DEVNULL)
+        else:
+            subprocess.run([EWW_PATH, "open-many", *EWW_WIDGETS], stdout = subprocess.DEVNULL)
     
     #Set up a map of our workspaces
     workspace_info = {}
@@ -94,9 +127,11 @@ def get_info(i3, e):
     outer = f"(box {joined_workspaces})"
     output["workspaces"] = outer
 
-    #Print to stdout, eww will pick this up
-    print(dumps(output))
-    sys.stdout.flush()
+    #Write to temp file for eww to pick up
+    #(We have to do it this way because simply just printing the output would actually indirectly kill this script due to how the script closes eww widgets)
+    with open(TMP_FILEPATH, "a") as f:
+        f.write(dumps(output))
+        f.write("\n")
 
 #Run handler so we get some initial data
 get_info(i3, None)
