@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Get the calendar data
-calendar_data=$(gcalcli agenda --details calendar --tsv)
+calendar_data=$(gcalcli --client-id=$(cat ~/.google_calendar_client_id) --client-secret=$(cat ~/.google_calendar_client_secret) agenda --details calendar --tsv)
 
 #Parse each row into a json item
 calendar_json=$(echo "$calendar_data" | awk -F "\t" '
