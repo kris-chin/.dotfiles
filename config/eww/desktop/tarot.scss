@@ -1,0 +1,11 @@
+.tarot-card {
+  & > svg {
+    color: red;
+  }
+}
+.tarot-text {
+  text-shadow: 1px 1px black;
+  font-family: Helvetica;
+  font-weight: bold;
+}
+

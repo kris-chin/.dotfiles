@@ -16,7 +16,10 @@
         :text "${_time_data.hour}:${_time_data.min}:${_time_data.seconds}")
       (label :class "dashboard-text" :style "font-size:7em" :text "hi chin.")
       (box :style "padding-top: 30px")
-      (Weather)
+      (box :orientation "h"
+        (Weather)
+        (Tarot)
+      )
       (box :orientation "h"
           (Google_Calendar_Desktop)
           (Org_Agenda_Info)

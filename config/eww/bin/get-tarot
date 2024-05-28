@@ -1,0 +1,167 @@
+#!/bin/python3
+import random
+from argparse import ArgumentParser
+import os
+import json
+from datetime import datetime
+import sys
+
+#Get a spread, generate random cards based on spread.
+
+"""
+Spread shape. Pos represents the positioning of the cards, with (0,0) being the relative center. Rot is the rotation in degrees. Can be positive or negative
+{
+    name: "Past-Present-Future Spread",
+    id: 1,
+    description: "",
+    cards: [
+        {
+            order: 0,
+            purpose: "Past"
+            pos: {
+                x: -1,
+                y: 0
+            },
+            rot: 0
+        },
+        {
+            order: 1,
+            purpose: "Present"
+            pos: {
+                x: 0,
+                y: 0
+            },
+            rot: 0 
+        },
+        {
+            order: 2,
+            purpose: "Future"
+            pos: {
+                x: 0,
+                y: 0
+            },
+            rot: 0 
+        }
+    ]
+}
+"""
+
+
+def main():
+    parser = ArgumentParser("get-tarot")
+    parser.add_argument("spread", help="spread to choose. Can be either a string or an id")
+    parser.add_argument("-s", '--spread_data',
+                        nargs='?', default=os.path.expanduser("~/spreads.json"),
+                        help="If specified, pulls spread data from this file instead of default")
+    parser.add_argument('--cards',
+                        nargs='?', default=os.path.expanduser("~/tarot-data.json"),
+                        help="If specified, pulls card data fro this file instead of default (why would you do this?)")
+    parser.add_argument('--image_dir',
+                        nargs='?', default=os.path.expanduser("~/assets/tarot_svg"),
+                        help="Specifies a directory to derive image files from")
+
+    args = parser.parse_args()
+    try:
+        with open(args.spread_data, "r") as f:
+            spread_json = json.loads(''.join(f.readlines()))
+        with open(args.cards, "r") as f:
+            card_data = json.loads(''.join(f.readlines()))
+    except FileNotFoundError:
+        raise Exception(f"\"{args.spread_data}\" does not exist")
+
+    def find_spread(spreadDict):
+        try:
+            if (spreadDict['id'] == int(args.spread)):
+                return True
+        except:
+            if (spreadDict['name'] == args.spread):
+                return True
+            else:
+                return False
+
+    #1. Search the spread for the spread Id or title
+    filtered = [s for s in filter(find_spread, spread_json)]
+    if (len(filtered) > 1):
+        raise Exception(f"Multiple results returned for spread query \"{args.spread}\"")
+    elif (len(filtered) < 1):
+        raise Exception(f"No results returned for spread query \"{args.spread}\"")
+
+    spread_data = filtered[0]
+
+    #Now that we have our spread, lets draw our cards and fill their positions accordingly.
+    #How we'll do this:
+    #1. EVERY possible card has a unique numerical, ID. There are 78 cards total in a tarot deck.
+    #2. Draw random number within range. Add it to drawn_cards Set.
+    #3. When drawing another card, check if it is in drawn_cards. If so, retry until you get a valid card
+    drawn_cards = set()
+    spread=[] #our final spread. ORDER MATTERS
+
+
+    #Keep track of ALL furthest coordinates.
+    furthest = {
+            "pos_x": 0,
+            "neg_x": 0,
+            "pos_y": 0,
+            "neg_y": 0,
+            "width": 0,
+            "height": 0,
+            }
+    
+    #Handle edge case where cards is over 78 (shouldn't possible)
+    if (len(spread_data['cards']) > 78):
+        raise Exception(f"Spread uses more than 78 cards (shouldn't be possible)")
+
+    #Seed the random function to today. Multiply by spread ID to ensure this is unique PER spread
+    random.seed(datetime.now().toordinal() * spread_data['id'])
+
+    for i in range(len(spread_data['cards'])):
+        
+        while True:
+            card_id = random.randint(0,77)
+            if card_id not in drawn_cards:
+                drawn_cards.add(card_id)
+                break
+
+        card_info = card_data[str(card_id)]
+        image_filepath = f"{args.image_dir}/{card_id + 1} {card_info['name']}_white.svg".replace(" ", "_")
+
+        spread_info = spread_data['cards'][i]
+
+        #Check furthest points and update accordingly
+        if (spread_info['pos']['x'] > 0 and spread_info['pos']['x'] > furthest['pos_x']):
+            furthest['pos_x'] = spread_info['pos']['x']
+        if (spread_info['pos']['x'] < 0 and spread_info['pos']['x'] < furthest['neg_x']):
+            furthest['neg_x'] = spread_info['pos']['x']
+        if (spread_info['pos']['y'] > 0 and spread_info['pos']['y'] > furthest['pos_y']):
+            furthest['pos_y'] = spread_info['pos']['y']
+        if (spread_info['pos']['y'] < 0 and spread_info['pos']['y'] < furthest['neg_y']):
+            furthest['neg_y'] = spread_info['pos']['y']
+        
+        spread_card = {
+                "card_info": card_info,
+                "image_filepath": image_filepath,
+                "spread_info": spread_info
+                }
+
+        spread.append(spread_card)
+    
+    #Calculate the spread width and height
+    furthest['width'] = furthest['pos_x'] + abs(furthest['neg_x']) + 1
+    furthest['height'] = furthest['pos_y'] + abs(furthest['neg_y']) + 1
+
+    #Remove our redundant card spread data for cleaner output
+    del spread_data['cards']
+    
+    #Create our output
+    output = {
+            "furthest": furthest,
+            "spread": spread,
+            "spread_info": spread_data
+            }
+    
+    #Finally, print output
+    print(json.dumps(output))
+    sys.stdout.flush()
+
+if __name__ == "__main__":
+    main()

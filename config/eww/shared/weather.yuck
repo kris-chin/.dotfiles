@@ -5,7 +5,7 @@
   )
 
 (defwidget _weather_day_item [maxtempF mintempF astronomy date]
-  (box :space-evenly true :orientation "v" :style "padding: 20px"
+  (box :space-evenly false :orientation "v" :style "padding: 20px"
     (label
       :class 'dashboard-text'
       :style "font-size: 2em"
@@ -41,7 +41,7 @@
              :text "Feels like ${current_condition.FeelsLikeF}°F"
         ) 
       )
-    (box :style "padding-top: 30px"
+    (box :style "padding-top: 30px" :space-evenly false
       (for item in weather
         (_weather_day_item
           :maxtempF "${item.maxtempF}"

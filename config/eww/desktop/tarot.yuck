@@ -1,0 +1,161 @@
+(defpoll _tarot_data 
+  :initial "N/A"
+  :interval "86400s"
+  `./bin/get-tarot 1`)
+
+(defvar _card_dimensions
+  `{
+    "width": "${round(249 * 0.5, 0)}",
+    "height": "${round(436 * 0.5, 0)}"
+   }`
+  )
+
+(defvar _highlighted_card_index -1)
+
+(defwidget _tarot_info_horizontal [spread_info cards date]
+  (box
+    :orientation "v" :space-evenly false
+    (box 
+      :orientation "v"
+      :space-evenly false 
+      :valign "start"
+      (label
+        :class "dashboard-text"
+        :style "font-size: 10em"
+        :halign "start"
+        :valign "end"
+        :text "${spread_info.name}"
+        )
+      (label
+        :class "dashboard-text"
+        :style "font-size: 3.5em;"
+        :halign "end"
+        :valign "center"
+        :text "${date}"
+        )
+    )
+    (box
+      :class "spread-info"
+      :style "padding-top: 50px"
+      :orientation "v"
+      :space-evenly false
+      :spacing 4
+      :halign "center"
+      :valign "start"
+      (for card in cards
+        (box
+          :orientation "h"
+          (label
+            :halign "start"
+            :class "tarot-text"
+            :style "font-size: 1em"
+            :text "${card.spread_info.order + 1}. ${card.spread_info.purpose}:"
+            )
+          (label
+            :halign "start"
+            :class "tarot-text"
+            :style "font-size: 1.5em"
+            :text "${card.card_info.name}")
+          )
+        )
+      )
+    )
+  )
+
+(defwidget _tarot_info_vertical [spread_info cards date]
+  (box
+    :orientation "v" :space-evenly false
+    (box :orientation "v" :space-evenly false
+      (label
+        :class "dashboard-text"
+        :style "font-size: 2em"
+        :text "${spread_info.name}"
+        )
+      (label
+        :class "dashboard-text"
+        :style "font-size: 1.5em"
+        :text "${date}"
+        )
+      )
+    (box
+      :class "spread-info"
+      :orientation "v"
+      :space-evenly false
+      :halign "center"
+      :valign "center"
+      (for card in cards
+        (label
+          :halign "center"
+          :class "tarot-text"
+          :style "font-size: 1em"
+          :text "${card.spread_info.order + 1}. ${card.spread_info.purpose}: ${card.card_info.name}")
+        )
+      )
+    )
+  )
+
+(defwidget _tarot_visual [cards furthest]
+  (box
+    ;;Set up the height of the spread to be the size of the actual spread
+    :style `min-height: ${furthest.height * _card_dimensions.height}px;`
+    :class "spread-visual"
+    :space-evenly false
+    :hexpand false
+      (for card in cards
+        (image
+          :style `-gtk-icon-transform:
+                 translateX(${
+                  ;;First Translate all cards to the same spot
+                  (-1 * _card_dimensions.width * card.spread_info.order)
+                  ;;Second, account for both the total cards and spread width, then move to center
+                  + ( ((arraylength(cards) / 2) - (furthest.width / 2) ) * (_card_dimensions.width) )
+                  ;;Lastly, move cards according to spread
+                  + (card.spread_info.pos.x * _card_dimensions.width)
+                  }px)
+                 translateY(${
+                  ;;First, translate all cards downards based on furthest neg y
+                  (-1 * furthest.neg_y * _card_dimensions.height)
+                  ;;Then, move cards according to spread
+                  + (card.spread_info.pos.y * _card_dimensions.height)
+                  }px)
+                 rotate(${card.spread_info.rot}deg);
+                 `
+          :class "tarot-card"
+          :valign "start"
+          :image-height "${_card_dimensions.height}"
+          :image-width "${_card_dimensions.width}"
+          :path "${card.image_filepath}"
+          )
+      )
+    )
+  )
+
+(defwidget _tarot [spread_info cards furthest date] 
+  (box
+    :orientation "v"
+    :space-evenly false 
+    :halign "center"
+    (_tarot_visual
+      :cards cards
+      :furthest furthest
+      )
+    (_tarot_info_vertical
+      :spread_info spread_info
+      :cards cards
+      :date date
+      )
+    ;;(_tarot_info_horizontal
+    ;;  :spread_info spread_info
+    ;;  :cards cards
+    ;;  :date date
+    ;;  )
+  )
+)
+
+(defwidget Tarot []
+  (_tarot
+    :spread_info "${_tarot_data.spread_info}"
+    :cards "${_tarot_data.spread}"
+    :furthest "${_tarot_data.furthest}"
+    :date "${_time_data.month} ${_time_data.day}, ${_time_data.year}"
+  ))
