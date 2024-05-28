@@ -12,11 +12,11 @@ final_output=$(printf "%s" "[")
 #Call top in batch mode sorted by CPU percent. Calls with 512 columns to prevent truncated process names
 #Also passes through awk to format each line
 final_output+=$(top -b -w 512 -o %CPU | head -n $((TOP_HEADER_LENGTH + PROCESS_NUMBER)) | tail -n $PROCESS_NUMBER | awk '{
-printf("{\"cpu_percent\":\"%s\",\"process_name\":\"%s\"},", $9, $12)
+printf("{\"cpu_percent\":\"%s\",\"process_name\":\"%s\",\"order\":\"%s\"},", $9, $12, NR - 1)
 }')
 
 #Add the the end of the json
 final_output+=$(printf "%s" "]")
 
-#Format then echo the final output
-echo "$final_output" | sed 's/},]/}]/'
+#Format the final output, reverse its contents, and output it.
+echo "$final_output" | sed 's/},]/}]/' | jq 'reverse'

@@ -10,7 +10,9 @@
     :space-evenly false
     (for process in top-processes
       (box
-        :style "min-width: 125px;"
+        :style "min-width: 125px; color:${
+        process.cpu_percent >= 50 ? colors.red : colors.white}
+        "
         :space-evenly false
         :spacing 8
           (label
