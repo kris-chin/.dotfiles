@@ -72,3 +72,4 @@ btop
 pavucontrol
 gnome-font-viewer
 acpi
+alacritty
