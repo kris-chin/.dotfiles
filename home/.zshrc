@@ -140,6 +140,11 @@ export PATH=$PATH:/home/krischin/.cargo/bin
 #Add emacs to our PATH (for doom)
 export PATH=$PATH:$HOME/.config/emacs/bin
 
+#Set up rvm in zshrc
+source /etc/profile.d/rvm.sh
+#Set up rvmsudo secure path
+export rvmsudo_secure_path=1
+
 # Add ruby gems to our PATH
 #TODO: in some situations, user_gemhome is undefined, not sure why..?
 export GEM_HOME="$(gem env user_gemhome)"
@@ -279,8 +284,10 @@ export GIT_EDITOR=vim
 source $(dirname $(gem which colorls))/tab_complete.sh
 
 #colorls aliass
-alias lc='colorls -lA --sd'
-alias ls='colorls'
+#I have to add "rvmsudo" here because for some godforsaken reason, the way I have rvm set up makes it such that ruby does not have permission for... literally anything???
+#that means that attempting to run colorls without rvmsudo yields an error because It seems that attempting to read a file without permission yields nil..
+alias lc='rvmsudo colorls -lA --sd'
+alias ls='rvmsudo colorls'
 
 #source work-related aliases
 #TODO: uncomment this once we can create a blank version of this file on startup

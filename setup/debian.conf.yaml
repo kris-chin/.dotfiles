@@ -25,8 +25,12 @@
         description: Installing tmux plugin manager
     #install rust and rustup
     -
-        command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; export PATH=$PATH:$HOME/.cargo/bin
         description: Installing rust and rustup
+    #install rvm
+    -
+        command: ./setup/install-rvm-ubuntu;
+        description: Installing rvm
     #install oh-my-zsh, delete auto-generated zshrc and pre-oh-my-zsh zshrc,
     -
         command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended; rm ~/.zshrc; rm ~/.zshrc.pre-oh-my-zsh
@@ -42,10 +46,6 @@
 
 #go back to shell commands
 - shell: 
-    #install code-minimap (via cargo. since this isnt on apt? maybe we should move this) )
-    -
-        command: cargo install --locked code-minimap
-        description: Installing code-minimap
     #install node version manager
     -
         command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -67,10 +67,6 @@
     -
         command: sudo add-apt-repository ppa:neovim-ppa/unstable; sudo apt-get update; sudo apt-get install neovim
         description: Get the latest version of neovim
-    #install colorls (TODO: Move this. I don't think this should be here)
-    -
-        command: sudo gem install colorls
-        description: Install colorls
     #change permissions of ~/.local and ~/.local/share this should allow neovim to install packages properly
     -
         command: sudo chmod a+rwx ~/.local; sudo chmod a+rwx ~/.local/share

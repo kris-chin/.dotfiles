@@ -10,8 +10,6 @@ ripgrep
 coreutils
 python3
 cloc
-ruby
-ruby-dev
 make
 gcc
 build-essential

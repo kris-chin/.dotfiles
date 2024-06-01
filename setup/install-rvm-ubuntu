@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#Installs RVM using the ubuntu instructions because Ubuntu is ANNOYING!
+sudo gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+
+#More keys..?
+sudo gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+
+sudo apt-get install software-properties-common
+
+sudo apt-add-repository -y ppa:rael-gc/rvm
+sudo apt-get update
+sudo apt-get install rvm
+
+sudo usermod -a -G rvm $USER
+
+echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
+
+#Add the secure path for rvmsudo
+export rvmsudo_secure_path=1
+
+#Source RVM. This will make it valid within the scope of this script only.
+source /etc/profile.d/rvm.sh
+
+#Fix RVM Permissions, then update RVM
+rvmsudo rvm cleanup all
+rvm fix-permissions
+rvmsudo rvm get master --auto-dotfiles
+
+#THEN Install ruby
+rvmsudo rvm install ruby
+rvmsudo rvm alias create default ruby
+rvm reload
+
+rvm use ruby
+
+#Re-source RVM again. Now ruby and gem should be in PATH for this script only?
+source /etc/profile.d/rvm.sh
+
+#Now, our aliases should be updated, this is experimental, but attempt to install colorls
+rvmsudo gem install colorls

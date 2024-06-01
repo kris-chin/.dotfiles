@@ -1,0 +1,13 @@
+#Run this AFTER debian.conf.
+#This is because RVM and rustup need a shell restart (cant seem to just source?)
+- defaults:
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
+
+- shell: 
+    #install code-minimap via cargo
+    -
+        command: cargo install --locked code-minimap
+        description: Installing code-minimap
