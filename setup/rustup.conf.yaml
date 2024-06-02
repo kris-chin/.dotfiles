@@ -1,0 +1,10 @@
+- defaults: 
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
+- shell: 
+    #install rust and rustup
+    -
+        command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        description: Installing rust and rustup
