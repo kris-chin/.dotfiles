@@ -140,15 +140,24 @@ export PATH=$PATH:/home/krischin/.cargo/bin
 #Add emacs to our PATH (for doom)
 export PATH=$PATH:$HOME/.config/emacs/bin
 
-#Set up rvm in zshrc
-source /etc/profile.d/rvm.sh
-#Set up rvmsudo secure path
-export rvmsudo_secure_path=1
+#Set up rvm in zshrc, ONLY if it is installed
+if [ -f /etc/profile.d/rvm.sh ]; then
+  source /etc/profile.d/rvm.sh
+
+  #Set up rvmsudo secure path
+  export rvmsudo_secure_path=1
+
+  export RVM_IS_INSTALLED=true
+else 
+  export RVM_IS_INSTALLED=false
+fi
 
 # Add ruby gems to our PATH
 #TODO: in some situations, user_gemhome is undefined, not sure why..?
-export GEM_HOME="$(gem env user_gemhome)"
-export PATH="$PATH:$GEM_HOME/bin"
+if command -v gem &>/dev/null; then
+  export GEM_HOME="$(gem env user_gemhome)"
+  export PATH="$PATH:$GEM_HOME/bin"
+fi
 
 #Run tmux and make sure it doesn't run itself
 #I also added a variable that will disable tmux on startup. Just set it before running the terminal
@@ -173,7 +182,9 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 alias ls='ls --color=auto'
 
 #use ack instead of grep
-alias grep='ack'
+if command -v ack &>/dev/null; then
+  alias grep='ack'
+fi
 
 #git stash aliases because I hate how long of an command it is
 alias gsl='git stash list'
@@ -270,24 +281,35 @@ alias docker-compose="sudo docker-compose"
 #R alias so we can install packages in a non-personal directory
 alias R="sudo R"
 
-# Load Angular CLI autocompletion for terminal.
-source <(ng completion script)
+# Load Angular CLI autocompletion for terminal. (only if ng exists)
+if command -v ng &>/dev/null; then
+  source <(ng completion script)
+fi
 
-# alias for vim to nvim because i will never change
-alias vim="nvim"
-alias v="nvim"
+# alias for vim to nvim because i will never change (ONLY if neovim is installed)
+if command -v nvim &>/dev/null; then
+  alias vim="nvim"
+  alias v="nvim"
+fi
 
 # default git editor to vim
 export GIT_EDITOR=vim
 
-#setup tab completion for colorls
-source $(dirname $(gem which colorls))/tab_complete.sh
+#setup tab completion for colorls, ONLY if it all exists
+if command -v gem &>/dev/null && command -v colorls &>/dev/null; then
+  source $(dirname $(gem which colorls))/tab_complete.sh
+fi
 
 #colorls aliass
 #I have to add "rvmsudo" here because for some godforsaken reason, the way I have rvm set up makes it such that ruby does not have permission for... literally anything???
 #that means that attempting to run colorls without rvmsudo yields an error because It seems that attempting to read a file without permission yields nil..
-alias lc='rvmsudo colorls -lA --sd'
-alias ls='rvmsudo colorls'
+if [[ "$RVM_IS_INSTALLED" == true ]]; then
+  alias lc='rvmsudo colorls -lA --sd'
+  alias ls='rvmsudo colorls'
+elif command -v colorls >/dev/null; then
+  alias lc='colorls -lA --sd'
+  alias ls='colorls'
+fi
 
 #source work-related aliases
 #TODO: uncomment this once we can create a blank version of this file on startup
@@ -308,4 +330,5 @@ alias logout="pkill X"
 #alias emacs to open an emacsclient frame instead of a new emacs process 
 #for context, we should have the emacs daemon already running. this will just connect to the existing daemon
 #(INSANELY FASTER)
+#TODO: only call this if daemon is detected. if not, just reguarly call emacs
 alias emacs="emacsclient --no-wait --create-frame"

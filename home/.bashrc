@@ -28,11 +28,22 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 #add the current node's bin directory to path
-export NODE_PATH="$NVM_DIR/versions/node/$(nvm current)/bin"
-export PATH="$PATH:$NODE_PATH"
+if command -v nvm >/dev/null; then
+  export NODE_PATH="$NVM_DIR/versions/node/$(nvm current)/bin"
+  export PATH="$PATH:$NODE_PATH"
+fi
 
-#Start ZSH
-zsh
-#Close bash if zsh gets exited
-exit
-. "$HOME/.cargo/env"
+if [ -f $HOME/.cargo/env ]; then
+  . "$HOME/.cargo/env"
+fi
+
+if [ -f /etc/profile.d/rvm.sh ]; then
+  source /etc/profile.d/rvm.sh
+fi
+
+#Start ZSH, if it exists
+if command -v zsh >/dev/null; then
+  zsh
+  #Close bash if zsh gets exited
+  exit
+fi
