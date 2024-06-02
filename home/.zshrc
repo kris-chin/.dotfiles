@@ -327,8 +327,33 @@ timezsh() {
 #logout alias 
 alias logout="pkill X"
 
-#alias emacs to open an emacsclient frame instead of a new emacs process 
-#for context, we should have the emacs daemon already running. this will just connect to the existing daemon
-#(INSANELY FASTER)
-#TODO: only call this if daemon is detected. if not, just reguarly call emacs
-alias emacs="emacsclient --no-wait --create-frame"
+#alias to open emacs client ONLY if the daemon is running
+function run_emacs() {
+  if emacsclient -a false -e 't' &>/dev/null; then
+    if [ "$#" -eq 0 ]; then
+      echo "Detected emacs server. Creating frame."
+
+      #Open an emacsclient frame instead of a new emacs process 
+      #for context, we should have the emacs daemon already running. this will just connect to the existing daemon
+      #(INSANELY FASTER)
+      #Run our emacs alias
+      emacsclient --no-wait --create-frame
+    else 
+      echo "Detected emacs server, but args were provided. Running 'emacs' with args"
+      emacs $@
+    fi
+  else
+    echo "No emacs server detected. Running regularly"
+
+    #Run emacs with args
+    emacs $@
+  fi
+}
+
+#Kills emacs daemon
+function kill_emacs() {
+  emacsclient -e "(kill-emacs)"
+}
+
+
+alias emacs="run_emacs"
