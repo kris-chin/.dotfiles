@@ -14,3 +14,4 @@ spotify-tui
 blight
 illum-git
 gcalcli
+pandoc-bin

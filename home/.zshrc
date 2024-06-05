@@ -165,6 +165,11 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
 	exec tmux
 fi
 
+#If npm is installed, set the global node_modules
+if command -v npm &> /dev/null; then
+  export NODE_PATH=$(npm root --quiet -g)
+fi
+
 #speed up key sequences in zsh-vi-mode
 export ZVM_KEYTIMEOUT=0.01
 

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#Set up our variables
+notion_to_md_filepath=~/.local/bin/notion-to-org-mode/notion-to-md.js
+notion_api_token=$(cat ~/.notion_api_secret)
+temporary_markdown_filepath=/tmp/notion-markdown.md
+
+#This directory is where our converted org files go
+org_inbox_directory=~/org/notion-inbox
+
+#If the directory is not created yet, make it
+mkdir -p $org_inbox_directory
+
+#First argument = page id
+page_id=$1
+
+echo "Generating markdown for $page_id. This will take some time"
+
+#Get the markdown version of the page id
+markdown_output=$(node --no-deprecation $notion_to_md_filepath --token=$notion_api_token --page_id=$page_id)
+
+#Write the markdown output to a temporary file
+echo "$markdown_output" > $temporary_markdown_filepath
+
+echo "Converting resulting markdown to org"
+
+#Then convert the markdown output to org with pandoc
+pandoc $temporary_markdown_filepath -f markdown -t org -o "$org_inbox_directory/$page_id.org"
+
+echo "Done"

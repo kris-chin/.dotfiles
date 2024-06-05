@@ -1,0 +1,13 @@
+- defaults:
+    shell:
+        stdin: true
+        stdout: true
+        stderr: true
+
+#ASSUMES NPM IS ALREADY INSTALLED
+
+#TODO: This file can technically be installed with a single command + a packages file. Not sure why I'm not doing that
+- shell:
+  - sudo npm install -g @notionhq/client --force
+  - sudo npm install -g notion-to-md --force
+  - sudo npm install -g minimist --force
