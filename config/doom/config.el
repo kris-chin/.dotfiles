@@ -692,7 +692,11 @@
                             org-roam-ui-open-on-start nil)) ;;disable opening in a new browser on start
 ;;ALWAYS open the server on start (if it isnt open yet)
 (unless org-roam-ui-mode
-  (org-roam-ui-mode)
+  ;;Sometimes this still attempts to open a websocket even though it is already open from a previous instance. (this probably has to do with the fact that I'm running emacs as a daemon)
+  ;;I'm just gonna ignore the error, hopefully that doesn't bite me in the ass
+  (ignore-errors
+    (org-roam-ui-mode)
+  )
   )
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
