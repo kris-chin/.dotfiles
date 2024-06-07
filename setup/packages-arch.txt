@@ -21,3 +21,5 @@ emacs-nativecomp
 fd
 enchant
 nm-connection-editor
+python-flask
+python-flask-cors

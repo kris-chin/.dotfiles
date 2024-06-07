@@ -1,0 +1,23 @@
+{
+  "name": "Notion to Org",
+  "description": "Provides a context menu to convert a Notion page to Org",
+  "version": "1.0",
+  "permissions": [
+    "contextMenus",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://notion.so/*"
+  ],
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
