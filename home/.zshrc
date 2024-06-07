@@ -202,6 +202,9 @@ alias gs='git status'
 #alias git checkout cuz that's too long for me
 alias gch="git checkout"
 
+#alias git rebase -i because i've been using it a lot lately
+alias gri="git rebase -i "
+
 #alias for quicker clears
 alias c="clear"
 
