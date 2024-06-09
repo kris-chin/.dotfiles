@@ -557,11 +557,26 @@
   )
 )
 
+;;Same as the above function but it uses the captured text as the title of the function
+(defun inbox-template-selection-capture-function ()
+  "Template for new inbox entries"
+  (concat ;;progn runs multiple args at a time
+     "* TODO %i  %^G"
+     "\n:PROPERTIES:"
+     "\n:CREATED: %T"
+     "\n:END:"
+     "\n -  %?"
+     "\n** Log"
+  )
+)
+
 ;;templates for my org-capture
 (setq org-capture-templates
       '(
         ("c" "Inbox - Personal" entry (file+headline "~/org/gtd/personal.org" "Inbox") (function inbox-template-function) )
+        ("v" "Inbox - Personal (selected text)" entry (file+headline "~/org/gtd/personal.org" "Inbox") (function inbox-template-selection-capture-function) )
         ("d" "Inbox - Tinkering" entry (file+headline "~/org/gtd/tinkering.org" "Inbox") (function inbox-template-function) )
+        ("f" "Inbox - Tinkering (selected text)" entry (file+headline "~/org/gtd/tinkering.org" "Inbox") (function inbox-template-selection-capture-function) )
        )
 )
 
