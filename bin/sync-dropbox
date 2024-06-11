@@ -1,0 +1,10 @@
+#!/bin/bash
+#Copies syncthing-synced files to dropbox
+
+directories=("org" "assets")
+
+for directory in ${directories[@]}; do
+  echo "Working on \"$directory\""
+  rclone sync --interactive --progress "$HOME/$directory" "dropbox:/$directory"
+  echo "Done"
+done
