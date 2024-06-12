@@ -2,9 +2,9 @@
 from i3ipc import Connection, Event
 
 def handle_on_window(i3,e):
-    #Just move ALL eww windows to workspace 1
-    window_instance = (e.container.window_instance)
-    if (window_instance == "eww"):
+    #Only move the dashboard to workspace 1
+    window_title = (e.container.window_title)
+    if (window_title == "Eww - dashboard"):
         e.container.command("floating disable")
         e.container.command("move window to workspace 1")
 
