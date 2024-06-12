@@ -12,9 +12,13 @@
   )
 )
 
-(defwidget _i3_workspaces [focused_window focused_workspace workspaces_yuck]
+(defwidget _i3_workspaces [focused_window focused_window_icon focused_workspace workspaces_yuck]
   (box :class "" :space-evenly false :spacing 8 
-    (image :icon "${focused_window}")
+    (image
+      ;;we don't trust :icon since gtk doesnt give us the css tools to resize a freakin' icon, so :icon-size doesnt even work.
+      :path "${focused_window_icon}"
+      :image-width 16
+      )
     (label :style "min-width: 80px; color: ${colors.bright_cyan}" :text "${focused_window}")
     (label :text "|")
     (label :text "${focused_workspace}")
@@ -26,7 +30,8 @@
 
 (defwidget I3_Workspaces []
       (_i3_workspaces
-        :focused_window "${_i3_data.focused_window}"
+        :focused_window "${_i3_data.focused_window_instance}"
+        :focused_window_icon "${_i3_data.focused_window_icon}"
         :focused_workspace "${_i3_data.focused_workspace}"
         :workspaces_yuck "${_i3_data.workspaces}"
       )

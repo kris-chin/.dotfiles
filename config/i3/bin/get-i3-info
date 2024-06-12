@@ -5,6 +5,10 @@ import subprocess
 import sys
 import os
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk
+
 MINIMUM_WORKSPACES = 5
 EWW_PATH = os.path.expanduser("~/.local/bin/eww")
 EWW_WIDGETS = ["topbar", "bottombar"]
@@ -50,7 +54,20 @@ def get_info(i3, e):
     #commented out because im using window instances instead of titles. (these c
     #new_focused_name = ('..' + focused.name[MAX_FOCUSED_LENGTH:]) if len(focused.name) > MAX_FOCUSED_LENGTH else focused.name
     new_focused_name = focused.window_instance
-    output["focused_window"] = new_focused_name
+    output["focused_window_instance"] = new_focused_name
+
+    #Get the icon filepath via gi
+    try:
+        gdk_screen = Gdk.Screen.get_default()
+        icon_theme = Gtk.IconTheme.get_for_screen(gdk_screen)
+        icon_info = icon_theme.lookup_icon(new_focused_name, 48, 0)
+        icon_filepath = icon_info.get_filename()
+        output["focused_window_icon"] = icon_filepath
+    except:
+        #This should be default for Adwaita, so this shouldn't NoneType error..?
+        icon_info = icon_theme.lookup_icon("application-x-executable", 48, 0)
+        icon_filepath = icon_info.get_filename()
+        output["focused_window_icon"] = icon_filepath
 
     #For some reason, the "floating" property doesnt get updated per window, so we need to re-aqcuire it
     #I guess i3 creates a TOP-LEVEL container for each individual floating window. So not only do we have to go through workspace.floating_nodes, we need to go through their OWN children as well
