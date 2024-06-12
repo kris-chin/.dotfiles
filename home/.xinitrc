@@ -7,5 +7,6 @@ xmodmap ~/.xmodmap
 bash -c '
   $HOME/.local/bin/customize-device-input
 '
-#Start i3
-i3
+
+#Commented this out because apparently, running i3 via .desktop entry still runs .xinitrc? So I don't need this anymore? Weird..
+#i3
