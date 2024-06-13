@@ -42,6 +42,8 @@
 (load! "~/.config/doom/mappings.el")
 ;;load org-mode config
 (load! "~/.config/doom/org.el")
+;;API for creating new entries easily
+(load! "~/.config/doom/create-org-entry.el")
 
 ;;enable line numbers when we enter treemacs
 (add-hook 'treemacs-mode-hook 'display-line-numbers-mode)

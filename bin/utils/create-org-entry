@@ -1,0 +1,27 @@
+#!/bin/python3
+from argparse import ArgumentParser
+import subprocess
+from datetime import datetime, timedelta
+
+#Goes to the emacs server and calls a conversion function
+
+#Replaces None with nil. wraps our args.
+#Uses "h" for convenience
+def h(input_str):
+    return "nil" if input_str == None else f"\"{input_str}\""
+
+def main():
+    parser = ArgumentParser("create-org-entry")
+    parser.add_argument('title')
+    parser.add_argument('bucket')
+    parser.add_argument('category')
+    parser.add_argument('-d', '--description')
+    parser.add_argument('-t', '--tags') #MUST BE a STRING IN ":"-SEPERATED FORMAT
+    parser.add_argument('-c', '--time_created') #if undefined, the function defaults to today
+    args = parser.parse_args()
+    subprocess.run(["emacsclient", "-e", f"(create-org-entry {h(args.title)} {h(args.bucket)} {h(args.category)} {h(args.time_created)} {h(args.description)} {h(args.tags)})"], check=True, text=True)
+
+    #I think the actual writing will be called by the conversion function
+
+if __name__ == "__main__":
+    main()
