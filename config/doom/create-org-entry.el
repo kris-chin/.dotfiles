@@ -6,14 +6,14 @@
 ;;Provide a simple API for us to create entries purely through the org-mode element api
 ;;We can call this from the emacs server via bash. neat!
 (defun create-org-entry (title bucket category
-                               &optional time-created description tags)
+                               &optional time-created description tags parent-title)
   "Creates an org entry"
   (save-window-excursion
     ;;1. Go to the respective category file
     ;;TODO: This is interactive.. we dont need this.
     (find-file-other-window (format "~/org/gtd/%s.org" category))
     ;;2. Move pointer to the respective bucket
-    (let ((marker (org-find-exact-headline-in-buffer bucket)))
+    (let ((marker (org-find-exact-headline-in-buffer (if parent-title parent-title bucket))))
       (goto-char marker)
       ;;Create the subheading. This should also move the marker
       (org-insert-todo-subheading nil)
