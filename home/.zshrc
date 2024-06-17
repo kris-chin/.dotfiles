@@ -97,6 +97,7 @@ plugins=(
 	docker-compose
 	dirhistory
 	git
+        virtualenv
 	)
 
 source $ZSH/oh-my-zsh.sh
