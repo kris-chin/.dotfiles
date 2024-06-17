@@ -19,8 +19,9 @@ def main():
     parser.add_argument('-t', '--tags') #MUST BE a STRING IN ":"-SEPERATED FORMAT
     parser.add_argument('-c', '--time_created') #if undefined, the function defaults to today
     parser.add_argument('-p', '--parent_title')
+    parser.add_argument('-s', '--source') #the source of the task (eg. nirvana, apple notes, etc)
     args = parser.parse_args()
-    subprocess.run(["emacsclient", "-e", f"(create-org-entry {h(args.title)} {h(args.bucket)} {h(args.category)} {h(args.time_created)} {h(args.description)} {h(args.tags)} {h(args.parent_title)})"], check=True, text=True)
+    subprocess.run(["emacsclient", "-e", f"(create-org-entry {h(args.title)} {h(args.bucket)} {h(args.category)} {h(args.time_created)} {h(args.description)} {h(args.tags)} {h(args.parent_title)} {h(args.source)})"], check=True, text=True)
 
     #I think the actual writing will be called by the conversion function
 

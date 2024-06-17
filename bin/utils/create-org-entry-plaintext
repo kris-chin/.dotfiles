@@ -1,0 +1,71 @@
+#!/usr/bin/env python
+from argparse import ArgumentParser
+from datetime import datetime 
+import os
+
+def format_org_timestamp(time_in_seconds):
+    return time_in_seconds.strftime("<%Y-%m-%d %a %H:%M:%S>")
+
+#Replaces None with "". wraps our args.
+#Uses "h" for convenience
+def h(input_str):
+    return "" if input_str == None else input_str
+
+#Plaintext implementation of create-org-entry. Creates an entry in a document using just plaintext
+def main():
+    parser = ArgumentParser("create-org-entry-plaintext")
+    parser.add_argument('title')
+    parser.add_argument('bucket')
+    parser.add_argument('category') #its kinda silly how opinionated my implementation is, this assumes the user has their org gtd files split by category
+    parser.add_argument('-d', '--description')
+    parser.add_argument('-t', '--tags') #MUST BE a STRING IN ":"-SEPERATED FORMAT
+    parser.add_argument('-c', '--time_created') #if undefined, the function defaults to today
+    parser.add_argument('-s', '--source') #the source of the task (eg. nirvana, apple notes, etc)
+    args = parser.parse_args()
+
+    created_time = format_org_timestamp(args.time_created) if args.time_created else format_org_timestamp(datetime.now())
+    tags = f":args.tags:" if args.tags else ""
+
+    template = [
+    "** TODO {title} {tags}".format(title=h(args.title), tags=tags),
+    ":PROPERTIES:",
+    ":CREATED: {created}".format(created=created_time),
+    ":SOURCE: {source}".format(source=h(args.source)),
+    ":END:",
+    "{description}".format(description=h(args.description)),
+    "*** Log",
+    "\n"
+    ]
+
+    try:
+        with open(os.path.expanduser(f"~/org/gtd/{args.category}.org"), "r+") as f:
+
+            #Inside the file, try to find the bucket, which is SPECIFICLLY an unindented H1
+            bucket_line = f"* {args.bucket}"
+
+            contents = f.readlines()
+
+            #Edge case: bucket is last line
+            if bucket_line in contents[-1]:
+                contents.append(template)
+                f.seek(0)
+                f.writelines(contents)
+                return
+
+            #Normal case, attempt to find bucket string and insert our template DIRECTLY below it
+            for index, line in enumerate(contents):
+                if bucket_line in line:
+                    contents[index+1:index+1] = '\n'.join(template)
+
+                    f.seek(0)
+                    f.writelines(contents)
+                    return
+
+            #If we're here, bucket was not found
+            print("bucket not found")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()
