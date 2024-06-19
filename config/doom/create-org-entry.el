@@ -6,7 +6,7 @@
 ;;Provide a simple API for us to create entries purely through the org-mode element api
 ;;We can call this from the emacs server via bash. neat!
 (defun create-org-entry (title bucket category
-                               &optional time-created description tags parent-title source)
+                               &optional time-created description tags parent-title source todo-state)
   "Creates an org entry"
   (save-window-excursion
     ;;1. Go to the respective category file
@@ -32,6 +32,9 @@
                                       ))
         (when source
           (org-set-property "SOURCE" source)
+          )
+        (when todo-state
+          (org-todo todo-state)
           )
         ;;Insert the log
         (org-insert-subheading nil)
