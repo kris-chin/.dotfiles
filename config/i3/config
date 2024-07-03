@@ -221,7 +221,9 @@ exec_always --no-startup-id ~/.config/i3/bin/get-i3-info
 
 #start eww topbar and bottom bar
 exec_always --no-startup-id ~/.local/bin/eww open-many topbar bottombar dashboard
+#start up keepassxc by default
+exec_always keepassxc
 #add a quick keybinding to toggle the widgets (basically fullscreen mode without fullscreen)
 bindsym $mod+Shift+f exec --no-startup-id  ~/.local/bin/eww open-many --toggle topbar bottombar dashboard
-#always move ALL eww window instances to workspace 1
-exec_always --no-startup-id ~/.config/i3/bin/always-move-eww
+#Handle window events (new and move)
+exec_always --no-startup-id ~/.config/i3/bin/handle-windows

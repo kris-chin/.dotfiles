@@ -1,0 +1,37 @@
+#!/bin/python3
+from i3ipc import Connection, Event
+
+#Instances to always start as floating
+TO_INITIALIZE_AS_FLOATING = [
+        "thunar",
+        "shutter",
+        "file-roller",
+        "lxappearance",
+        "gnome-font-viewer"
+        ]
+
+#Instances to always move to scratchboard
+TO_MOVE_TO_SCRATCHPAD = ["keepassxc"]
+
+def handle_on_window(i3,e):
+    window_title = (e.container.window_title)
+    window_instance = (e.container.window_instance)
+    #Always move eww dashboard to workspace 1
+    if (window_title == "Eww - dashboard"):
+        e.container.command("floating disable")
+        e.container.command("move window to workspace 1")
+    #Handle floating or scratchboard windows
+    if (e.change == "new"):
+        if (window_instance in TO_INITIALIZE_AS_FLOATING):
+            e.container.command("floating enable")
+        if (window_instance in TO_MOVE_TO_SCRATCHPAD):
+            e.container.command("move scratchpad")
+
+def main():
+  i3 = Connection()   
+  i3.on(Event.WINDOW_NEW, handle_on_window)
+  i3.on(Event.WINDOW_MOVE, handle_on_window)
+  i3.main()
+
+if __name__ == "__main__":
+  main()
