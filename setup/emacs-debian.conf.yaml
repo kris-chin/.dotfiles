@@ -4,6 +4,12 @@
         stdout: true
         stderr: true
 
+- link:
+    ~/.config/doom:
+        glob: true
+        path: config/doom/*
+        create: true
+
 #make sure you get the org folder from syncthing. otherwise, just create ~/org/roam
 
 - shell:
@@ -16,7 +22,7 @@
         command: ./setup/build-emacs-latest; sudo rm -rf ~/.emacs.d
         description: Build and install emacs. Then delete ~/.emacs.d
     #build an updated ripgrep binary with PCRE lookaheads (for doom)
-    #NOTE: assumes cargo is installed. man, I gotta set up these configs so they can be independent of each other..
+    #TODO ASSUMES CARGO IS INSTALLED. this should probably be a conditional for rustup
     -
         command: cargo install --features pcre2 ripgrep
         description: Build ripgrep with pcre lookaheads

@@ -1,0 +1,70 @@
+#Our oh-my-zsh-less .zshrc!
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+#Add nvim to our PATH (assuming it was installed via binaries)
+export PATH="$PATH:/opt/nvim-linux64/bin"
+
+#Custom prompt
+fpath=(~/.config/zsh/prompt $fpath)
+autoload -Uz custom_prompt; custom_prompt
+
+#add local bin to PATH (why is this not here already?)
+export PATH=$PATH:$HOME/.local/bin
+
+# default git editor to nvim
+export GIT_EDITOR=nvim
+export VISUAL=nvim
+export EDITOR="$VISUAL"
+
+#ALIASES============================================================
+
+#shorthands
+alias t="tmux"
+alias c="clear"
+
+#replace entire commands due to muscle memory
+if command -v nvim &>/dev/null; then
+  alias vim="nvim" #use nvim instead of vim
+fi
+if command -v z &>/dev/null; then
+  alias cd="z" #map cd to zoxide
+fi
+if command -v ack &>/dev/null; then
+  alias grep='ack' #use ack instead of grep
+fi
+
+#Git aliases
+alias gsl='git stash list'
+alias gsp='git stash pop'
+alias gsm='git stash -m '
+alias gs='git status'
+alias gch="git checkout"
+alias gri="git rebase -i "
+#helper function that pushes the current branch to remote
+function gpo () {
+	local currentBranch=$(git rev-parse --abbrev-ref HEAD)
+	git push origin $currentBranch "$@"
+}
+
+#always color ls
+alias ls='ls --color=auto'
+
+#use emacs aliases if it is installed
+if command -v emacs &>/dev/null; then
+  source ~/.config/zsh/aliases/emacs.zsh
+fi
+
+#PLUGINS AND EXTERNAL PROGRAMS======================================
+
+#zsh-autosuggestions
+source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+#zsh-vi-mode
+source ~/.config/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+#zsh-syntax-highlighting (should be at end of zshrc)
+source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#zoxide (must be at end of zshrc)
+eval "$(zoxide init zsh)"

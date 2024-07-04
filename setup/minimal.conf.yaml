@@ -1,0 +1,54 @@
+#This config is a minimal setup good for very portable setups (eg. windows development)
+- defaults: #these are automatically run for every command
+    link:
+      relink: true #delete old symlink and replace with new symlink
+      force: true #force removes old target
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
+
+- clean: ['~']
+
+- link:
+    ~/.config/zsh:
+        glob: true
+        path: config/zsh/*
+        create: true
+    ~/.config/nvim:
+        glob: true
+        path: config/nvim/*
+        create: true
+    ~/.tmux.conf: home/.tmux.conf
+    ~/.zshrc: home/.zshrc.minimal
+    ~/.local/bin/:
+        glob: true
+        path: bin/*
+        create: true
+
+- shell:
+  -
+    command: git submodule update --init --recursive
+    description: Installing submodules
+  -
+    command: sudo chmod a+rw /tmp/
+    description: adding permissions to the /tmp/ folder in case it is not writable
+  -
+    command: chsh -s $(which zsh)
+    description: setting zsh as default shell (so .bashrc isn't loaded anymore)
+  -
+    command: curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz; sudo rm -rf /opt/nvim; sudo tar -C /opt -xzf nvim-linux64.tar.gz
+    description: installing nvim binaries
+  #install tmux plugin manager
+  #TODO: install plugins without needing to press the keybind myself
+  -
+      command: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+      description: Installing tmux plugin manager
+  #install fzf
+  -
+      command: git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf; ~/.fzf/install
+      description: Installing fzf
+  #install zoxide
+  -
+      command: curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+      description: Installing zoxide

@@ -4,6 +4,12 @@
       stdout: true
       stderr: true
 
+- link:
+    ~/.config/doom:
+        glob: true
+        path: config/doom/*
+        create: true
+
 #Make sure you get the org folder from syncthing, otherwise, just create aa new folder
 
 - shell:
