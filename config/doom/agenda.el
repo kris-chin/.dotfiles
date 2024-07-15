@@ -65,8 +65,10 @@
 (defun format-org-timestamp (timestamp format-string)
   "Format an Org Mode TIMESTAMP according to FORMAT-STRING."
   (if timestamp
-    (let ((time-value (org-time-string-to-time timestamp)))
-      (format-time-string format-string time-value))
+    (ignore-errors
+      (let ((time-value (org-time-string-to-time timestamp)))
+        (format-time-string format-string time-value))
+    )
   "")
   )
 
