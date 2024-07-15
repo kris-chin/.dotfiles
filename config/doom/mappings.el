@@ -239,3 +239,12 @@
 ;;Apply this keybinding to all modes that DONT use evil (eg. treemacs, org-agenda)
 (map! "M--" #'hydra-zoom/body)
 (map! "M-=" #'hydra-zoom/body)
+
+;;Bypassing certain keybindings so they are passed to vterm
+(map! :after vterm :map vterm-mode-map "C-c" #'vterm-send-C-c)
+(map! :after vterm :map vterm-mode-map "C-u" #'vterm-send-C-u)
+(map! :after vterm :map vterm-mode-map "C-h" #'vterm-send-C-h)
+(map! :after vterm :map vterm-mode-map "C-l" #'vterm-send-C-l)
+(map! :after vterm :map vterm-mode-map "C-j" #'vterm-send-C-j)
+(map! :after vterm :map vterm-mode-map "C-k" #'vterm-send-C-k)
+(map! :after vterm :map vterm-mode-map "<escape>" #'vterm-send-escape)

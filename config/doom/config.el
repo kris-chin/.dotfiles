@@ -79,6 +79,15 @@
 
 (setq fancy-splash-image "~/assets/emacs-splash-500x500.png")
 
+;;set a minimal delay on the refresh speed of the vterm buffer (should make it as fast as possible)
+(setq vterm-timer-delay 0.01)
+
+;;enable and disable evil depending on if vterm is enabled on current window
+(add-hook 'window-selection-change-functions (lambda (window) (if (string-equal major-mode "vterm-mode")
+                                               (evil-local-mode -1)
+                                             (evil-local-mode 1)
+                                             )))
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
