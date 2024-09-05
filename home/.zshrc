@@ -282,6 +282,12 @@ function gdstale() {
   done
 }
 
+#if in wsl, set $DISPLAY to our VcXsrv server on windows
+#NOTE: this is may need some configuring if you try this on a different system, since the local IP might change
+if [[ $(is-wsl) == "True" ]]; then
+  export DISPLAY=192.168.56.1:0.0
+fi
+
 #alias vim to mvim
 #alias vim="mvim -v"
 

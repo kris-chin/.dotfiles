@@ -34,3 +34,18 @@ vim.opt.foldmethod = "indent"
 --auto open all folds
 vim.opt.foldlevel = 99
 
+--integrate with wsl clipboard (taken from  :h wsl-clipboard)
+vim.cmd([[
+  let g:clipboard = {
+    \   'name': 'WslClipboard',
+    \   'copy': {
+    \      '+': 'clip.exe',
+    \      '*': 'clip.exe',
+    \    },
+    \   'paste': {
+    \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    \   },
+    \   'cache_enabled': 0,
+    \ }
+]])

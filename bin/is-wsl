@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#Checks if linux is being run within WSL
+#Taken from https://stackoverflow.com/questions/53996607/most-efficient-if-statement-in-zshrc-to-check-whether-linux-os-is-running-on-ws
+
+if uname -r |grep -q 'Microsoft' ; then
+    echo True
+elif grep -q -i 'Microsoft' /proc/version ; then
+    echo True
+elif grep -q -i 'Microsoft' /proc/sys/kernel/osrelease ; then
+    echo True
+fi
