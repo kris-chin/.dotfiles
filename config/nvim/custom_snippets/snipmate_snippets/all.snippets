@@ -221,3 +221,70 @@ snippet jde Quick "it.each" Block
 	\`("$1", ({$2, expected}) => {
 
 	})
+
+snippet rfcf Write a simple React Form with state
+	import { FormEvent, useState, useContext, createContext } from "react";
+
+	//Form State is annoying.
+
+	export type FormData = Record<string, unknown>
+	const FormContext = createContext<{ formData: FormData, setFormData: (value: FormData) => void }>({ formData: {}, setFormData: () => { } });
+
+	export type FormProps = {
+	  onSubmit: (data: FormData) => void;
+	} & React.FormHTMLAttributes<HTMLFormElement>
+
+	export const Form = (props: React.PropsWithChildren<FormProps>) => {
+	  const { onSubmit, children, ...formProps } = props;
+
+	  const [formData, setFormData] = useState<FormData>({});
+
+	  const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
+	    e.preventDefault();
+	    onSubmit(formData);
+	  }
+
+	  return (
+	    <FormContext.Provider value={{ formData, setFormData }}>
+	      <form onSubmit={handleOnSubmit} {...formProps}>
+		{children}
+		{/*
+		    Example Usage of component:
+
+		    <FormInput name="input1" label="Input 1" />
+		    <FormInput name="input2" label="Input 2" />
+		  */}
+	      </form>
+	    </FormContext.Provider>
+	  )
+	}
+
+	export type FormInputProps = React.FormHTMLAttributes<HTMLInputElement> & {
+	  label?: string,
+	  name: string,
+	}
+
+	export const FormInput = (props: FormInputProps) => {
+	  const { label, name } = props
+
+	  const { formData, setFormData } = useContext(FormContext)
+
+	  const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
+	    e.preventDefault();
+
+	    setFormData({
+	      ...formData,
+	      [name]: e.currentTarget.value
+	    })
+
+	  }
+
+	  return (
+	    <div>
+	      <label>
+		{label}
+	      </label>
+	      <input onChange={handleOnChange} type={props.typeof} {...props} />
+	    </div>
+	  )
+	}
