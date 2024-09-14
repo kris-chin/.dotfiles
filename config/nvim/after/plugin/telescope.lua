@@ -45,6 +45,8 @@ vim.keymap.set('n', '<C-p>p', function()
     })
 end,{})
 --live grep. requires ripgrep
+--NOTE: in order for .gitignore to be respected, 'fd' must be installed.
+--use :checkhealth telescope to double-check
 vim.keymap.set('n', '<C-p>[', function()
     builtin.live_grep({
         path_display={"truncate"}
