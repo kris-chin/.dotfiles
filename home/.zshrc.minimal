@@ -6,10 +6,6 @@
 #Add nvim to our PATH (assuming it was installed via binaries)
 export PATH="$PATH:/opt/nvim-linux64/bin"
 
-#Custom prompt
-fpath=(~/.config/zsh/prompt $fpath)
-autoload -Uz custom_prompt; custom_prompt
-
 #add local bin to PATH (why is this not here already?)
 export PATH=$PATH:$HOME/.local/bin
 
@@ -72,5 +68,16 @@ source ~/.config/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#pure prompt for simplicity. (also a faster git prompt experience)
+fpath+=($HOME/.config/zsh/plugins/pure)
+autoload -U promptinit; promptinit
+export PURE_CMD_MAX_EXEC_TIME=0 #always show execution time
+prompt pure
+
+#NVM (you will never run away from it)========================================
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 #zoxide (must be at end of zshrc)
 eval "$(zoxide init zsh)"

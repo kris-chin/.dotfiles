@@ -14,3 +14,6 @@
 [submodule "config/zsh/themes/powerlevel10k"]
 	path = config/zsh/themes/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k
+[submodule "config/zsh/plugins/pure"]
+	path = config/zsh/plugins/pure
+	url = https://github.com/sindresorhus/pure.git
