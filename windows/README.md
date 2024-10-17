@@ -40,6 +40,7 @@ This is WIP for now, but ideally I would like to automate the installation of th
 - [komorebi](https://github.com/LGUG2Z/komorebi) (Tiling window manager for Windows)
 - [DeskPins](https://efotinis.neocities.org/deskpins/) (Keeps Windows on top.. Wtf a neocities site??) 
 - [TreeSize Free](https://www.jam-software.com/treesize_free) (View the sizes of Directories interactively)
-- [CrystalDiskInfo](https://crystalmark.info/en/software/crystaldiskinfo/) (View the information about current disk drive status)
+- [CrystalDiskInfo](https://crystalmark.info/en/software/crystaldiskinfo/) and [CrystalDiskMark](https://crystalmark.info/en/software/crystaldiskmark/) (View the information about current disk drive status)
 - [Controller Companion](http://controllercompanion.com/) (Provides Controller bindings to navigate your desktop)
 - [Playnite](https://playnite.link/) (A Windows-Only frontend for cataloging *all* PC games)
+- [UsbTreeView](https://www.uwe-sieber.de/usbtreeview_e.html) (View Details on USB Connections and speed)
