@@ -46,7 +46,8 @@ require("lazy").setup({
           local ts_update = require('nvim-treesitter.install').update({with_sync = true})
           ts_update()
       end,
-      ensure_installed = { "c", "lua", "vim", "vimdoc", "javascript", "typescript" },
+      --NOTE FOR FUTURE SELF: I've created an autocommand that runs `:TSEnable highlight` on every buffer open as a hack. for some reason adding "svelte" to this list wasn't auto-enabling it during editing.
+      ensure_installed = { "c", "lua", "vim", "vimdoc", "javascript", "typescript", "svelte", "css" },
       highlight = {
           enable = true
       }

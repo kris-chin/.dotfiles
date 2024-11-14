@@ -8,6 +8,9 @@ lsp.on_attach(function(client, bufnr)
   lsp.default_keymaps({buffer = bufnr})
 end)
 
+--NOTE TO FUTURE SELF: if you install an LSP via Mason, you *may* need to enable it here?
+--REMEMBER: LSP is NOT Highlighting. For Highlighting, be sure to install parsers with TreeSitter!
+
 --configuration for lua language server specifically
 require('lspconfig').lua_ls.setup(
     --combine lsp-zero's Lua config with our own
@@ -31,6 +34,8 @@ require('lspconfig').tsserver.setup(
         end
     }
 )
+
+require('lspconfig').svelte.setup({})
 
 --Fix undefined global 'vim'
 lsp.nvim_workspace()
