@@ -188,22 +188,24 @@ require("lazy").setup({
   {
       "karb94/neoscroll.nvim",
       config = function()
-          require('neoscroll').setup()
-          local t = {}
+          local neoscroll = require('neoscroll')
+          neoscroll.setup()
 
-          --configure the times for the scrolling
-          -- Syntax: t[keys] = {function, {function arguments}}
-          t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '75', [['sine']]}} --default 250
-          t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '75', [['sine']]}} --default -250
-          t['<C-b>'] = {'scroll', {'-vim.api.nvim_win_get_height(0)', 'true', '450'}} --default 450
-          t['<C-f>'] = {'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '450'}} --default 450
-          t['<C-y>'] = {'scroll', {'-0.10', 'false', '100'}} --default 100
-          t['<C-e>'] = {'scroll', { '0.10', 'false', '100'}} --default 100
-          t['zt']    = {'zt', {'250'}} --default 250
-          t['zz']    = {'zz', {'250'}} --default 250
-          t['zb']    = {'zb', {'250'}} --default 250
-
-          require('neoscroll.config').set_mappings(t)
+          local keymap = {
+            ["<C-u>"] = function() neoscroll.ctrl_u({ duration = 75, easing='sine' }) end;
+            ["<C-d>"] = function() neoscroll.ctrl_d({ duration = 75, easing='sine' }) end;
+            ["<C-b>"] = function() neoscroll.ctrl_b({ duration = 450 }) end;
+            ["<C-f>"] = function() neoscroll.ctrl_f({ duration = 450 }) end;
+            ["<C-y>"] = function() neoscroll.scroll(-0.1, { move_cursor=false; duration = 100 }) end;
+            ["<C-e>"] = function() neoscroll.scroll(0.1, { move_cursor=false; duration = 100 }) end;
+            ["zt"]    = function() neoscroll.zt({ half_win_duration = 250 }) end;
+            ["zz"]    = function() neoscroll.zz({ half_win_duration = 250 }) end;
+            ["zb"]    = function() neoscroll.zb({ half_win_duration = 250 }) end;
+          }
+          local modes = { 'n', 'v', 'x' }
+          for key, func in pairs(keymap) do
+            vim.keymap.set(modes, key, func)
+          end
       end
   },
   --a scrollbar that shows diagnostics (very vscode-y)

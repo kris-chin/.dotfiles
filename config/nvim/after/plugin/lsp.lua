@@ -25,8 +25,8 @@ require('lspconfig').lua_ls.setup(
         }
     )
 )
---configuration for tsserver specifically
-require('lspconfig').tsserver.setup(
+--configuration for ts_ls specifically
+require('lspconfig').ts_ls.setup(
     {
         on_init = function(client)
             --ALSO disable semantic tokens for tsserver because it also sucks???? 
