@@ -4,7 +4,7 @@
 [[ $- != *i* ]] && return
 
 #Add nvim to our PATH (assuming it was installed via binaries)
-export PATH="$PATH:/opt/nvim-linux64/bin"
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 #add local bin to PATH (why is this not here already?)
 export PATH=$PATH:$HOME/.local/bin
