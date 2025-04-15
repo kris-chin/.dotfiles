@@ -9,9 +9,13 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
 --HACK: For some reason, svelte's TreeSitter parser isn't enabling even when I have it set up to always be installed?
 --This autocommand should enable treesitter highlighting EVERY time a buffer is displayed
+function tsEnableHighlight ()
+    vim.cmd[[:TSEnable highlight]]
+end
 vim.api.nvim_create_autocmd("BufWinEnter", {
   callback = function()
-    vim.cmd[[:TSEnable highlight]]
+  --TODO: call only if treesitter is installed. this results in an error if it is not
+    pcall(tsEnableHighlight)
   end,
   desc = "Always enable TreeSitter highlight on all files"
 })
