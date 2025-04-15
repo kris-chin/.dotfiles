@@ -62,6 +62,15 @@
 ;;enable zooming the text of the entire emacs frame, rather than a single buffer
 (package! zoom-frm)
 
+;;md-roam (it's not on MELPA)
+;;https://github.com/nobiot/md-roam
+(package! md-roam
+          :recipe (:host github
+                     :repo "nobiot/md-roam"
+                     :files ("*.el")
+                   )
+          )
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

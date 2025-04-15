@@ -51,14 +51,20 @@
 ;;for future reference, i'm assuming what this is doing is calling the variable-pitch-mode command when emacs sees its in org mode
 (add-hook 'org-mode-hook 'variable-pitch-mode)
 
-;;enable mixed pitch mode 
+;;enable mixed pitch mode
 (use-package! mixed-pitch
              :config
              (add-hook 'text-mode-hook #'mixed-pitch-mode)
              )
 
 ;;sets the org roam directory
-(setq org-roam-directory (file-truename "~/org/roam"))
+(setq org-roam-directory (file-truename "~/org"))
+
+;;associate md files with org roam (md-roam)
+(setq org-roam-file-extensions '("org" "md"))
+(md-roam-mode 1)
+(setq md-roam-file-extension "md")
+
 ;;set up org-roam to autosync on file changes to maintain cache consistency
 (org-roam-db-autosync-mode)
 

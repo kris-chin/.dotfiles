@@ -34,6 +34,10 @@
 ;;                )
 ;;              )
 
+
+;;disable warnings
+(setq warning-minimum-level :emergency)
+
 ;;my own custom major mode to run external integration scripts
 (load! "~/.config/doom/flow-script.el")
 ;;Agenda Configs
