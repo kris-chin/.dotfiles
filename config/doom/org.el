@@ -69,13 +69,13 @@
 (org-roam-db-autosync-mode)
 
 ;;configure obsidian for emacs
-(use-package! obsidian
-              :ensure t
-              :demand t
-              :config
-              (obsidian-specify-path "~/Obsidian")
-              (global-obsidian-mode t)
-              )
+;;(use-package! obsidian
+;;              :ensure t
+;;              :demand t
+;;              :config
+;;              (obsidian-specify-path "~/Obsidian")
+;;              (global-obsidian-mode t)
+;;              )
 
 ;;auto fold blocks in org mode
 (setq org-hide-block-startup t)

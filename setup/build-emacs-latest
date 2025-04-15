@@ -1,17 +1,11 @@
 #!/bin/bash
 
-#0. Set up the directory for creating source
-export INSTALL_BASEDIR=/usr/local/src
+#0. add jammy to ubuntu sources
+#https://stackoverflow.com/questions/62301866/how-to-install-the-libwebkitgtk-package-on-ubuntu-20-04-lts
+sudo chmod a+rx /etc/apt/sources.list.d/ubuntu.sources
+sudo printf "\n##Added automatically by script\nTypes: deb\nURIs: http://gb.archive.ubuntu.com/ubuntu\nSuites: jammy\nComponents: main" >> /etc/apt/sources.list.d/ubuntu.sources
 
-#In case we dont have permissions to add a folder there
-sudo chmod a+rwx $INSTALL_BASEDIR
-
-#1. Clone the official emacs repo (SPECIFICIALLY with the most recent changes)
-cd $INSTALL_BASEDIR
-
-git clone --depth=1 git://git.savannah.gnu.org/emacs.git
-
-#2. Install the required Dependencies
+#1. Install the required Dependencies first
 #Taken from https://harryrschwartz.com/2022/12/08/how-i-build-emacs-from-source-on-debian
 sudo apt install \
 	make \
@@ -36,7 +30,19 @@ sudo apt install \
 	libtree-sitter-dev \
 	libwebkit2gtk-4.0-dev
 
-#3. Set up Config options and then Build Emacs
+#2. Set up the directory for creating source
+export INSTALL_BASEDIR=/usr/local/src
+
+#In case we dont have permissions to add a folder there
+sudo chmod a+rwx $INSTALL_BASEDIR
+
+#3. Clone the official emacs repo (SPECIFICIALLY with the most recent changes)
+cd $INSTALL_BASEDIR
+
+git clone --depth=1 git://git.savannah.gnu.org/emacs.git
+
+
+#4. Set up Config options and then Build Emacs
 cd $INSTALL_BASEDIR/emacs
 
 export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10
