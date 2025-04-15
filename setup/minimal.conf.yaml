@@ -34,11 +34,15 @@
     command: sudo chmod a+rw /tmp/
     description: adding permissions to the /tmp/ folder in case it is not writable
   -
+    command: sudo chmod a+rw /opt/
+    description: adding permissions to the /opt/ folder in case it is not writable
+  -
     command: chsh -s $(which zsh)
     description: setting zsh as default shell (so .bashrc isn't loaded anymore)
   #install nvim binaries. NOTE: for telescope to respect .gitignore, fd-find must be installed
+  #for binaries installed in /opt, their bins must be added to your $PATH. our .zshrc has this already, but ensure it is.
   -
-    command: curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz; sudo rm -rf /opt/nvim; sudo tar -C /opt -xzf nvim-linux64.tar.gz
+    command: curl -LO https://github.com/neovim/neovim/releases/download/v0.11.0/nvim-linux-x86_64.tar.gz; sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
     description: installing nvim binaries
   #install tmux plugin manager
   #TODO: install plugins without needing to press the keybind myself
