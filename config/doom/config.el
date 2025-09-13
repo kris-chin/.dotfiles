@@ -97,6 +97,63 @@
   (set-frame-size (selected-frame) 124 40)
   )
 
+;;add syntax highlighting for other languages in org babel code blocks
+(add-to-list 'org-src-lang-modes '("AutoHotKey" . "ahk-mode"))
+
+;;custom function to get the filepaths of our hotkey config files per system
+;;manager - string of which hotkey manager to use. can be: "i3", "skhd", or "ahk"
+(defun get-hotkey-config (manager)
+  "Gets the filepath of a hotkey config"
+  (cond
+    (
+     (string-equal manager "i3")
+     (
+      let ((
+           filepath (concat (expand-file-name "~") "/.config/i3/config")
+          ))
+      (if (file-exists-p filepath)
+        filepath
+        "NULL"
+        )
+      )
+    )
+    (
+     (string-equal manager "skhd")
+     (
+      let ((
+           filepath (concat (expand-file-name "~") "/.shkdrc")
+          ))
+      (if (file-exists-p filepath)
+        filepath
+        "NULL"
+        )
+      )
+    )
+    (
+     (string-equal manager "ahk")
+     (
+      let ((
+           filepath 
+               (concat 
+                 ;;remove newlines
+                 (replace-regexp-in-string "\n$" "" 
+                   ;;get the user folder in windows
+                   (shell-command-to-string "wslpath $(cmd.exe /c \"echo %USERPROFILE%\" 2> /dev/null | tr -d '\r')"
+                    )
+                 )
+                 "/Documents/AutoHotKey/Komorebi.ahk" ;;TODO: is this the directory I want to use for Windows bootstrapping?
+                 )
+          ))
+      (if (file-exists-p filepath)
+        filepath
+        "NULL"
+        )
+      )
+     )
+    )
+  )
+) 
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;

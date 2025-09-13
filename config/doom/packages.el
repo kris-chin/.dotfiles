@@ -71,6 +71,9 @@
                    )
           )
 
+;;ahk-mode (adds an AutoHotKey major mode to emacs)
+(package! ahk-mode)
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

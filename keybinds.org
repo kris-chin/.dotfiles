@@ -1,0 +1,346 @@
+#+TITLE: OS Keybinds
+#+DESCRIPTION: Universal keybinds across OS. Very useful for not fucking up your muscle memory.
+- A custom function called `get-hotkey-config` is defined in our doom config to get relative filepaths based on string. We use this function to determine the locations on which config files to write to.
+- As a simple refresher, use `org-babel-tangle` to tangle all blocks to their respective locations
+
+* Non-Keybind Setup
+** ahk
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#Requires AutoHotkey v2.0.2
+#SingleInstance Force
+; Config from https://lgug2z.github.io/komorebi/common-workflows/autohotkey.html
+;===THIS IS A TANGLED FILE. SEE `.dotfiles/kebyinds.org` DON"T MODIFY DIRECTLY===
+
+;Define Komorebic command for easier access
+Komorebic(cmd) {
+    RunWait(format("komorebic.exe {}", cmd), , "Hide")
+}
+#+end_src
+** skhd
+#+begin_src sh :tangle (get-hotkey-config "skhd")
+# ===THIS IS A TANGLED FILE. SEE `.dotfiles/kebyinds.org` DON"T MODIFY DIRECTLY===
+#+end_src
+** i3
+#+begin_src sh :tangle (get-hotkey-config "i3")
+#===THIS IS A TANGLED FILE. SEE `.dotfiles/kebyinds.org. `DON'T MODIFY DIRECTLY===
+
+set $mod Mod4
+#For some reason, Mod1 is alt, not "Alt"
+set $alt Mod1
+#+end_src
+*** Arch Config
+#+begin_src sh :tangle (get-hotkey-config "i3")
+
+#Font  (default: monospace 8)
+font pango:Cozette 10
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Set up minimum floating window sizes
+#floating_minimum_size 800 x 500
+
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier.
+tiling_drag modifier titlebar
+
+# Disable focus following mouse. This is specifically so that switching windows doesn't get stuck for floating windows
+focus_follows_mouse no
+#default window gaps
+#(weirdly enough, defining the gaps needs to be like this for the config. but the actual message has different syntax)
+gaps inner 20px
+gaps outer 30px
+#keybinds for modifying gaps per workspace
+bindsym $mod+w gaps outer current minus 10 px
+bindsym $mod+q gaps outer current plus 10 px
+bindsym $mod+s gaps inner current minus 10 px
+bindsym $mod+a gaps inner current plus 10 px
+#open feh on startup to load background image
+exec_always --no-startup-id ~/.fehbg &
+
+#open picom in the background (this is a compositor that allows for transparent windows)
+#psst. use `pkill picom` to kill the picom daemon good for tweaking configs.
+exec_always --no-startup-id picom -b
+
+#hide window titlebars
+for_window [class="^.*"] border none
+#start background process to write i3 data
+exec_always --no-startup-id ~/.config/i3/bin/get-i3-info
+
+#start eww topbar and bottom bar
+exec_always --no-startup-id ~/.local/bin/eww open-many topbar bottombar dashboard
+#start up keepassxc by default
+exec_always keepassxc
+#add a quick keybinding to toggle the widgets (basically fullscreen mode without fullscreen)
+bindsym $mod+Shift+f exec --no-startup-id  ~/.local/bin/eww open-many --toggle topbar bottombar dashboard
+#Handle window events (new and move)
+exec_always --no-startup-id ~/.config/i3/bin/handle-windows
+#+end_src
+
+** X
+#+begin_src sh :tangle ~/.xmodmap
+#===THIS IS A TANGLED FILE. SEE `.dotfiles/kebyinds.org` DON'T MODIFY DIRECTLY===
+remove Lock = Caps_Lock
+keysym Caps_Lock = Control_L
+add Control = Control_L
+#+end_src
+* Window Management
+** Turn on/off Window Tiling Mode
+Start = L_MOD + Alt + [
+Stop = L_MOD + Alt + ]
+*** i3
+*** skhd
+*** ahk
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#![::Komorebic("start") ;;explicitly enable ffm for focus_folows_mouse
+#!]::Komorebic("stop") ;;TODO: grab all windows and move them back to the front
+#+end_src
+** Change Window Focus and Move Mouse
+L_MOD + hjkl
+*** i3
+Runs our focus script which also moves focus within tmux, nvim, or emacs
+#+begin_src sh :tangle (get-hotkey-config "i3")
+bindsym $mod+h exec --no-startup-id ~/.config/i3/bin/focus left
+bindsym $mod+j exec --no-startup-id ~/.config/i3/bin/focus down
+bindsym $mod+k exec --no-startup-id ~/.config/i3/bin/focus up
+bindsym $mod+l exec --no-startup-id ~/.config/i3/bin/focus right
+#+end_src
+*** skhd
+(currently alt + shift + hjkl)
+#+begin_src
+alt + shift - h : yabai -m window --focus west
+alt + shift - j : yabai -m window --focus south
+alt + shift - k : yabai -m window --focus north
+alt + shift - l : yabai -m window --focus east
+#+end_src
+*** ahk
+NOTE: `win + l` is actually the "lock screen" shortcut, it actually needs to be removed in the registry editor for the shortcut to work
+see: https://stackoverflow.com/questions/58130133/removing-access-to-winl-keyboard-shortcut
+
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#h::Komorebic("focus left")
+#j::Komorebic("focus down")
+#k::Komorebic("focus up")
+#l::Komorebic("focus right")
+#+end_src
+** Swap Window
+MOD + SHIFT + hjkl
+*** i3
+#+begin_src :tangle (get-hotkey-config "i3")
+
+#+end_src
+*** skhd
+#+begin_src
+alt + shift - o : yabai -m window --swap north
+alt + shift - i : yabai -m window --swap south
+alt + shift - u : yabai -m window --swap west
+alt + shift - p : yabai -m window --swap east
+#+end_src
+*** ahk
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#+h::Komorebic("move left")
+#+j::Komorebic("move down")
+#+k::Komorebic("move up")
+#+l::Komorebic("move right")
+#+end_src
+** Resize Window
+MOD + CTRL + hjkl
+*** i3
+#+begin_src sh :tangle (get-hotkey-config "i3")
+# resize window relative to its position on the display
+bindsym $mod+Shift+h exec --no-startup-id ~/.config/i3/bin/resize-relative left 50
+bindsym $mod+Shift+l exec --no-startup-id ~/.config/i3/bin/resize-relative right 50
+bindsym $mod+Shift+j exec --no-startup-id ~/.config/i3/bin/resize-relative down 50
+bindsym $mod+Shift+k exec --no-startup-id ~/.config/i3/bin/resize-relative up 50
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+#+end_src
+*** skhd
+*** ahk
+Note: seems like this one is not working rn?
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+^#h::Komorebic("resize-axis horizontal decrease")
+^#j::Komorebic("resize-axis vertical decrease")
+^#k::Komorebic("resize-axis vertical increase")
+^#l::Komorebic("resize-axis horizontal increase")
+#+end_src
+** Change Workspace
+MOD + 1-9
+*** i3
+#+begin_src sh :tangle (get-hotkey-config "i3")
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+#+end_src
+*** skhd
+*** ahk
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#1::Komorebic("focus-workspace 0")
+#2::Komorebic("focus-workspace 1")
+#3::Komorebic("focus-workspace 2")
+#4::Komorebic("focus-workspace 3")
+#5::Komorebic("focus-workspace 4")
+#6::Komorebic("focus-workspace 5")
+#7::Komorebic("focus-workspace 6")
+#8::Komorebic("focus-workspace 7")
+#+end_src
+** Throw Window to Workspace
+MOD + SHIFT + 1-9
+*** i3
+#+begin_src sh :tangle (get-hotkey-config "i3")
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+#+end_src
+*** skhd
+#+begin_src
+alt + shift - 1 : yabai -m window --space 1
+alt + shift - 2 : yabai -m window --space 2
+alt + shift - 3 : yabai -m window --space 3
+alt + shift - 4 : yabai -m window --space 4
+alt + shift - 5 : yabai -m window --space 5
+#+end_src
+*** ahk
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#+1::Komorebic("move-to-workspace 0")
+#+2::Komorebic("move-to-workspace 1")
+#+3::Komorebic("move-to-workspace 2")
+#+4::Komorebic("move-to-workspace 3")
+#+5::Komorebic("move-to-workspace 4")
+#+6::Komorebic("move-to-workspace 5")
+#+7::Komorebic("move-to-workspace 6")
+#+8::Komorebic("move-to-workspace 7")
+#+end_src
+** Fullscreen Window
+MOD + f
+*** i3
+#+begin_src sh :tangle (get-hotkey-config "i3")
+# enter fullscreen mode for the focused container
+#bindsym $mod+f exec --no-startup-id ~/.config/i3/bin/toggle-fullscreen
+bindsym $mod+f fullscreen toggle
+#+end_src
+*** skhd
+#+begin_src
+alt + shift - return : yabai -m window --toggle zoom-fullscreen
+#+end_src
+*** ahk
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#f::Komorebic("toggle-maximize")
+#+end_src
+** Close Window
+MOD + SHIFT + q
+*** i3
+#+begin_src sh :tangle (get-hotkey-config "i3")
+# Kill window (doesn't kill processes)
+# We DONT put xkill because that also kills daemons actually. not good for emacs.
+bindsym $mod+Shift+q kill
+#+end_src
+*** skhd
+*** ahk
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#+q::Komorebic("close")
+
+#+end_src
+** Toggle Float
+MOD + SHIFT+ o
+*** i3
+#+begin_src sh :tangle (get-hotkey-config "i3")
+# Toggle the focused window to either float / tile
+# If it's now floating, moves it to the mouse
+bindsym $mod+Shift+o [con_id=__focused__] floating toggle, move position mouse
+#+end_src
+*** skhd
+#+begin_src
+alt + shift - f : yabai -m window --toggle float
+#+end_src
+*** ahk
+#+begin_src ahk :tangle (get-hotkey-config "ahk")
+#+o::Komorebic("toggle-float")
+#+end_src
+
+* dmenu
+** i3
+#+begin_src sh :tangle (get-hotkey-config "i3")
+# start dmenu (a program launcher)
+#bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+Return exec --no-startup-id rofi -show drun -show-icons
+bindsym $mod+Shift+Return exec --no-startup-id rofi -show run
+bindsym $mod+Ctrl+Return exec --no-startup-id env NO_TMUX=true alacritty
+#+end_src
+

@@ -16,9 +16,14 @@ export EDITOR="$VISUAL"
 
 #ALIASES============================================================
 
+#always color ls
+alias ls='ls --color=auto'
+
 #shorthands
 alias t="tmux"
 alias c="clear"
+alias l="ls"
+
 
 #replace entire commands due to muscle memory
 if command -v nvim &>/dev/null; then
@@ -50,8 +55,6 @@ if [[ $(is-wsl) == "True" ]]; then
   export DISPLAY=192.168.56.1:0.0
 fi
 
-#always color ls
-alias ls='ls --color=auto'
 
 #use emacs aliases if it is installed
 if command -v emacs &>/dev/null; then
