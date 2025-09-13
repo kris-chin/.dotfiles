@@ -97,6 +97,9 @@
   (set-frame-size (selected-frame) 124 40)
   )
 
+;;add syntax highlighting for other languages in org babel code blocks
+(add-to-list 'org-src-lang-modes '("AutoHotKey" . "ahk-mode"))
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
