@@ -1,5 +1,6 @@
 #+TITLE: OS Keybinds
 #+DESCRIPTION: Universal keybinds across OS. Very useful for not fucking up your muscle memory.
+A custom function called `get-hotkey-config` is defined in our doom config to get relative filepaths based on string
 
 * Some notes
 ** TODO figure out a way to acquire relative user config path (for windows bc windows is windows)
