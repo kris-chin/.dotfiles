@@ -74,6 +74,9 @@
 ;;ahk-mode (adds an AutoHotKey major mode to emacs)
 (package! ahk-mode)
 
+;;rainbow-delimiters super necessary rainbow delimiters!! (especially for elisp
+(package! rainbow-delimiters)
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

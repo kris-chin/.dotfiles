@@ -1,15 +1,48 @@
+;; ===================READ BELOW==========================
 ;; These mappings were created from a tangled config file in ~/org/doom-config/mappings.org
+;; As a refresher, tangled files are specified in the org file's header-args. 
+;; Run `org-babel-tangle` to write changes to tangled files
+;; =======================================================
 
 (map! :map evil-normal-state-map "C-h" #'evil-window-left)
 (map! :map evil-normal-state-map "C-j" #'evil-window-down)
 (map! :map evil-normal-state-map "C-k" #'evil-window-up)
 (map! :map evil-normal-state-map "C-l" #'evil-window-right)
 
-;;window resize maps
+;; Edge-Cases for special modes
+
+;; - Treemacs
+(map! :after treemacs :map treemacs-mode-map "C-h" #'evil-window-left)
+(map! :after treemacs :map treemacs-mode-map "C-j" #'evil-window-down)
+(map! :after treemacs :map treemacs-mode-map "C-k" #'evil-window-right)
+(map! :after treemacs :map treemacs-mode-map "C-l" #'evil-window-right)
+
+;; A bunch of Vterm Edge Cases
+
+;; Vterm - Navigation
+(map! :after vterm :map vterm-mode-map "C-h" #'evil-window-left)
+(map! :after vterm :map vterm-mode-map "C-j" #'evil-window-down)
+(map! :after vterm :map vterm-mode-map "C-k" #'evil-window-up)
+(map! :after vterm :map vterm-mode-map "C-l" #'evil-window-right)
+
+;; Vterm - Stuff for Nvim
+(map! :after vterm :map vterm-mode-map "C-u" #'vterm-send-C-u)
+(map! :after vterm :map vterm-mode-map "<escape>" #'vterm-send-escape)
+(map! :after vterm :map vterm-mode-map "\\ t" #'treemacs)
+
+;; General Bind to Send to Vterm instead of Emacs
+;; I don't know a better keybinding rn so I'm just doing C-x C-x
+(map! :after vterm :map vterm-mode-map "C-x C-x" #'vterm-send-next-key)
+
+;;resize maps
 (map! "C-a C-h" #'shrink-window-horizontally)
 (map! "C-a C-l" #'enlarge-window-horizontally)
 (map! "C-a C-j" #'shrink-window)
 (map! "C-a C-k" #'enlarge-window)
+
+;;New Windows
+(map! "C-a C--" #'evil-window-new)
+(map! "C-a C-\\" #'evil-window-vnew)
 
 ;;map \ + b for all buffers
 (map! :map evil-normal-state-map "\\ b" #'ibuffer)
@@ -97,6 +130,13 @@
   ("j" #'org-roam-alias-add "add alias")
   ;; Left-hand side: Adding links / creating new nodes
   ("r" #'org-roam-node-insert "insert link")
+  ;;("r" (lambda () (interactive) ((org-roam-node-insert :templates ( ("d" "default" plain "%?" :target
+  ;;                                                                   (file+head "${slug}.org"
+  ;;                                                                              "#+TITLE: ${title}\n"
+  ;;                                                                   :unarrowed t)
+  ;;                                                                   )
+  ;;                                                                  )
+  ;;                                                     ))) "insert link (special)")
   ;;These two are ALMOST the same thing, but imma just keep them
   ("e" #'org-roam-capture "capture")
   ("f" #'org-roam-node-find "find node")
@@ -147,6 +187,7 @@
   ("l" #'org-toggle-link-display "toggle link display")
   ("c" #'org-columns "column view")
   ("t" #'org-tidy-toggle "tidy toggle")
+  ("p" #'org-toggle-pretty-entities "pretty entities toggle")
   )
 
 ;;hydra for all flow
@@ -241,10 +282,8 @@
 (map! "M-=" #'hydra-zoom/body)
 
 ;;Bypassing certain keybindings so they are passed to vterm
-(map! :after vterm :map vterm-mode-map "C-c" #'vterm-send-C-c)
-(map! :after vterm :map vterm-mode-map "C-u" #'vterm-send-C-u)
-(map! :after vterm :map vterm-mode-map "C-h" #'vterm-send-C-h)
-(map! :after vterm :map vterm-mode-map "C-l" #'vterm-send-C-l)
-(map! :after vterm :map vterm-mode-map "C-j" #'vterm-send-C-j)
-(map! :after vterm :map vterm-mode-map "C-k" #'vterm-send-C-k)
-(map! :after vterm :map vterm-mode-map "<escape>" #'vterm-send-escape)
+;;(map! :after vterm :map vterm-mode-map "C-c" #'vterm-send-C-c)
+;;(map! :after vterm :map vterm-mode-map "C-h" #'vterm-send-C-h)
+;;(map! :after vterm :map vterm-mode-map "C-l" #'vterm-send-C-l)
+;;(map! :after vterm :map vterm-mode-map "C-j" #'vterm-send-C-j)
+;;(map! :after vterm :map vterm-mode-map "C-k" #'vterm-send-C-k)

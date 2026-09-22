@@ -153,6 +153,14 @@
     )
   )
 
+;;set up org-cite and citar
+;;pointing to our .bib file in our synced notes
+(setq org-cite-global-bibliography '("~/org/references/whole_library.bib"))
+;;point to the pre-existing zotero CSL templates
+(setq org-cite-csl-styles-dir '("~/Zotero/styles/") )
+;;point the citar bibliography to the org-cite bibliography
+(setq citar-bibliography org-cite-global-bibliography)
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
