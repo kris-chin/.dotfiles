@@ -161,6 +161,9 @@
 ;;point the citar bibliography to the org-cite bibliography
 (setq citar-bibliography org-cite-global-bibliography)
 
+;;Enable latex highlighting in org mode
+(setq org-highlight-latex-and-related '(native latex script entities) )
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
