@@ -9,6 +9,7 @@ tmux
 ripgrep
 coreutils
 python3
+python-is-python3
 cloc
 make
 gcc
